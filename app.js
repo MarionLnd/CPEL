@@ -38,4 +38,16 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
+// Server
+app.listen(3000, function () {
+  console.info("HTTP server started on port 3000")
+});
+
+// Base de donnée
+let mongoose = require('mongoose');
+
+mongoose.connect('mongodb+srv://CPEL_USER:coucoucpel@projetcpel.mls1z.mongodb.net/test', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+});
 module.exports = app;
