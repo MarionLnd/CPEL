@@ -9,3 +9,6 @@ const student  = mongoose.Schema({
     idModuleStudent: String
 })
 
+module.exports = mongoose.model('student', student);
+
+

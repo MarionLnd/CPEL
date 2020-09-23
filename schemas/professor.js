@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
-const professor  = mongoose.Schema({
+const professorSchema  = new Schema({
     idProf : String,
     nomProf : String,
     prenomProf : String,
@@ -8,3 +9,5 @@ const professor  = mongoose.Schema({
     pwdProf: String,
     idModuleProf: String
 })
+
+module.exports = mongoose.model('professor', professorSchema);

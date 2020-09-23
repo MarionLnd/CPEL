@@ -6,3 +6,5 @@ const renduStudent  = mongoose.Schema({
     contenu : String,
     exerciceFini: Boolean,
 })
+
+module.exports = mongoose.model('renduStudent', renduStudent);

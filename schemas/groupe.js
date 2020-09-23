@@ -5,3 +5,6 @@ const groupe  = mongoose.Schema({
     nomGroupe : String,
     nbreEtudiants : Number
 })
+
+module.exports = mongoose.model('groupe', groupe);
+

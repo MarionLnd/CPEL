@@ -5,3 +5,5 @@ const correction  = mongoose.Schema({
     idExercice : String,
     contenu : String
 })
+
+module.exports = mongoose.model('correction', correction);

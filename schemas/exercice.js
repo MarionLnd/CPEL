@@ -5,3 +5,6 @@ const exercice  = mongoose.Schema({
     nom : String,
     idModule : String,
 })
+
+module.exports = mongoose.model('exercice', exercice);
+

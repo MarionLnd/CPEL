@@ -5,3 +5,5 @@ const module  = mongoose.Schema({
     nom : String,
     contenu : String
 })
+
+module.exports = mongoose.model('module', module);
