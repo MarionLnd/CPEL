@@ -60,7 +60,6 @@ router.get("/api/professor",(req,res)=>{
 
 
 // Récupère toutes les informations d’un professeur en fonction de son id
-
 router.get("/api/professor/:idProf",(req,res)=>{
   professor.find({idProf : req.params.idProf}).then((result)=>{
     res.status(200).json({message : "Personne trouvé"})
@@ -69,5 +68,72 @@ router.get("/api/professor/:idProf",(req,res)=>{
     res.status(400).json(err)
   })
 });
+
+
+// Récupère le nom, prénom, mot de passe et email
+
+
+// Récupère tous les étudiants
+router.get("/api/student",(req,res)=>{
+  student.find({}).then((result)=>{
+    res.status(200).json(result)
+  },(err)=>{
+    res.status(400).json(err)
+  })
+});
+
+
+// Récupère les étudiants par ID
+router.get("/api/student/:idStudent",(req,res)=>{
+  student.find({idStudent : req.params.idStudent}).then((result)=>{
+    res.status(200).json({message : "Personne trouvé"})
+    res.status(200).json(result);
+  },(err)=>{
+    res.status(400).json(err)
+  })
+});
+
+// Récupère les groupes
+router.get("/api/group",(req,res)=>{
+  group.find({}).then((result)=>{
+    res.status(200).json(result)
+  },(err)=>{
+    res.status(400).json(err)
+  })
+});
+
+// Récupère un groupe
+router.get("/api/group/:idGroupe",(req,res)=>{
+  group.find({idGroupe : req.params.idGroupe}).then((result)=>{
+    res.status(200).json({message : "Personne trouvé"})
+    res.status(200).json(result);
+  },(err)=>{
+    res.status(400).json(err)
+  })
+});
+
+
+// Récupérer tous les exercices
+router.get("/api/exercise",(req,res)=>{
+  group.find({}).then((result)=>{
+    res.status(200).json(result)
+  },(err)=>{
+    res.status(400).json(err)
+  })
+});
+
+
+// Récupérer un exercice
+router.get("/api/exercise/:idExercie",(req,res)=>{
+  group.find({idExercie : req.params.idExercie}).then((result)=>{
+    res.status(200).json({message : "Personne trouvé"})
+    res.status(200).json(result);
+  },(err)=>{
+    res.status(400).json(err)
+  })
+});
+
+
+
 
 module.exports = router;
