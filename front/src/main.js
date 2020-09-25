@@ -4,12 +4,10 @@ import 'bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import VueRouter from "vue-router";
 import Routes from "./Routes";
-import VueAwesome from 'vue-awesome'
 
 Vue.config.productionTip = false
 
 Vue.use(VueRouter)
-Vue.use(VueAwesome)
 
 const router = new VueRouter({
   routes: Routes,
