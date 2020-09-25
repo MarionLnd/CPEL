@@ -1,0 +1,30 @@
+<template>
+    <div>
+        <h1>Tableau de bord</h1>
+        <ModuleDashboard />
+        <GroupDashboard />
+    </div>
+</template>
+
+<script>
+  import ModuleDashboard from "@/components/Dashboards/ModuleDashboard";
+  import GroupDashboard from "@/components/Dashboards/GroupDashboard";
+
+  export default {
+    name: "Dashboard",
+    components: {
+      GroupDashboard,
+      ModuleDashboard
+    },
+    data(){
+      return {
+
+      }
+    }
+  }
+
+</script>
+
+<style scoped>
+
+</style>
