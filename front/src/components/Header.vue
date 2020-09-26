@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar navbar-expand-md navbar-light bg-danger fixed-top">
+  <nav class="navbar navbar-expand-md navbar-light bg-header fixed-top">
     <a class="navbar-brand" href="#">CPEL</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -41,8 +41,10 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+  .bg-header {
+    background-color: #84A9AC;
+  }
   /*.main-header {
     width: 100%;
-    background-color: #84A9AC;
   }*/
 </style>
