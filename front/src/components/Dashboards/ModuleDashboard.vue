@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h3>Tableau de bord des modules</h3>
+    <h3 class="text-left">Les modules</h3>
     <Vuetable ref="vuetable"
               :api-mode="false"
               :fields="fields"
@@ -65,8 +65,7 @@
     },
     methods: {
       dataManager(sortOrder, pagination) {
-        console.log(this.data);
-        //if (this.data.length < 1) return;
+        if (this.data.length < 1) return;
 
         let local = this.data;
 
