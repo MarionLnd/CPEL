@@ -6,7 +6,8 @@ const student  = mongoose.Schema({
     prenomStudent: String,
     emailStudent: String,
     pwdStudent: String,
-    idModuleStudent: String
+    idModuleStudent: String,
+    idGroupe: String,
 })
 
 module.exports = mongoose.model('student', student);

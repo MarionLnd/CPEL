@@ -7,8 +7,8 @@ var routes = require('./routes/routes');
 
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json());
-
-app.use('/', routes);
+app.use(express.json()) // new
+app.use('/api', routes);
 
 mongoose.connect(connexionChain, { useUnifiedTopology: true, useNewUrlParser: true  })
     .then(client => {
@@ -18,6 +18,8 @@ mongoose.connect(connexionChain, { useUnifiedTopology: true, useNewUrlParser: tr
 app.listen(3000, function() {
   console.log('Server : OK');
 })
+
+
 
 module.exports = app;
 
