@@ -17,9 +17,9 @@ const correction = require('../schemas/correction');
 // -------------------------------------------
 
 // Ajout professeur
-router.post("/professor/addProfessor",(req,res)=>{
-  let newProfessor = new  professor(req.body);
-  newProfessor.save().then((result)=>{
+router.post("/professor/addProfessor",async (req,res)=>{
+  let newProfessor = new professor(req.body);
+  await newProfessor.save().then((result)=>{
     res.status(200).json({result : result, professor : newProfessor})
   },(err)=>{
     res.status(400).json(err)
@@ -27,9 +27,9 @@ router.post("/professor/addProfessor",(req,res)=>{
 });
 
 // Ajout étudiant
-router.post("/student/addStudent",(req,res)=>{
+router.post("/student/addStudent",async (req,res)=>{
   let newStudent = new  student(req.body);
-  newStudent.save().then((result)=>{
+  await newStudent.save().then((result)=>{
     res.status(200).json({result : result, student : newStudent})
   },(err)=>{
     res.status(400).json(err)
@@ -37,9 +37,9 @@ router.post("/student/addStudent",(req,res)=>{
 });
 
 // Ajout d’un groupe étudiant
-router.post("/group/addGroup",(req,res)=>{
+router.post("/group/addGroup",async (req,res)=>{
   let newGroup = new  group(req.body);
-  newGroup.save().then((result)=>{
+  await newGroup.save().then((result)=>{
     res.status(200).json({result : result, group : newGroup})
   },(err)=>{
     res.status(400).json(err)
@@ -47,9 +47,9 @@ router.post("/group/addGroup",(req,res)=>{
 });
 
 // Ajout d'un module
-router.post("/module/addModule",(req,res)=>{
+router.post("/module/addModule",async (req,res)=>{
   let newModule = new mod(req.body);
-  newModule.save().then((result)=>{
+  await newModule.save().then((result)=>{
     res.status(200).json({result : result, module : newModule})
   },(err)=>{
     res.status(400).json(err)
@@ -57,10 +57,10 @@ router.post("/module/addModule",(req,res)=>{
 });
 
 // Ajout d’un exercice par module
-router.post("/exercise/addExercise/:id",(req,res)=>{
+router.post("/exercise/addExercise/:id",async (req,res)=>{
   let newExercise = new  exercise(req.body);
   newExercise.idModule = req.params.id;
-  newExercise.save().then((result)=>{
+  await newExercise.save().then((result)=>{
     res.status(200).json({result : result, exercise : newExercise})
   },(err)=>{
     res.status(400).json(err)
@@ -68,10 +68,10 @@ router.post("/exercise/addExercise/:id",(req,res)=>{
 });
 
 // Ajout de la correction d’un exercice
-router.post("/correction/addCorrection/:id",(req,res)=>{
+router.post("/correction/addCorrection/:id",async (req,res)=>{
   let newCorrection = new  correction(req.body);
   newCorrection.idExercice = req.params.id;
-  newCorrection.save().then((result)=>{
+  await newCorrection.save().then((result)=>{
     res.status(200).json({result : result, correction : newCorrection})
   },(err)=>{
     res.status(400).json(err)
@@ -83,8 +83,8 @@ router.post("/correction/addCorrection/:id",(req,res)=>{
 // -----------------------------------------------
 
 // Récupère tous les professeurs
-router.get("/professor",(req,res)=>{
-  professor.find({}).then((result)=>{
+router.get("/professor",async (req,res)=>{
+  await professor.find({}).then((result)=>{
     res.status(200).json(result)
   },(err)=>{
     res.status(400).json(err)
@@ -103,8 +103,8 @@ router.get("/professor/:id", async (req, res) => {
 })
 
 // Récupère tous les étudiants
-router.get("/student",(req,res)=>{
-  student.find({}).then((result)=>{
+router.get("/student",async (req,res)=>{
+  await student.find({}).then((result)=>{
     res.status(200).json(result)
   },(err)=>{
     res.status(400).json(err)
@@ -123,8 +123,8 @@ router.get("/student/:id", async (req, res) => {
 })
 
 // Récupère les groupes
-router.get("/group",(req,res)=>{
-  group.find({}).then((result)=>{
+router.get("/group",async (req,res)=>{
+  await group.find({}).then((result)=>{
     res.status(200).json(result)
   },(err)=>{
     res.status(400).json(err)
@@ -143,8 +143,8 @@ router.get("/group/:id", async (req, res) => {
 })
 
 // Récupérer tous les exercices
-router.get("/exercise",(req,res)=>{
-  group.find({}).then((result)=>{
+router.get("/exercise",async (req,res)=>{
+  await group.find({}).then((result)=>{
     res.status(200).json(result)
   },(err)=>{
     res.status(400).json(err)

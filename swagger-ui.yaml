@@ -6,6 +6,9 @@ info:
   # put the contact info for your development or API team
   contact:
     email: you@your-company.com
+  description: This the API for the CPEL application
+  version: 1.0.0
+  title: API for CPEL Application
 
   license:
     name: Apache 2.0
@@ -27,6 +30,12 @@ paths:
         - developers
       summary: searches inventory
       operationId: searchInventory
+  /professor:
+    get:
+      tags:
+        - professor
+      summary: searches professors
+      operationId: searchProfessors
       description: |
         By passing in the appropriate options, you can search for
         available inventory in the system
@@ -58,6 +67,13 @@ paths:
             type: array
             items:
               $ref: '#/definitions/InventoryItem'
+      responses:
+        200:
+          description: Search all existing professors
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Professor'
         400:
           description: bad input parameter
     post:
@@ -91,6 +107,55 @@ definitions:
       - name
       - manufacturer
       - releaseDate
+  /professor/{id}:
+    get:
+      tags:
+        - professor
+      summary: searches professors
+      operationId: searchProfessors
+      description: |
+        By passing in the appropriate options, you can search for
+        available inventory in the system
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          name: searchString
+          description: pass an optional search string for looking up inventory
+          required: false
+          type: string
+        - in: query
+          name: skip
+          description: number of records to skip for pagination
+          type: integer
+          format: int32
+          minimum: 0
+        - in: query
+          name: limit
+          description: maximum number of records to return
+          type: integer
+          format: int32
+          minimum: 0
+          maximum: 50
+      responses:
+        200:
+          description: search results matching criteria
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/InventoryItem'
+        400:
+          description: bad input parameter
+definitions:
+  Professor:
+    type: object
+    required:
+      - idProf
+      - lastname
+      - firstname
+      - email
+      - password
+      - idModule
     properties:
       id:
         type: string
@@ -103,6 +168,22 @@ definitions:
         type: string
         format: date-time
         example: 2016-08-29T09:12:33.001Z
+      lastname:
+        type: string
+        example: Doe
+      firtname:
+        type: string
+        example: Joe
+      email:
+        type: string
+        example: joe.doe@domain.com
+      password:
+        type: string
+        example: hashPassword
+      idModule:
+        type: integer
+        format: int32
+        example: 2
       manufacturer:
         $ref: '#/definitions/Manufacturer'
   Manufacturer:
