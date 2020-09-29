@@ -9,6 +9,8 @@ const student = require('../schemas/student');
 const group = require('../schemas/groupe');
 const exercise = require('../schemas/exercice');
 const mod = require('../schemas/module');
+const correction = require('../schemas/correction');
+
 
 // -------------------------------------------
 //                  [ POST ]
@@ -55,8 +57,9 @@ router.post("/module/addModule",(req,res)=>{
 });
 
 // Ajout d’un exercice par module
-router.post("/exercise/addExercise",(req,res)=>{
+router.post("/exercise/addExercise/:id",(req,res)=>{
   let newExercise = new  exercise(req.body);
+  newExercise.idModule = req.params.id;
   newExercise.save().then((result)=>{
     res.status(200).json({result : result, exercise : newExercise})
   },(err)=>{
@@ -65,8 +68,9 @@ router.post("/exercise/addExercise",(req,res)=>{
 });
 
 // Ajout de la correction d’un exercice
-router.post("/correction/addCorrection",(req,res)=>{
-  let newCorrection = new  exercise(req.body);
+router.post("/correction/addCorrection/:id",(req,res)=>{
+  let newCorrection = new  correction(req.body);
+  newCorrection.idExercice = req.params.id;
   newCorrection.save().then((result)=>{
     res.status(200).json({result : result, correction : newCorrection})
   },(err)=>{
@@ -97,8 +101,6 @@ router.get("/professor/:id", async (req, res) => {
     res.send({ error: "404" })
   }
 })
-
-// Récupère le nom, prénom, mot de passe et email
 
 // Récupère tous les étudiants
 router.get("/student",(req,res)=>{
@@ -176,6 +178,62 @@ router.put("/student/updateStudentGroup/:id", async (req, res) => {
   } catch {
     res.status(404)
     res.send({ error: "404 " })
+  }
+})
+
+// Update Exercice
+router.put("/student/updateExercice/:id", async (req, res) => {
+  try {
+    const exo = await exercise.findOne({ idExercice: req.params.id })
+    if (req.body.enonce) {
+      exo.enonce = req.body.enonce
+    }
+    await exo.save()
+    res.send(exo)
+  } catch {
+    res.status(404)
+    res.send({ error: "404 " })
+  }
+})
+
+// Update Correction
+router.put("/student/updateCorrection/:id", async (req, res) => {
+  try {
+    const correct = await correction.findOne({ idCorrection: req.params.id })
+    if (req.body.contenu) {
+      correct.contenu = correct.body.contenu
+    }
+    await correct.save()
+    res.send(correct)
+  } catch {
+    res.status(404)
+    res.send({ error: "404 " })
+  }
+})
+
+// -----------------------------------------------
+//                  [ DELETE ]
+// -----------------------------------------------
+
+// Suppression d'un groupe
+router.delete("/student/deleteGroup/:id", async (req, res) => {
+  try {
+    await group.deleteOne({ idGroup: req.params.id })
+    res.status(204).send()
+  } catch {
+    res.status(404)
+    res.send({ error: "404" })
+  }
+})
+
+// Suppression d'un exercice
+router.delete("/student/deleteExercise/:id", async (req, res) => {
+  try {
+    await exercise.deleteOne({ idExercice: req.params.id })
+    res.status(204).send()
+  } catch {
+    res.status(404)
+    res.send({ error: "404" })
   }
 })
 
