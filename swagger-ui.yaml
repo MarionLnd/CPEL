@@ -10,18 +10,19 @@ info:
 
 # tags are used for organizing operations
 tags:
-  - name: professor
-    description: Professors operations
-  - name: student
+  - name: Professor
+    description: Professors
+  - name: Student
     description: Student operations
-  - name: group
+  - name: Group
     description: Group of students
+  - name: Module
 
 paths:
   /professor:
     get:
       tags:
-        - professor
+        - Professor
       summary: searches professors
       operationId: searchProfessors
       description: |
@@ -40,67 +41,115 @@ paths:
           description: bad input parameter
     post:
       tags:
-        - admins
-      summary: adds an inventory item
-      operationId: addInventory
-      description: Adds an item to the system
+        - Professor
+      summary: adds a new professor
+      operationId: addProfessor
+      description: Adds a professor to the system
       consumes:
         - application/json
       produces:
         - application/json
       parameters:
         - in: body
-          name: inventoryItem
-          description: Inventory item to add
+          name: Professor
+          description: New professor to add
           schema:
-            $ref: '#/definitions/InventoryItem'
+            $ref: '#/definitions/Professor'
       responses:
         201:
-          description: item created
+          description: professor created
         400:
           description: invalid input, object invalid
         409:
-          description: an existing item already exists
+          description: an existing professor already exists
   /professor/{id}:
     get:
       tags:
-        - professor
-      summary: searches professors
-      operationId: searchProfessors
+        - Professor
+      summary: searches one professor by its id
+      operationId: searchProfessor
       description: |
         By passing in the appropriate options, you can search for
         available inventory in the system
       produces:
         - application/json
       parameters:
-        - in: query
-          name: searchString
+        - in: path
+          name: id
           description: pass an optional search string for looking up inventory
-          required: false
+          required: true
           type: string
-        - in: query
-          name: skip
-          description: number of records to skip for pagination
-          type: integer
-          format: int32
-          minimum: 0
-        - in: query
-          name: limit
-          description: maximum number of records to return
-          type: integer
-          format: int32
-          minimum: 0
-          maximum: 50
       responses:
         200:
           description: search results matching criteria
           schema:
             type: array
             items:
-              $ref: '#/definitions/InventoryItem'
+              $ref: '#/definitions/Professor'
         400:
           description: bad input parameter
 definitions:
+  Correction:
+    type: object
+    required:
+      - idCorrection
+      - idExercise
+      - contenu
+    properties:
+      idCorrection:
+        type: string
+        format: uuid
+        example: d290f1ee-6c54-4b01-90e6-d701748f0851
+      idExercise:
+        type: string
+        example: 12
+      contenu:
+        type: string
+        example: Pour cet exercice, vous allez devoir..
+  Exercise:
+    type: object
+    required:
+      - idExercise
+      - name
+      - idModule
+      - wording
+      - syntaxCriteria
+      - logicCriteria
+    properties:
+      idExercise:
+        type: string
+        example: 12
+      name:
+        type: string
+        example: Les boucles en Python
+      idModule:
+        type: string
+        example: 3
+      wording:
+        type: string
+        example: Dans cet exercice, vous devrez parcourir un tableau avec une boucle while
+      syntaxCriteria:
+        type: boolean
+        example: false
+      logicCriteria:
+        type: boolean
+        example: true
+  Group:
+    type: object
+    required:
+      - idGroup
+      - name
+      - nbOfStudents
+    properties:
+      idGroup:
+        type: string
+        example: 2
+      name:
+        type: string
+        example: M2MIAA
+      nbOfStudents:
+        type: integer
+        example: 30
   Professor:
     type: object
     required:
@@ -131,22 +180,8 @@ definitions:
         type: integer
         format: int32
         example: 2
-      manufacturer:
-        $ref: '#/definitions/Manufacturer'
-  Manufacturer:
-    required:
-      - name
-    properties:
-      name:
-        type: string
-        example: ACME Corporation
-      homePage:
-        type: string
-        format: url
-        example:  https://www.acme-corp.com
-      phone:
-        type: string
-        example: 408-867-5309
+
+
 # Added by API Auto Mocking Plugin
 host: virtserver.swaggerhub.com
 basePath: /CPEL_Project/CPEL_PROJECT/1.0.0
