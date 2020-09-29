@@ -7213,6 +7213,11 @@ simple-swizzle@^0.2.2:
   dependencies:
     is-arrayish "^0.3.1"
 
+skulpt@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/skulpt/-/skulpt-1.0.0.tgz#7e3f7d3cd470af1f2f36e6390f434b774d209df5"
+  integrity sha512-WXnnwBKG3QYYK1qXz8KwUORb3C45MfEfEYeszJ3YfXoZoB+Nj0bkg59ffH5mcke4wIlThjXaqF5tRv72+4zPyw==
+
 slash@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/slash/-/slash-1.0.0.tgz#c41f2f6c39fc16d1cd17ad4b5d896114ae470d55"

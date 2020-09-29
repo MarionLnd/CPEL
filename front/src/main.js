@@ -4,6 +4,8 @@ import 'bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import VueRouter from "vue-router";
 import Routes from "./Routes";
+import 'skulpt/dist/skulpt-stdlib'
+import 'skulpt/dist/skulpt.min'
 
 Vue.config.productionTip = false
 
