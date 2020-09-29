@@ -99,7 +99,6 @@ paths:
         400:
           description: invalid input, object invalid
         409:
-<<<<<<< HEAD
           description: an existing item already exists
 definitions:
   InventoryItem:
@@ -109,9 +108,7 @@ definitions:
       - name
       - manufacturer
       - releaseDate
-=======
           description: an existing professor already exists
->>>>>>> 3149a488f6f835ba0ed12c2fb12c387e4bdc7fa9
   /professor/{id}:
     get:
       tags:
