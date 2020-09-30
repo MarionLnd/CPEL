@@ -2,8 +2,8 @@ const mongoose = require('mongoose');
 
 const correction  = mongoose.Schema({
     idCorrection : String,
-    idExercice : String,
-    contenu : String
+    idExercise : String,
+    content : String
 })
 
 module.exports = mongoose.model('correction', correction);

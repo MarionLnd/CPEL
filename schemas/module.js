@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const mod  = mongoose.Schema({
     idmodule : String,
-    nom : String,
-    contenu : String
+    name : String,
+    content : String
 })
 module.exports = mongoose.model('module', mod);
