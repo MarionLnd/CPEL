@@ -16,7 +16,9 @@ const studentRendering = require('../schemas/studentRendering');
 //                  [ POST ]
 // -------------------------------------------
 
-// Ajout professeur
+// Ajout professeur : supprimer addProfessor code retour 201/location/professor/numeroId
+// Supprimer les verbes
+
 router.post("/professor/addProfessor",async (req,res)=>{
   let newProfessor = new professor(req.body);
   await newProfessor.save().then((result)=>{
