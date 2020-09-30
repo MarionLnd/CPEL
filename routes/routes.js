@@ -6,17 +6,19 @@ var express = require('express');
 var router = express.Router();
 const professor = require('../schemas/professor.js');
 const student = require('../schemas/student');
-const group = require('../schemas/groupe');
-const exercise = require('../schemas/exercice');
+const group = require('../schemas/group');
+const exercise = require('../schemas/exercise');
 const mod = require('../schemas/module');
 const correction = require('../schemas/correction');
-
+const studentRendering = require('../schemas/studentRendering');
 
 // -------------------------------------------
 //                  [ POST ]
 // -------------------------------------------
 
-// Ajout professeur
+// Ajout professeur : supprimer addProfessor code retour 201/location/professor/numeroId
+// Supprimer les verbes
+
 router.post("/professor/addProfessor",async (req,res)=>{
   let newProfessor = new professor(req.body);
   await newProfessor.save().then((result)=>{
@@ -70,13 +72,26 @@ router.post("/exercise/addExercise/:id",async (req,res)=>{
 // Ajout de la correction d’un exercice
 router.post("/correction/addCorrection/:id",async (req,res)=>{
   let newCorrection = new  correction(req.body);
-  newCorrection.idExercice = req.params.id;
+  newCorrection.idExercise = req.params.id;
   await newCorrection.save().then((result)=>{
     res.status(200).json({result : result, correction : newCorrection})
   },(err)=>{
     res.status(400).json(err)
   })
 });
+
+// Ajout du rendu d'un étudiant
+router.post("/studentRendering/addStudentRendering/:id/:idStudent",async (req,res)=>{
+  let newStudentRendering = new  studentRendering(req.body);
+  newStudentRendering.idExercise = req.params.id;
+  newStudentRendering.idStudent = req.params.idStudent;
+  await newStudentRendering.save().then((result)=>{
+    res.status(200).json({result : result, studentRendering : newStudentRendering})
+  },(err)=>{
+    res.status(400).json(err)
+  })
+});
+
 
 // -----------------------------------------------
 //                    [ GET ]
@@ -94,7 +109,7 @@ router.get("/professor",async (req,res)=>{
 // Récupère toutes les informations d’un professeur en fonction de son id
 router.get("/professor/:id", async (req, res) => {
   try {
-    const prof = await professor.findOne({ idProf: req.params.id })
+    const prof = await professor.findOne({ idProfessor: req.params.id })
     res.send(prof)
   } catch {
     res.status(404)
@@ -154,7 +169,29 @@ router.get("/exercise",async (req,res)=>{
 // Récupérer un exercice
 router.get("/exercise/:id", async (req, res) => {
   try {
-    const exo = await exercise.findOne({ idExercice: req.params.id })
+    const exo = await exercise.findOne({ idExercise: req.params.id })
+    res.send(exo)
+  } catch {
+    res.status(404)
+    res.send({ error: "404" })
+  }
+})
+
+// Récupérer tous les rendus pour un étudiant
+router.get("/studentRendering/:id", async (req, res) => {
+  try {
+    const exo = await studentRendering.findOne({ idStudent: req.params.id })
+    res.send(exo)
+  } catch {
+    res.status(404)
+    res.send({ error: "404" })
+  }
+})
+
+// Récupérer les rendus d'un exercice pour un étudiant
+router.get("/studentRendering/:id/:idStudent", async (req, res) => {
+  try {
+    const exo = await exercise.studentRendering({ idExercise: req.params.id, idStudent: req.params.idStudent })
     res.send(exo)
   } catch {
     res.status(404)
@@ -170,8 +207,8 @@ router.get("/exercise/:id", async (req, res) => {
 router.put("/student/updateStudentGroup/:id", async (req, res) => {
   try {
     const etu = await student.findOne({ idStudent: req.params.id })
-    if (req.body.idGroupe) {
-      etu.idGroupe = req.body.idGroupe
+    if (req.body.idGroup) {
+      etu.idGroup = req.body.idGroup
     }
     await etu.save()
     res.send(etu)
@@ -182,11 +219,11 @@ router.put("/student/updateStudentGroup/:id", async (req, res) => {
 })
 
 // Update Exercice
-router.put("/student/updateExercice/:id", async (req, res) => {
+router.put("/exercise/updateExercise/:id", async (req, res) => {
   try {
-    const exo = await exercise.findOne({ idExercice: req.params.id })
-    if (req.body.enonce) {
-      exo.enonce = req.body.enonce
+    const exo = await exercise.findOne({ idExercise: req.params.id })
+    if (req.body.wording) {
+      exo.wording = req.body.wording
     }
     await exo.save()
     res.send(exo)
@@ -197,11 +234,26 @@ router.put("/student/updateExercice/:id", async (req, res) => {
 })
 
 // Update Correction
-router.put("/student/updateCorrection/:id", async (req, res) => {
+router.put("/correction/updateCorrection/:id", async (req, res) => {
   try {
     const correct = await correction.findOne({ idCorrection: req.params.id })
-    if (req.body.contenu) {
-      correct.contenu = correct.body.contenu
+    if (req.body.content) {
+      correct.content = correct.body.content
+    }
+    await correct.save()
+    res.send(correct)
+  } catch {
+    res.status(404)
+    res.send({ error: "404 " })
+  }
+})
+
+// Update Rendu
+router.put("/studentRendering/updateStudentRendering/:id/:idExercise", async (req, res) => {
+  try {
+    const correct = await studentRendering.findOne({ idStudent: req.params.id, idExercise: req.params.idExercise })
+    if (req.body.content) {
+      correct.content = correct.body.content
     }
     await correct.save()
     res.send(correct)
@@ -216,7 +268,7 @@ router.put("/student/updateCorrection/:id", async (req, res) => {
 // -----------------------------------------------
 
 // Suppression d'un groupe
-router.delete("/student/deleteGroup/:id", async (req, res) => {
+router.delete("/group/deleteGroup/:id", async (req, res) => {
   try {
     await group.deleteOne({ idGroup: req.params.id })
     res.status(204).send()
@@ -227,9 +279,20 @@ router.delete("/student/deleteGroup/:id", async (req, res) => {
 })
 
 // Suppression d'un exercice
-router.delete("/student/deleteExercise/:id", async (req, res) => {
+router.delete("/exercise/deleteExercise/:id", async (req, res) => {
   try {
-    await exercise.deleteOne({ idExercice: req.params.id })
+    await exercise.deleteOne({ idExercise: req.params.id })
+    res.status(204).send()
+  } catch {
+    res.status(404)
+    res.send({ error: "404" })
+  }
+})
+
+// Supression d'un rendu
+router.delete("/studentRendering/deleteStudentRendering/:id", async (req, res) => {
+  try {
+    await studentRendering.deleteOne({ idExercise: req.params.id })
     res.status(204).send()
   } catch {
     res.status(404)
