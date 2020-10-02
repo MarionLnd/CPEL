@@ -14,12 +14,12 @@
           <router-link class="nav-link" to="/profil">Profil</router-link>
         </li>
         <li class="nav-item dropdown">
-          <router-link class="nav-link dropdown-toggle" to="/" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Créer
-          </router-link>
+          </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <a class="dropdown-item" href="#">Modules</a>
-            <a class="dropdown-item" href="#">Groupes</a>
+              <router-link class="dropdown-item nav-link" to="/creer-exercice">Exercice</router-link>
+              <router-link class="dropdown-item nav-link" to="/creer-groupe">Groupe</router-link>
           </div>
         </li>
         <li class="nav-item">
@@ -32,7 +32,7 @@
 
 <script>
 export default {
-  name: 'HelloWorld',
+  name: 'Header',
   props: {
     msg: String
   }
