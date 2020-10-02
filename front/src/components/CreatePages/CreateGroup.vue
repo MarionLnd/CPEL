@@ -10,12 +10,9 @@
                 </div>
 
                 <label for="students">Pour le module :</label>
-                <multiselect
-                    id="students"
-                    v-model="formData.studentsAdded"
-                    :options="formData.students"
-                    :multiple="true">
-                </multiselect>
+                <select id="students" class="form-control" multiple="multiple" v-model="formData.studentsAdded">
+                    <option v-for="(student, key) of formData.students" :key="key">{{ student.firstname }} {{ student.lastname }}</option>
+                </select>
 
                 <label for="module">Pour le module :</label>
                 <select id="module" class="custom-select" v-model="formData.moduleSelected">
@@ -33,7 +30,8 @@
 </template>
 
 <script>
-import Multiselect from "vue-multiselect"
+    import Multiselect from "vue-multiselect"
+    import axios from 'axios'
 
     export default {
         name: "CreateGroup",
@@ -43,19 +41,49 @@ import Multiselect from "vue-multiselect"
         data() {
             return {
                 formData: {
-                    name: "",
-                    studentsAdded: "",
-                    students: [
-                        "LastnameStudent1 FirstnameStudent1",
-                        "LastnameStudent2 FirstnameStudent2",
-                        "LastnameStudent3 FirstnameStudent3",
-                        "LastnameStudent4 FirstnameStudent4",
-                        "LastnameStudent5 FirstnameStudent5",
-                        "LastnameStudent6 FirstnameStudent6",
-                    ],
+                    groupName: "",
+                    studentsAdded: [],
+                    students: [],
                     modules: [],
                     moduleSelected: ""
                 }
+            }
+        },
+        mounted() {
+            axios.get("http://localhost:3000/api/student/").then(response => {
+                console.log(response.data)
+                for (let stud of response.data) {
+                    console.log(stud)
+                }
+                this.formData.students = response.data
+                //this.data = response.data.data;
+            });
+        },
+        methods: {
+            createGroup() {
+                let groupCreated = {
+                    idGroup: this.getValidIdGroup(),
+                    name: this.name,
+                    nbOfStudents: this.studentsAdded.length
+                }
+                // Ajouter le nouveau groupe a la base
+                axios.post("http://localhost:3000/api/group/addGroup", groupCreated)
+                    .then()
+                // Mettre a jour l'etudiant
+                axios.put("http://localhost:3000/api/student/")
+                    .then()
+            },
+            getValidIdGroup() {
+                let validId = 0
+                axios.get("http://localhost:3000/api/group/")
+                    .then(response => {
+                        for (let group of response.data) {
+                            if (validId === group.idGroup) {
+                                validId++
+                            }
+                        }
+                    })
+                return validId
             }
         }
     }
