@@ -10,18 +10,27 @@ info:
 
 # tags are used for organizing operations
 tags:
-  - name: professor
-    description: Professors operations
-  - name: student
+  - name: Professor
+    description: Professors
+  - name: Student
     description: Student operations
-  - name: group
+  - name: Group
     description: Group of students
+  - name: Module
+    description: Module composed of courses and exercices
+  - name: Exercise
+    description: Exercises in modules
+  - name: Correction
+    description: Corrections of exercises
 
 paths:
+  #
+  # -- PROFESSOR --
+  #
   /professor:
     get:
       tags:
-        - professor
+        - Professor
       summary: searches professors
       operationId: searchProfessors
       description: |
@@ -38,69 +47,568 @@ paths:
               $ref: '#/definitions/Professor'
         400:
           description: bad input parameter
+  /professor/addProfessor:
     post:
       tags:
-        - admins
-      summary: adds an inventory item
-      operationId: addInventory
-      description: Adds an item to the system
+        - Professor
+      summary: adds a new professor
+      operationId: addProfessor
+      description: Adds a professor to the system
       consumes:
         - application/json
       produces:
         - application/json
       parameters:
         - in: body
-          name: inventoryItem
-          description: Inventory item to add
+          name: Professor
+          description: New professor to add
           schema:
-            $ref: '#/definitions/InventoryItem'
+            $ref: '#/definitions/Professor'
       responses:
-        201:
-          description: item created
+        200:
+          description: professor created
         400:
           description: invalid input, object invalid
         409:
-          description: an existing item already exists
+          description: an professor already exists
   /professor/{id}:
     get:
       tags:
-        - professor
-      summary: searches professors
-      operationId: searchProfessors
+        - Professor
+      summary: searches one professor by its id
+      operationId: searchProfessor
       description: |
         By passing in the appropriate options, you can search for
         available inventory in the system
       produces:
         - application/json
       parameters:
-        - in: query
-          name: searchString
+        - in: path
+          name: id
           description: pass an optional search string for looking up inventory
-          required: false
+          required: true
           type: string
-        - in: query
-          name: skip
-          description: number of records to skip for pagination
-          type: integer
-          format: int32
-          minimum: 0
-        - in: query
-          name: limit
-          description: maximum number of records to return
-          type: integer
-          format: int32
-          minimum: 0
-          maximum: 50
       responses:
         200:
           description: search results matching criteria
           schema:
-            type: array
-            items:
-              $ref: '#/definitions/InventoryItem'
+            $ref: '#/definitions/Professor'
         400:
           description: bad input parameter
+        404:
+          description: professor not found
+  #
+  # -- STUDENT --
+  #
+  /student:
+    get:
+      tags:
+        - Student
+      summary: search all the students
+      operationId: searchStudents
+      produces:
+        - application/json
+      responses:
+        200:
+          description: search students
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Student'
+        400:
+          description: Error
+  /student/{id}:
+    get:
+      tags:
+        - Student
+      summary: searches one student by its id
+      operationId: searchStudent
+      description: |
+        By passing in the right id, you can search for
+        one student in the system
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          description: pass the id of the student
+          required: true
+          type: string
+      responses:
+        200:
+          description: search results matching id
+          schema:
+            $ref: '#/definitions/Student'
+        400:
+          description: bad input parameter
+        404:
+          description: student not found
+  /student/addStudent:
+    post:
+      tags:
+        - Student
+      summary: add a new student
+      operationId: AddStudent
+      description: Add a new student to the system
+      produces:
+        - application/json
+      responses:
+        200:
+          description: a new student is created
+          schema:
+            $ref: '#/definitions/Student'
+        400:
+          description: invalid input, object invalid
+        409:
+          description: an student already exists
+  /student/updateStudentGroup/{id}:
+    put:
+      tags:
+        - Student
+      summary: Update the group of an existing student
+      operationId: updateGroupStudent
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          description: Group object that needs to be modified for a student
+          required: true
+          type: string
+      responses:
+        400:
+          description: Invalid ID Group supplied
+        404:
+          description: Student not found
+  /student/deleteGroup/{id}:
+    delete:
+      tags:
+        - Student
+      summary: Delete a student from a group
+      operationId: deleteGroupStudent
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: string
+      responses:
+        204:
+          description: The student isn't a part of the group anymore
+        404:
+          description: Group not found
+  #
+  # -- GROUP --
+  #
+  /group:
+    get:
+      tags:
+        - Group
+      summary: search all the groups
+      operationId: searchGroups
+      produces:
+        - application/json
+      responses:
+        200:
+          description: search groups
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Group'
+        400:
+          description: Error
+  /group/{id}:
+    get:
+      tags:
+        - Group
+      summary: searches one group by its id
+      operationId: searchGroup
+      description: |
+        By passing in the right id, you can search for
+        one group in the system
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          description: pass the id of the group
+          required: true
+          type: string
+      responses:
+        200:
+          description: search results matching id
+          schema:
+            $ref: '#/definitions/Group'
+        400:
+          description: bad input parameter
+        404:
+          description: group not found
+  /group/addGroup:
+    post:
+      tags:
+        - Group
+      summary: add a new group
+      operationId: AddGroup
+      description: Add a new group to the system
+      produces:
+        - application/json
+      responses:
+        200:
+          description: a new group is created
+          schema:
+            $ref: '#/definitions/Group'
+        400:
+          description: invalid input, object invalid
+        409:
+          description: an group already exists
+  #
+  # -- EXERCISE --
+  #
+  /exercise:
+    get:
+      tags:
+        - Exercise
+      summary: search all the exercices
+      operationId: searchExercises
+      produces:
+        - application/json
+      responses:
+        200:
+          description: search exercises
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Exercise'
+        400:
+          description: Error
+  /exercise/{id}:
+    get:
+      tags:
+        - Exercise
+      summary: searches one exercise by its id
+      operationId: searchExercice
+      description: |
+        By passing in the right id, you can search for
+        one exercise in the system
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          description: pass the id of the exercise
+          required: true
+          type: string
+      responses:
+        200:
+          description: search results matching id
+          schema:
+            $ref: '#/definitions/Exercise'
+        400:
+          description: bad input parameter
+        404:
+          description: exercise not found
+  /exercise/addExercise/{id}:
+    post:
+      tags:
+        - Exercise
+      summary: add a new exercise
+      operationId: AddExercise
+      description: Add a new exercice to the system
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          description: pass the idModule of the exercise
+          required: true
+          type: string
+      responses:
+        200:
+          description: a new exercise is created
+          schema:
+            $ref: '#/definitions/Exercise'
+        400:
+          description: invalid input, object invalid
+        409:
+          description: an exercise already exists
+  /exercise/updateExercise/{id}:
+    put:
+      tags:
+        - Exercise
+      summary: Update the wording of an exercice
+      operationId: updateExercise
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          description: Exercise object that needs to be modified
+          required: true
+          type: string
+      responses:
+        400:
+          description: Invalid ID Exercise supplied
+        404:
+          description: Exercise not found
+  /exercise/updateCorrection/{id}:
+    put:
+      tags:
+        - Exercise
+      summary: Update the correction of an exercice
+      operationId: updateCorrectionExercise
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          description: Correction of an exercise that needs to be modified
+          required: true
+          type: string
+      responses:
+        400:
+          description: Invalid ID Exercise supplied
+        404:
+          description: Exercise not found
+  #
+  # -- MODULE --
+  #
+  /module:
+    get:
+      tags:
+        - Module
+      summary: search all the modules
+      operationId: searchModules
+      produces:
+        - application/json
+      responses:
+        200:
+          description: search modules
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Module'
+        400:
+          description: Error
+  /module/{id}:
+    get:
+      tags:
+        - Module
+      summary: searches one module by its id
+      operationId: searchModule
+      description: |
+        By passing in the right id, you can search for
+        one module in the system
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          description: pass the id of the module
+          required: true
+          type: string
+      responses:
+        200:
+          description: search results matching id
+          schema:
+            $ref: '#/definitions/Module'
+        400:
+          description: bad input parameter
+        404:
+          description: module not found
+  /module/addGroup:
+    post:
+      tags:
+        - Module
+      summary: add a new group
+      operationId: AddModule
+      description: Add a new module to the system
+      produces:
+        - application/json
+      responses:
+        200:
+          description: a new module is created
+          schema:
+            $ref: '#/definitions/Module'
+        400:
+          description: invalid input, object invalid
+        409:
+          description: an module already exists
+  /module/deleteExercise/{id}:
+    delete:
+      tags:
+        - Module
+      summary: Delete an exercise from a module
+      operationId: deleteExercise
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: string
+      responses:
+        204:
+          description: The exercise isn't a part of the module anymore
+        404:
+          description: Exercise not found
+  #
+  # -- CORRECTION --
+  #
+  /correction:
+    get:
+      tags:
+        - Correction
+      summary: search all the corrections
+      operationId: searchCorrections
+      produces:
+        - application/json
+      responses:
+        200:
+          description: search corrections
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Correction'
+        400:
+          description: Error
+  /correction/{id}:
+    get:
+      tags:
+        - Correction
+      summary: searches one correction by its id
+      operationId: searchCorrection
+      description: |
+        By passing in the right id, you can search for
+        one correction in the system
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          description: pass the id of the correction
+          required: true
+          type: string
+      responses:
+        200:
+          description: search results matching id
+          schema:
+            $ref: '#/definitions/Correction'
+        400:
+          description: bad input parameter
+        404:
+          description: correction not found
+  /correction/addCorrection/{id}:
+    post:
+      tags:
+        - Correction
+      summary: add a new correction
+      operationId: AddCorrection
+      description: Add a new correction to the system
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: string
+          description: The id of the exercise
+      responses:
+        200:
+          description: a new correction is created
+          schema:
+            $ref: '#/definitions/Correction'
+        400:
+          description: invalid input, object invalid
+        409:
+          description: a correction already exists
+#
+# -- MODELES --
+#
 definitions:
+  Correction:
+    type: object
+    required:
+      - idCorrection
+      - idExercise
+      - contenu
+    properties:
+      idCorrection:
+        type: string
+        format: uuid
+        example: d290f1ee-6c54-4b01-90e6-d701748f0851
+      idExercise:
+        type: string
+        example: 12
+      contenu:
+        type: string
+        example: Pour cet exercice, vous allez devoir..
+  Exercise:
+    type: object
+    required:
+      - idExercise
+      - name
+      - idModule
+      - wording
+      - syntaxCriteria
+      - logicCriteria
+    properties:
+      idExercise:
+        type: string
+        example: 12
+      name:
+        type: string
+        example: Les boucles en Python
+      idModule:
+        type: string
+        example: 3
+      wording:
+        type: string
+        example: Dans cet exercice, vous devrez parcourir un tableau avec une boucle while
+      syntaxCriteria:
+        type: boolean
+        example: false
+      logicCriteria:
+        type: boolean
+        example: true
+  Group:
+    type: object
+    required:
+      - idGroup
+      - name
+      - nbOfStudents
+    properties:
+      idGroup:
+        type: string
+        example: 2
+      name:
+        type: string
+        example: M2MIAA
+      nbOfStudents:
+        type: integer
+        example: 30
+  Module:
+    type: object
+    required:
+      - idModule
+      - name
+      - content
+    properties:
+      idModule:
+        type: string
+        example: 3
+      name:
+        type: string
+        example: Les structures de contrôle en Python
+      content:
+        type: string
+        example: Ce module va comporter des cours et exercices sur les structures de contrôle en Python
   Professor:
     type: object
     required:
@@ -123,7 +631,8 @@ definitions:
         example: Joe
       email:
         type: string
-        example: joe.doe@domain.com
+        format: email
+        example: joe.doe@univ-evry.com
       password:
         type: string
         example: hashPassword
@@ -131,24 +640,60 @@ definitions:
         type: integer
         format: int32
         example: 2
-      manufacturer:
-        $ref: '#/definitions/Manufacturer'
-  Manufacturer:
+  StudentRendering:
+    type: object
     required:
-      - name
+      - idStudent
+      - idExercise
+      - content
+      - exerciseDone
     properties:
-      name:
+      idStudent:
         type: string
-        example: ACME Corporation
-      homePage:
+        example: 4
+      idExercise:
         type: string
-        format: url
-        example:  https://www.acme-corp.com
-      phone:
+        example: 12
+      content:
         type: string
-        example: 408-867-5309
+        example: print("Hello world")
+      exerciceDone:
+        type: boolean
+        example: true
+  Student:
+    type: object
+    required:
+      - idStudent
+      - lastname
+      - firstname
+      - email
+      - password
+      - idGroup
+    properties:
+      idStudent:
+        type: string
+        example: 4
+      lastname:
+        type: string
+        example: Keys
+      firstname:
+        type: string
+        example: Alicia
+      email:
+        type: string
+        format: email
+        example: alicia.keys@etud.univ-evry.fr
+      password:
+        type: string
+        format: password
+        example: Password hashed
+      idGroup:
+        type: string
+        example: 2
+
 # Added by API Auto Mocking Plugin
 host: virtserver.swaggerhub.com
 basePath: /CPEL_Project/CPEL_PROJECT/1.0.0
 schemes:
   - https
+
