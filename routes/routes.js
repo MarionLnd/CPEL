@@ -11,6 +11,8 @@ const exercise = require('../schemas/exercise');
 const mod = require('../schemas/module');
 const correction = require('../schemas/correction');
 const studentRendering = require('../schemas/studentRendering');
+const wording = require('../schemas/wording');
+
 
 // -------------------------------------------
 //                  [ POST ]
@@ -19,79 +21,89 @@ const studentRendering = require('../schemas/studentRendering');
 // Ajout professeur : supprimer addProfessor code retour 201/location/professor/numeroId
 // Supprimer les verbes
 
-router.post("/professor/addProfessor",async (req,res)=>{
+router.post("/professor",async (req,res)=>{
   let newProfessor = new professor(req.body);
   await newProfessor.save().then((result)=>{
-    res.status(200).json({result : result, professor : newProfessor})
+    res.status(200).json({ NewProfessor : "201 => localhost:3000/api/professor/"+newProfessor._id})
   },(err)=>{
     res.status(400).json(err)
   })
 });
 
 // Ajout étudiant
-router.post("/student/addStudent",async (req,res)=>{
+router.post("/student",async (req,res)=>{
   let newStudent = new  student(req.body);
   await newStudent.save().then((result)=>{
-    res.status(200).json({result : result, student : newStudent})
+    res.status(200).json({ NewStudent : "201 => localhost:3000/api/student/"+newStudent._id})
   },(err)=>{
     res.status(400).json(err)
   })
 });
 
 // Ajout d’un groupe étudiant
-router.post("/group/addGroup",async (req,res)=>{
+router.post("/group",async (req,res)=>{
   let newGroup = new  group(req.body);
   await newGroup.save().then((result)=>{
-    res.status(200).json({result : result, group : newGroup})
+    res.status(200).json({ NewGroup : "201 => localhost:3000/api/group/"+newGroup._id})
   },(err)=>{
     res.status(400).json(err)
   })
 });
 
 // Ajout d'un module
-router.post("/module/addModule",async (req,res)=>{
+router.post("/module",async (req,res)=>{
   let newModule = new mod(req.body);
   await newModule.save().then((result)=>{
-    res.status(200).json({result : result, module : newModule})
+    res.status(200).json({ NewModule : "201 => localhost:3000/api/module/"+newModule._id})
   },(err)=>{
     res.status(400).json(err)
   })
 });
 
 // Ajout d’un exercice par module
-router.post("/exercise/addExercise/:id",async (req,res)=>{
+router.post("/exercise/:id",async (req,res)=>{
   let newExercise = new  exercise(req.body);
   newExercise.idModule = req.params.id;
   await newExercise.save().then((result)=>{
-    res.status(200).json({result : result, exercise : newExercise})
+    res.status(200).json({ NewExercise : "201 => localhost:3000/api/exercise/"+newExercise._id})
   },(err)=>{
     res.status(400).json(err)
   })
 });
 
 // Ajout de la correction d’un exercice
-router.post("/correction/addCorrection/:id",async (req,res)=>{
+router.post("/correction/:id",async (req,res)=>{
   let newCorrection = new  correction(req.body);
   newCorrection.idExercise = req.params.id;
   await newCorrection.save().then((result)=>{
-    res.status(200).json({result : result, correction : newCorrection})
+    res.status(200).json({ NewCorrection : "201 => localhost:3000/api/student/"+newCorrection._id})
   },(err)=>{
     res.status(400).json(err)
   })
 });
 
 // Ajout du rendu d'un étudiant
-router.post("/studentRendering/addStudentRendering/:id/:idStudent",async (req,res)=>{
+router.post("/studentRendering/:id/:idStudent",async (req,res)=>{
   let newStudentRendering = new  studentRendering(req.body);
   newStudentRendering.idExercise = req.params.id;
   newStudentRendering.idStudent = req.params.idStudent;
   await newStudentRendering.save().then((result)=>{
-    res.status(200).json({result : result, studentRendering : newStudentRendering})
+    res.status(200).json({ NewRendering : "201 => localhost:3000/api/studentRendering/"+newStudentRendering._id})
   },(err)=>{
     res.status(400).json(err)
   })
 });
 
+// Ajout d'un énoncé
+router.post("/wording/:id",async (req,res)=>{
+  let newWording = new  wording(req.body);
+  newWording.idExercise = req.params.id;
+  await newWording.save().then((result)=>{
+    res.status(200).json({ NewWording : "201 => localhost:3000/api/wording/"+newWording._id})
+  },(err)=>{
+    res.status(400).json(err)
+  })
+});
 
 // -----------------------------------------------
 //                    [ GET ]
@@ -157,6 +169,15 @@ router.get("/group/:id", async (req, res) => {
   }
 })
 
+// Recup tous les modules
+router.get("/module",async (req,res)=>{
+  await mod.find({}).then((result)=>{
+    res.status(200).json(result)
+  },(err)=>{
+    res.status(400).json(err)
+  })
+});
+
 // Récupérer tous les exercices
 router.get("/exercise",async (req,res)=>{
   await group.find({}).then((result)=>{
@@ -199,12 +220,34 @@ router.get("/studentRendering/:id/:idStudent", async (req, res) => {
   }
 })
 
+// Recupere un énoncé
+router.get("/wording/:id", async (req, res) => {
+  try {
+    const exo = await wording.findOne({ idWording: req.params.id })
+    res.send(exo)
+  } catch {
+    res.status(404)
+    res.send({ error: "404" })
+  }
+})
+
+// Recupere tous les enoncés d'un exercice
+router.get("/wording/:id", async (req, res) => {
+  try {
+    const exo = await wording.findOne({ idExercise: req.params.id })
+    res.send(exo)
+  } catch {
+    res.status(404)
+    res.send({ error: "404" })
+  }
+})
+
 // -----------------------------------------------
 //                  [ UPDATE ]
 // -----------------------------------------------
 
 // MAJ du groupe d'un étudiant
-router.put("/student/updateStudentGroup/:id", async (req, res) => {
+router.put("/student/:id", async (req, res) => {
   try {
     const etu = await student.findOne({ idStudent: req.params.id })
     if (req.body.idGroup) {
@@ -219,7 +262,7 @@ router.put("/student/updateStudentGroup/:id", async (req, res) => {
 })
 
 // Update Exercice
-router.put("/exercise/updateExercise/:id", async (req, res) => {
+router.put("/exercise/:id", async (req, res) => {
   try {
     const exo = await exercise.findOne({ idExercise: req.params.id })
     if (req.body.wording) {
@@ -234,7 +277,7 @@ router.put("/exercise/updateExercise/:id", async (req, res) => {
 })
 
 // Update Correction
-router.put("/correction/updateCorrection/:id", async (req, res) => {
+router.put("/correction/:id", async (req, res) => {
   try {
     const correct = await correction.findOne({ idCorrection: req.params.id })
     if (req.body.content) {
@@ -249,7 +292,7 @@ router.put("/correction/updateCorrection/:id", async (req, res) => {
 })
 
 // Update Rendu
-router.put("/studentRendering/updateStudentRendering/:id/:idExercise", async (req, res) => {
+router.put("/studentRendering/:id/:idExercise", async (req, res) => {
   try {
     const correct = await studentRendering.findOne({ idStudent: req.params.id, idExercise: req.params.idExercise })
     if (req.body.content) {
@@ -263,12 +306,27 @@ router.put("/studentRendering/updateStudentRendering/:id/:idExercise", async (re
   }
 })
 
+// Update Enoncé
+router.put("/wording/:id", async (req, res) => {
+  try {
+    const wording = await wording.findOne({ idWording: req.params.id })
+    if (req.body.content) {
+      wording.content = wording.body.content
+    }
+    await wording.save()
+    res.send(wording)
+  } catch {
+    res.status(404)
+    res.send({ error: "404 " })
+  }
+})
+
 // -----------------------------------------------
 //                  [ DELETE ]
 // -----------------------------------------------
 
 // Suppression d'un groupe
-router.delete("/group/deleteGroup/:id", async (req, res) => {
+router.delete("/group/:id", async (req, res) => {
   try {
     await group.deleteOne({ idGroup: req.params.id })
     res.status(204).send()
@@ -279,7 +337,7 @@ router.delete("/group/deleteGroup/:id", async (req, res) => {
 })
 
 // Suppression d'un exercice
-router.delete("/exercise/deleteExercise/:id", async (req, res) => {
+router.delete("/exercise/:id", async (req, res) => {
   try {
     await exercise.deleteOne({ idExercise: req.params.id })
     res.status(204).send()
@@ -290,9 +348,20 @@ router.delete("/exercise/deleteExercise/:id", async (req, res) => {
 })
 
 // Supression d'un rendu
-router.delete("/studentRendering/deleteStudentRendering/:id", async (req, res) => {
+router.delete("/studentRendering/:id", async (req, res) => {
   try {
     await studentRendering.deleteOne({ idExercise: req.params.id })
+    res.status(204).send()
+  } catch {
+    res.status(404)
+    res.send({ error: "404" })
+  }
+})
+
+// Supression d'un énoncé
+router.delete("/wording/:id", async (req, res) => {
+  try {
+    await wording.deleteOne({ idWording: req.params.id })
     res.status(204).send()
   } catch {
     res.status(404)
