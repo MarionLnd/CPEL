@@ -50,8 +50,8 @@
                             v-model="formData.enableSyntaxCriteria"></switches>
                     </div>
                 </div>
-
-                <CreateCorrection />
+                <h4>Correction de l'exercice</h4>
+                <CreateCorrection/>
 
                 <button type="submit" class="btn btn-primary mt-2" @click.prevent="sendForm">Ajouter l'exercice</button>
             </form>
@@ -73,8 +73,8 @@ export default {
         return {
             formData: {
                 idExercice: String,
-                name : String,
-                moduleSelected : String,
+                name: String,
+                moduleSelected: String,
                 wording: String,
                 enableSyntaxCriteria: false,
                 enableLogicCriteria: false,
@@ -90,5 +90,7 @@ export default {
 </script>
 
 <style scoped>
-
+form, h4 {
+    text-align: left;
+}
 </style>

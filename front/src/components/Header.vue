@@ -17,9 +17,10 @@
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Créer
           </a>
-          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <router-link class="dropdown-item nav-link" to="/creer-exercice">Exercice</router-link>
-              <router-link class="dropdown-item nav-link" to="/creer-groupe">Groupe</router-link>
+          <div class="dropdown-menu p-1" aria-labelledby="navbarDropdown">
+              <router-link class="dropdown-item nav-link text-center" to="/creer-exercice">Exercice</router-link>
+              <router-link class="dropdown-item nav-link text-center" to="/creer-groupe">Groupe</router-link>
+              <router-link class="dropdown-item nav-link text-center" to="/creer-correction">Correction</router-link>
           </div>
         </li>
         <li class="nav-item">
