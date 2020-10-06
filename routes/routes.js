@@ -370,3 +370,4 @@ router.delete("/wording/:id", async (req, res) => {
 })
 
 module.exports = router;
+
