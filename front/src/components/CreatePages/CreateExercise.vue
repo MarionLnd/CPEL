@@ -51,10 +51,10 @@
                     </div>
                 </div>
 
+                <CreateCorrection />
+
                 <button type="submit" class="btn btn-primary mt-2" @click.prevent="sendForm">Ajouter l'exercice</button>
             </form>
-
-            <CreateCorrection />
         </div>
     </div>
 </template>

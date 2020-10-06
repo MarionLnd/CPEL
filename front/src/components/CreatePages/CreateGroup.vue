@@ -9,18 +9,19 @@
                     <input type="text" id="name" class="form-control" v-model.lazy="formData.name">
                 </div>
 
-                <label for="students">Pour le module :</label>
+                <div class="form-group">
+                    <label for="idGroup">L'identifiant du groupe:</label>
+                    <input type="text" id="idGroup" class="form-control" v-model.lazy="formData.idGroup">
+                </div>
+
+                <label for="students">Ajouter les étudiants :</label>
                 <select id="students" class="form-control" multiple="multiple" v-model="formData.studentsAdded">
-                    <option v-for="(student, key) of formData.students" :key="key">{{ student.firstname }} {{ student.lastname }}</option>
+                    <option v-for="(student, key) of formData.students" :key="key">{{student.idStudent}} : {{ student.firstname }} {{ student.lastname }} </option>
                 </select>
 
                 <label for="module">Pour le module :</label>
-                <select id="module" class="custom-select" v-model="formData.moduleSelected">
-                    <!--<option v-for="(pays, key) in formData.countryList" v-bind:key="key">{{ pays }}</option> -->
-                    <option>Module de programmation Python</option>
-                    <option>Module de base pour Python</option>
-                    <option>Module de Python avancée</option>
-                    <option>Module d'initiation au C</option>
+                <select id="module" class="custom-select" v-model="formData.modulesSelected">
+                    <option v-for="(mod, key) of formData.modules" :key="key">{{ mod.idmodule }} : {{ mod.name }} </option>
                 </select>
 
                 <button type="submit" class="btn btn-primary mt-2" @click.prevent="sendForm">Créer le groupe</button>
@@ -30,60 +31,70 @@
 </template>
 
 <script>
-    import Multiselect from "vue-multiselect"
+    //import Multiselect from "vue-multiselect"
     import axios from 'axios'
+
+    console.log()
 
     export default {
         name: "CreateGroup",
         components: {
-          Multiselect
+          //Multiselect
         },
         data() {
             return {
                 formData: {
                     groupName: "",
+                    idGroup: "",
                     studentsAdded: [],
                     students: [],
                     modules: [],
-                    moduleSelected: ""
+                    modulesSelected: ""
                 }
             }
         },
         mounted() {
-            axios.get("http://localhost:3000/api/student/").then(response => {
+            axios.get("https://cpel.herokuapp.com/api/student/").then(response => {
                 console.log(response.data)
-                for (let stud of response.data) {
-                    console.log(stud)
-                }
                 this.formData.students = response.data
+                //this.data = response.data.data;
+            });
+            axios.get("https://cpel.herokuapp.com/api/module/").then(response => {
+                console.log(response.data)
+                this.formData.modules = response.data
                 //this.data = response.data.data;
             });
         },
         methods: {
-            createGroup() {
+            sendForm() {
+                console.log("cliqué")
+                console.log(this.formData.studentsAdded)
+
                 let groupCreated = {
-                    idGroup: this.getValidIdGroup(),
-                    name: this.name,
-                    nbOfStudents: this.studentsAdded.length
+                    idGroup: this.getValidIdGroup(this.formData.idGroup),
+                    name: this.formData.name,
+                    nbOfStudents: this.formData.studentsAdded.length
                 }
+                console.log(groupCreated)
                 // Ajouter le nouveau groupe a la base
                 axios.post("http://localhost:3000/api/group/addGroup", groupCreated)
                     .then()
                 // Mettre a jour l'etudiant
-                axios.put("http://localhost:3000/api/student/")
-                    .then()
+                for (let student in this.studentsAdded) {
+                    axios.put(`http://localhost:3000/api/student/${student.id}`, this.idGroup)
+                }
+
             },
-            getValidIdGroup() {
-                let validId = 0
+            getValidIdGroup(idGroup) {
                 axios.get("http://localhost:3000/api/group/")
                     .then(response => {
                         for (let group of response.data) {
-                            if (validId === group.idGroup) {
-                                validId++
+                            if (idGroup === group.idGroup) {
+                                return "Existing id, retry"
                             }
                         }
                     })
-                return validId
+                return idGroup
             }
         }
     }
