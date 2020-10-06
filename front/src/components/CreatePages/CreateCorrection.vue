@@ -1,17 +1,28 @@
 <template>
     <div>
+        <h2>Création d'une correction</h2>
+
         <div class="container">
             <form>
                 <div class="form-group">
-                    <label for="wording">Pour l'énoncé:</label>
-                    <select id="wording" class="custom-select" v-model="formData.currentWording">
+                    <label class="text-left" for="exercise">Pour l'exercice:</label>
+                    <select id="exercise" class="custom-select" v-model="formData.currentExercise">
 
                     </select>
                 </div>
 
                 <div class="form-group">
+                    <label class="text-left" for="wording">Pour l'énoncé:</label>
+                    <select id="wording" class="custom-select" v-model="formData.currentWording">
+                        <option>Faire une boucle for</option>
+                        <option>Faire une boucle do while</option>
+                        <option>Faire une boucle while</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
                     <p>Énoncé : {{ this.formData.currentWording }}</p>
-                    <label for="txt">Correction pour l'énoncé selectionné:</label>
+                    <label class="text-left" for="txt">Correction pour l'énoncé selectionné:</label>
                     <textarea id="txt" class="form-control" v-model.trim="formData.wording"></textarea>
                 </div>
 
@@ -23,7 +34,7 @@
 
 <script>
 
-    import axios from 'axios'
+    //import axios from 'axios'
 
     export default {
         name: "CreateCorrection",
@@ -34,19 +45,19 @@
                 formData: {
                     exercices: [],
                     wordings: [],
-                    currentWording: {},
-
+                    currentWording: "",
+                    idCorrection: "",
                 }
             }
         },
         mounted() {
-            axios.get()
+            //axios.get()
         },
         methods: {
             sendForm() {
 
             },
-            getExerciceById(idExercise) {
+            /*getExerciceById(idExercise) {
                 axios.get("")
                     .then(exercise => {
                         this.currentExercise = exercise
@@ -57,7 +68,7 @@
                     .then(wordings => {
                         this.formData.wordings = wordings
                     })
-            }
+            }*/
         }
     }
 </script>
