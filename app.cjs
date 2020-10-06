@@ -6,7 +6,13 @@ const connexionChain = 'mongodb+srv://CPEL_USER:coucoucpel@cluster0.82glw.mongod
 var routes = require('./routes/routes');
 
 app.use(bodyParser.urlencoded({ extended: true }))
-app.use(bodyParser.json());
+app.use(function (req, res, next) {
+    res.setHeader('Access-Control-Allow-Origin', 'https://cpel.herokuapp.com');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type,Accept, Authorization');
+    res.setHeader('Access-Control-Allow-Credentials', true);
+    next();
+});app.use(bodyParser.json());
 app.use(express.json()) // new
 app.use('/api', routes);
 
