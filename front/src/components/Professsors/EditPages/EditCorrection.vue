@@ -1,12 +1,12 @@
 <template>
     <div>
-      <h1>Profil</h1>
+        <h1>Éditer une correction d'exercice</h1>
     </div>
 </template>
 
 <script>
     export default {
-        name: "Profil"
+        name: "EditCorrection"
     }
 </script>
 

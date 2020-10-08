@@ -1,8 +1,14 @@
-import Dashboard from "./components/Dashboards/Dashboard";
-import Profile from "./components/Profile";
-import CreateExercise from "@/components/CreatePages/CreateExercise";
-import CreateGroup from "@/components/CreatePages/CreateGroup";
-import CreateCorrection from "@/components/CreatePages/CreateCorrection";
+import Dashboard from "./components/Professsors/Dashboards/Dashboard";
+import Profile from "./components/Professsors/Profile";
+import CreateExercise from "@/components/Professsors/CreatePages/CreateExercise";
+import CreateGroup from "@/components/Professsors/CreatePages/CreateGroup";
+import CreateCorrection from "@/components/Professsors/CreatePages/CreateCorrection";
+import EditCorrection from "@/components/Professsors/EditPages/EditCorrection";
+import EditExercise from "@/components/Professsors/EditPages/EditExercise";
+import EditGroup from "@/components/Professsors/EditPages/EditGroup";
+import EditWording from "@/components/Professsors/EditPages/EditWording";
+import Module from "@/components/Professsors/DetailsPages/Module";
+import Group from "@/components/Professsors/DetailsPages/Group";
 
 export default [
     {path: '/', component: Dashboard },
@@ -11,4 +17,10 @@ export default [
     {path: '/creer-exercice', component: CreateExercise },
     {path: '/creer-groupe', component: CreateGroup },
     {path: '/creer-correction', component: CreateCorrection },
+    {path: '/editer-correction', component: EditCorrection },
+    {path: '/editer-exercice', component: EditExercise },
+    {path: '/editer-groupe', component: EditGroup },
+    {path: '/editer-enonce', component: EditWording },
+    {path: '/module/:id', component: Module },
+    {path: '/group/:id', component: Group },
 ]

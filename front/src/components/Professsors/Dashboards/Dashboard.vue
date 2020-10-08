@@ -7,8 +7,8 @@
 </template>
 
 <script>
-  import ModuleDashboard from "@/components/Dashboards/ModuleDashboard";
-  import GroupDashboard from "@/components/Dashboards/GroupDashboard";
+  import ModuleDashboard from "@/components/Professsors/Dashboards/ModuleDashboard";
+  import GroupDashboard from "@/components/Professsors/Dashboards/GroupDashboard";
 
   export default {
     name: "Dashboard",

@@ -1,66 +1,50 @@
 <template>
   <div>
-    <h3 class="text-left text-u">Les groupes d'élèves</h3>
+    <h3 class="text-left">Les modules</h3>
     <Vuetable ref="vuetable"
               :api-mode="false"
+              :data="data"
               :fields="fields"
               :per-page="perPage"
-              :data-manager="dataManager"
     >
     </Vuetable>
   </div>
 </template>
 
 <script>
-  import Vuetable from 'vuetable-2';
+  import axios from 'axios';
+  //import VuetablePagination from 'vuetable-2/src/components/VuetablePagination';
   import _ from 'lodash';
+  import Vuetable from 'vuetable-2';
 
   export default {
-    name: "GroupDashboard",
+    name: "ModuleDashboard",
     components: {
       Vuetable
     },
     data(){
       return {
-        data: [
-          {
-            "moduleId": 1,
-            "name": "Module 1",
-            "title": "delectus aut autem",
-            "modules": ["Python"]
-          },
-          {
-            "moduleId": 2,
-            "name": "Module 2",
-            "title": "delectus aut autem",
-            "modules": ["ModuleA"]
-          },
-          {
-            "moduleId": 3,
-            "name": "Module 3",
-            "title": "delectus aut autem",
-            "modules": ["ModuleB"]
-          },
-          {
-            "moduleId": 4,
-            "name": "Module 4",
-            "title": "delectus aut autem",
-            "modules": ["ModuleA", "ModuleC"]
-          },
-        ],
-        fields: [
-          {name: 'name', title: 'Nom', sortField: 'name'},
-          {name: 'title', title: 'Description'},
-          {name: 'modules', title: 'Modules liés', sortField: 'modules'}
-        ],
-        perPage: 5
+          data: [],
+          fields: [
+              {name: 'name', title: 'Nom', sortField: 'name'},
+              {name: 'groups', title: 'Groupes concernés', sortField: 'groups'}
+          ],
+          perPage: 5
       }
+    },
+    mounted() {
+      axios.get("https://cpel.herokuapp.com/api/module/").then(response => {
+        this.data = response.data;
+      });
     },
     methods: {
       dataManager(sortOrder, pagination) {
         if (this.data.length < 1) return;
 
+        console.log(this.data)
+
         let local = this.data;
+        console.log(local)
 
         // sortOrder can be empty, so we have to check for that as well
         if (sortOrder.length > 0) {

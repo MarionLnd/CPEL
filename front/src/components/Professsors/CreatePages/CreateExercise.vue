@@ -6,7 +6,7 @@
             <form>
                 <div class="form-group">
                     <label for="name">L'intitulé de l'exercice:</label>
-                    <input type="text" id="name" class="form-control" v-model.lazy="formData.name">
+                    <input type="text" id="name" class="form-control" v-model="formData.name">
                 </div>
 
                 <div class="form-group">
@@ -50,8 +50,6 @@
                             v-model="formData.enableSyntaxCriteria"></switches>
                     </div>
                 </div>
-                <h4>Correction de l'exercice</h4>
-                <CreateCorrection/>
 
                 <button type="submit" class="btn btn-primary mt-2" @click.prevent="sendForm">Ajouter l'exercice</button>
             </form>
@@ -60,22 +58,20 @@
 </template>
 
 <script>
-import CreateCorrection from "@/components/CreatePages/CreateCorrection";
 import Switches from 'vue-switches';
 
 export default {
     name: "CreateExercice",
     components: {
-        CreateCorrection,
         Switches
     },
     data() {
         return {
             formData: {
                 idExercice: String,
-                name: String,
+                name: "",
                 moduleSelected: String,
-                wording: String,
+                wording: "",
                 enableSyntaxCriteria: false,
                 enableLogicCriteria: false,
             }

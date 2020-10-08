@@ -16,12 +16,12 @@
 
                 <label for="students">Ajouter les étudiants :</label>
                 <select id="students" class="form-control" multiple="multiple" v-model="formData.studentsAdded">
-                    <option v-for="(student, key) of formData.students" :key="key">{{student.idStudent}} : {{ student.firstname }} {{ student.lastname }} </option>
+                    <option v-for="(student, key) of formData.students" :key="key">{{student.idStudent}} : {{ student.firstname }} {{ student.lastname }}</option>
                 </select>
 
                 <label for="module">Pour le module :</label>
                 <select id="module" class="custom-select" v-model="formData.modulesSelected">
-                    <option v-for="(mod, key) of formData.modules" :key="key">{{ mod.idmodule }} : {{ mod.name }} </option>
+                    <option v-for="(mod, key) of formData.modules" :key="key">{{ mod.idmodule }} : {{ mod.name }}</option>
                 </select>
 
                 <button type="submit" class="btn btn-primary mt-2" @click.prevent="sendForm">Créer le groupe</button>
@@ -49,7 +49,7 @@
                     studentsAdded: [],
                     students: [],
                     modules: [],
-                    modulesSelected: ""
+                    modulesSelected: []
                 }
             }
         },
@@ -73,20 +73,21 @@
                 let groupCreated = {
                     idGroup: this.getValidIdGroup(this.formData.idGroup),
                     name: this.formData.name,
-                    nbOfStudents: this.formData.studentsAdded.length
+                    nbOfStudents: this.formData.studentsAdded.length,
+                    modules: this.formData.modulesSelected
                 }
                 console.log(groupCreated)
                 // Ajouter le nouveau groupe a la base
-                axios.post("http://localhost:3000/api/group/addGroup", groupCreated)
+                axios.post("https://cpel.herokuapp.com/api/group/", groupCreated)
                     .then()
                 // Mettre a jour l'etudiant
                 for (let student in this.studentsAdded) {
-                    axios.put(`http://localhost:3000/api/student/${student.id}`, this.idGroup)
+                    axios.put(`https://cpel.herokuapp.com/api/student/${student.id}`, this.idGroup)
                 }
 
             },
             getValidIdGroup(idGroup) {
-                axios.get("http://localhost:3000/api/group/")
+                axios.get("https://cpel.herokuapp.com/api/group/")
                     .then(response => {
                         for (let group of response.data) {
                             if (idGroup === group.idGroup) {
@@ -100,7 +101,7 @@
     }
 </script>
 
-<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
+<style src="../../../../node_modules/vue-multiselect/dist/vue-multiselect.min.css"></style>
 <style scoped>
 
 </style>
