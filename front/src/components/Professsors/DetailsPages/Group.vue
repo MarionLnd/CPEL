@@ -9,8 +9,8 @@
             <div class="card-body">
                 <p>Ce groupe est composé de {{ group.nbOfStudents }} étudiants</p>
                 <p>Il est actuellement lié au(x) module(s) suivant(s) :</p>
-                <ul v-for="(module, key) in group.modules" :key="key">
-                    <li>{{ module }}</li>
+                <ul v-for="(mod, key) in group.modules" :key="key">
+                    <li>{{ mod }}</li>
                 </ul>
             </div>
         </div>

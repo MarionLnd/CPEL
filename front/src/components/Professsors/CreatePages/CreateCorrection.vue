@@ -7,7 +7,7 @@
                 <div class="form-group">
                     <label class="text-left" for="exercise">Pour l'exercice:</label>
                     <select id="exercise" class="custom-select" v-model="formData.currentExercise">
-
+                        <option v-for="exersise in formData.exercises" :key="exersise.idExercise">Module {{ exersise.idModule }}, exercice : {{ exersise.name }}</option>
                     </select>
                 </div>
 
@@ -34,7 +34,7 @@
 
 <script>
 
-    //import axios from 'axios'
+    import axios from 'axios'
 
     export default {
         name: "CreateCorrection",
@@ -43,7 +43,7 @@
             return {
                 currentExercise: {},
                 formData: {
-                    exercices: [],
+                    exercises: [],
                     wordings: [],
                     currentWording: "",
                     idCorrection: "",
@@ -51,7 +51,11 @@
             }
         },
         mounted() {
-            //axios.get()
+            axios.get("https://cpel.herokuapp.com/api/exercise/")
+            .then(response => {
+                console.log(response.data)
+                this.formData.exercises = response.data
+            })
         },
         methods: {
             sendForm() {
