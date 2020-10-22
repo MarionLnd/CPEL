@@ -9,6 +9,7 @@ import EditGroup from "@/components/Professsors/EditPages/EditGroup";
 import EditWording from "@/components/Professsors/EditPages/EditWording";
 import Module from "@/components/Professsors/DetailsPages/Module";
 import Group from "@/components/Professsors/DetailsPages/Group";
+import Exercice from "@/components/Professsors/DetailsPages/Exercice";
 
 export default [
     {path: '/', component: Dashboard },
@@ -23,4 +24,5 @@ export default [
     {path: '/editer-enonce', component: EditWording },
     {path: '/module/:id', component: Module },
     {path: '/group/:id', component: Group },
+    {path: '/exercice/:id', component: Exercice },
 ]

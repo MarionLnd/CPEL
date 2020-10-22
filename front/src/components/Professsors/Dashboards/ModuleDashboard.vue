@@ -1,13 +1,27 @@
 <template>
   <div>
     <h3 class="text-left">Les modules</h3>
-    <Vuetable ref="vuetable"
-              :api-mode="false"
-              :data="data"
-              :fields="fields"
-              :per-page="perPage"
-    >
-    </Vuetable>
+
+      <table class="table">
+          <thead>
+          <tr>
+              <th>Identifiant du module</th>
+              <th>Nom du module</th>
+              <th>Groupes concernés</th>
+              <th>Action</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr v-for="(mod, key) in data" :key="key">
+              <td>{{ mod.idmodule }}</td>
+              <td>{{ mod.name }}</td>
+              <td>{{ mod.groups }}</td>
+              <td>
+                  <router-link :to="`/module/${mod.idmodule}`">Voir le module</router-link>
+              </td>
+          </tr>
+          </tbody>
+      </table>
   </div>
 </template>
 
@@ -15,12 +29,12 @@
   import axios from 'axios';
   //import VuetablePagination from 'vuetable-2/src/components/VuetablePagination';
   import _ from 'lodash';
-  import Vuetable from 'vuetable-2';
+  //import Vuetable from 'vuetable-2';
 
   export default {
     name: "ModuleDashboard",
     components: {
-      Vuetable
+      //Vuetable
     },
     data(){
       return {
