@@ -325,6 +325,18 @@ router.put("/wording/:id", async (req, res) => {
 //                  [ DELETE ]
 // -----------------------------------------------
 
+// Suppression d'un prof
+router.delete("/professor/:id", async (req, res) => {
+  try {
+    await group.deleteOne({ _id: req.params.id })
+    res.status(204).send()
+  } catch {
+    res.status(404)
+    res.send({ error: "404" })
+  }
+})
+
+
 // Suppression d'un groupe
 router.delete("/group/:id", async (req, res) => {
   try {
