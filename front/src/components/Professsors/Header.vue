@@ -7,7 +7,7 @@
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto">
-        <li class="nav-item active">
+        <li class="nav-item">
           <router-link class="nav-link" to="/tableau-de-bord">Tableau de bord<span class="sr-only">(current)</span></router-link>
         </li>
         <li class="nav-item">
@@ -18,6 +18,7 @@
             Créer
           </a>
           <div class="dropdown-menu p-1" aria-labelledby="navbarDropdown">
+              <router-link class="dropdown-item nav-link text-center" to="/creer-module">Module</router-link>
               <router-link class="dropdown-item nav-link text-center" to="/creer-exercice">Exercice</router-link>
               <router-link class="dropdown-item nav-link text-center" to="/creer-groupe">Groupe</router-link>
               <router-link class="dropdown-item nav-link text-center" to="/creer-correction">Correction</router-link>
@@ -44,6 +45,9 @@ export default {
 <style scoped>
   .bg-header {
     background-color: #84A9AC;
+  }
+  .router-link-active {
+    color: black;
   }
   /*.main-header {
     width: 100%;

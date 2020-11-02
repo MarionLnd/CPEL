@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="container">
         <h1>Module {{ id }}</h1>
         <div class="card">
             <div class="card-header">
