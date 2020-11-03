@@ -1,17 +1,18 @@
 <template>
+
   <div id="app">
-    <Header />
+   
     <router-view />
   </div>
 </template>
 
 <script>
-import Header from './components/Header.vue'
+//import Header from './components/Login';
 
 export default {
   name: 'App',
   components: {
-    Header
+   // Header
   }
 }
 </script>
@@ -24,5 +25,13 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+  background-color: #C2DBDB;
+  min-height: 100%;
+ 
+  
+}
+body,html{
+background-color: #C2DBDB;
+min-height: 100%;
 }
 </style>

@@ -12,6 +12,18 @@ const mod = require('../schemas/module');
 const correction = require('../schemas/correction');
 
 
+export class test {
+  getAllProf(){
+    return router.get("/professor",(req,res)=>{
+      professor.find({}).then((result)=>{
+        res.status(200).json(result)
+      },(err)=>{
+        res.status(400).json(err)
+      })
+    });
+  }
+}
+
 // -------------------------------------------
 //                  [ POST ]
 // -------------------------------------------
@@ -83,6 +95,7 @@ router.post("/correction/addCorrection/:id",(req,res)=>{
 // -----------------------------------------------
 
 // Récupère tous les professeurs
+
 router.get("/professor",(req,res)=>{
   professor.find({}).then((result)=>{
     res.status(200).json(result)
