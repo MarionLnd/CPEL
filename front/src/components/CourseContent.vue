@@ -12,7 +12,7 @@
     </div>
   </div>
 </template>
-
+   
 
 <style scoped>
 .card {
