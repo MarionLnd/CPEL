@@ -13,7 +13,7 @@
   </div>
 </template>
    
-
+  
 <style scoped>
 .card {
   width: 60%;
