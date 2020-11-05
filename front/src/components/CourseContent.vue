@@ -7,7 +7,7 @@
         {{ item.module }}
       </div>
       <div class="content">
-        {{ item.content }}
+        {{ item.content }} 
       </div>
     </div>
   </div>
