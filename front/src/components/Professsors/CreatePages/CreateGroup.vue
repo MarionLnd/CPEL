@@ -10,7 +10,7 @@
         </transition>
 
         <transition>
-            <div class="alert alert-danger alert-dismissible" v-if="formData.submitted && formData.error">
+            <div class="alert alert-danger alert-dismissible" v-if="formData.error" style="transition-delay: 1.5s">
                 Une erreur est survenue lors de la création du groupe.. Réessayez !
             </div>
         </transition>

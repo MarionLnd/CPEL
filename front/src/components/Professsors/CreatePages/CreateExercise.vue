@@ -10,8 +10,8 @@
         </transition>
 
         <transition>
-            <div class="alert alert-danger alert-dismissible" v-if="formData.submitted && formData.error">
-                Une erreur est survenue lors de la création de l'exercice.. Réessayez !
+            <div class="alert alert-danger alert-dismissible" v-if="formData.error">
+                {{ formData.errorMessage }}
             </div>
         </transition>
 
@@ -19,46 +19,20 @@
             <form>
                 <div class="form-group">
                     <label for="name">L'intitulé de l'exercice:</label>
-                    <input type="text" id="name" class="form-control" v-model="formData.name">
+                    <input type="text" id="name" class="form-control" v-model="formData.name" required>
                 </div>
 
                 <div class="form-group">
                     <label for="txt">L'énoncé de l'exercice:</label>
-                    <textarea id="txt" class="form-control" v-model.trim="formData.wording"></textarea>
+                    <textarea id="txt" class="form-control" v-model.trim="formData.wording" required></textarea>
                 </div>
 
                 <label for="module">Pour le module :</label>
-                <select id="module" class="custom-select" v-model="formData.moduleSelected">
-                    <option v-for="(mod, key) in getModules" v-bind:key="key">{{ mod.name }}</option>
+                <select id="module" class="custom-select" v-model="formData.moduleSelected" required>
+                    <option v-for="(mod) in getModules" v-bind:key="mod.idmodule">
+                        [{{ mod.idmodule }}] {{ mod.name }}
+                    </option>
                 </select>
-
-                <!--<div class="form-check text-left p-0">
-                    <div class="form-check p-0">
-                        <label class="m-0" for="logicCriteria">Activer le critère de logique : </label>
-                        <br>
-                        <switches
-                            id="logicCriteria"
-                            class=""
-                            theme="bootstrap"
-                            color="primary"
-                            text-enabled="Le critère de logique est activé pour cet exercice"
-                            text-disabled="Le critère de logique est désactivé pour cet exercice"
-                            v-model="formData.enableLogicCriteria"></switches>
-                    </div>
-
-                    <div class="form-check p-0">
-                        <label class="m-0" for="syntaxCriteria">Activer le critère de syntaxe : </label>
-                        <br>
-                        <switches
-                            id="syntaxCriteria"
-                            class=""
-                            theme="bootstrap"
-                            color="primary"
-                            text-enabled="Le critère de syntaxe est activé pour cet exercice"
-                            text-disabled="Le critère de syntaxe est désactivé pour cet exercice"
-                            v-model="formData.enableSyntaxCriteria"></switches>
-                    </div>
-                </div>-->
 
                 <button type="submit" class="btn btn-primary mt-2" @click.prevent="sendForm">Ajouter l'exercice</button>
             </form>
@@ -81,53 +55,53 @@ export default {
             formData: {
                 idExercice: String,
                 name: "",
-                moduleSelected: String,
+                moduleSelected: "",
                 wording: "",
                 enableSyntaxCriteria: false,
                 enableLogicCriteria: false,
                 submitted: false,
-                error: false
+                error: false,
+                errorMessage: ""
             },
             idModule: ""
         }
     },
     methods: {
-        findModuleByName(moduleName) {
-            axios.get("https://cpel.herokuapp.com/api/module")
-            .then(response => {
-                for(let mod of response.data) {
-                    if (mod.name === moduleName) {
-                        return mod.idmodule
-                    }
-                }
-            })
+        getIdFromModule(moduleSelected) {
+            return moduleSelected.substring(
+                moduleSelected.lastIndexOf("[") + 1,
+                moduleSelected.lastIndexOf("]")
+            )
         },
         sendForm() {
-            this.formData.submitted = true
+            if(this.formData.name === "" || this.formData.wording === "" || this.formData.moduleSelected === "") {
+                this.formData.errorMessage = "Vous n'avez pas rempli tous les champs nécéssaires"
+                this.formData.error = true
+            } else {
+                this.formData.submitted = true
 
-            let exerciseCreated = {
-                idExercise: Math.random(),
-                name: this.formData.name,
-                idModule: this.findModuleByName(this.formData.moduleSelected),
-                wording: this.formData.wording,
-                syntaxCriteria: true,
-                logicCriteria: true,
+                let exerciseCreated = {
+                    idExercise: Math.round(Math.random()),
+                    name: this.formData.name,
+                    idModule: this.getIdFromModule(this.formData.moduleSelected),
+                    wording: this.formData.wording,
+                    syntaxCriteria: true,
+                    logicCriteria: true,
+                }
+
+                // Ajouter le nouveau groupe a la base
+                axios.post(`https://cpel.herokuapp.com/api/exercise/${exerciseCreated.idModule}`, exerciseCreated)
+                    .then(() => {
+                        // redirect (OK)
+                        this.$router.push(this.$route.query.redirect || '/')
+                    })
+                    .catch(error => {
+                        console.log(error)
+                        this.formData.error = true
+                        this.formData.errorMessage = "Une erreur est survenue lors de la création de l'exercice.. Réessayez !"
+                    })
+                this.formData.submitted = false
             }
-
-            console.log(exerciseCreated.idModule)
-
-            // Ajouter le nouveau groupe a la base
-            axios.post(`https://cpel.herokuapp.com/api/exercise/`, exerciseCreated)
-                .then(() => {
-                    // redirect (OK)
-                    //this.$router.push(this.$route.query.redirect || '/')
-                    console.log(exerciseCreated)
-                })
-                .catch(error => {
-                    console.log(error)
-                    this.formData.error = true
-                })
-            this.formData.submitted = false
         }
     },
     mounted() {
@@ -142,7 +116,7 @@ export default {
 </script>
 
 <style scoped>
-form, h4 {
+form {
     text-align: left;
 }
 </style>
