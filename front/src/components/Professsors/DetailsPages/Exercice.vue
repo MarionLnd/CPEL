@@ -5,9 +5,7 @@
             <div class="enonce">
                 <h3>Enoncé</h3>
                 <div class="card">
-                    <div v-for="item in exo" :key="item">
-                        <p>{{ item.wording }}</p>
-                    </div>
+                    <p>{{ exercise.wording }}</p>
                 </div>
             </div>
             <div class="todo">
@@ -75,7 +73,9 @@ export default {
     components: {},
     data: function () {
         return {
-            exo: [],
+            idModule: this.$route.params.idModule,
+            idExercise: this.$route.params.idExercise,
+            exercise: [],
             active: Boolean,
         };
     },
@@ -119,28 +119,90 @@ export default {
         },
     },
     mounted() {
-        axios.get("https://cpel.herokuapp.com/api/exercise/").then((response) => {
-            console.log(this.$route.params);
-            response.data.forEach((ex) => {
-                if (ex.idExercise === this.$route.params.id) {
-                    if (ex.codeSolution !== undefined) {
-                        this.exo.push({
-                            name: ex.name,
-                            codeSolution: ex.codeSolution,
-                        });
-                    } else {
-                        this.exo.push({
-                            name: ex.name,
-                        });
-                    }
-                    console.log(this.exo);
+        axios.get("https://cpel.herokuapp.com/api/exercise/").then(response => {
+            for (let exercise of response.data) {
+                if (exercise.idExercise === this.idExercise && exercise.idModule === this.idModule) {
+                    this.exercise = exercise
                 }
-            });
+            }
         });
     },
 }
 </script>
 
 <style scoped>
-
+ul {
+    display: flex;
+    list-style: none;
+    color: #ddd;
+    font-size: 0;
+    margin-top: 7px;
+}
+#nt {
+    display: flex;
+    list-style: none;
+    color: #ddd;
+    font-size: 0;
+    margin-top: 7px;
+    margin-left: 30px;
+}
+.nav-item {
+    background-color: #666666;
+    font-size: 13px;
+    font-family: "Lato", "Lucida Grande", "Lucida Sans Unicode", Tahoma,
+    Sans-Serif;
+    display: inline-block;
+    text-decoration: none;
+    padding: 10px 16px 10px 16px;
+    letter-spacing: 0.6px;
+    font-size: 13px;
+    -webkit-box-shadow: inset 0 3px transparent;
+    box-shadow: inset 0 3px transparent;
+    margin-right: 1px;
+    color: #ddd;
+}
+.code {
+    width: 800px;
+    overflow: hidden;
+    background-color: #333;
+    font-family: Arial, Helvetica, sans-serif;
+    display: inline-block;
+}
+.container {
+    border-radius: 20px;
+    text-align: center;
+    margin-left: 400px;
+}
+h3 {
+    margin-left: 20px;
+}
+#yourcode {
+    float: left;
+    background-color: #666666;
+    color: #ddd;
+}
+div.output {
+    display: inline-block;
+    margin-left: 0px;
+    margin-right: 50px;
+}
+div.result {
+    display: inline-block;
+    margin-right: 0px;
+}
+.embed-nav {
+    overflow: hidden;
+    background-color: #3d3d3e;
+    font-family: Arial, Helvetica, sans-serif;
+    width: 800px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+.todo {
+    text-align: center;
+    width: 800px;
+}
+.enonce {
+    margin-bottom: 50px;
+    width: 800px;
+}
 </style>

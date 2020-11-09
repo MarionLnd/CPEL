@@ -27,6 +27,6 @@ export default [
     {path: '/editer-enonce', component: EditWording },
     {path: '/module/:id', component: Module },
     {path: '/group/:id', component: Group },
-    {path: '/exercice/:id', component: Exercice },
+    {path: '/:idModule/exercice/:idExercise', component: Exercice },
     {path: '/student/:id', component: Student },
 ]

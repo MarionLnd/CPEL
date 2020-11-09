@@ -11,7 +11,7 @@
                 <p>Il est composé des exercices suivants :</p>
                 <ol v-for="(exercise, key) in exercises" :key="key">
                     <li class="text-left">
-                        <router-link :to="`/exercice/${exercise.idExercise}`">{{ exercise.name }}</router-link>
+                        <router-link :to="`/${id}/exercice/${exercise.idExercise}`">{{ exercise.name }}</router-link>
                     </li>
                 </ol>
             </div>
