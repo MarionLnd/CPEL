@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <h1>Profil Étudiant {{ id }}</h1>
+        <h1 class="pt-3 pb-3">Profil Étudiant {{ id }}</h1>
     </div>
 </template>
 

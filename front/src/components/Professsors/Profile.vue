@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-      <h1>Profil</h1>
+      <h1 class="pt-3 pb-3">Profil</h1>
         <div class="card mt-4">
             <div class="card-header">
                 <h4 class="card-title">Frank Ledoux</h4>

@@ -10,6 +10,8 @@ import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faPlay } from '@fortawesome/free-solid-svg-icons'
 import { faCheck } from '@fortawesome/free-solid-svg-icons'
+import { faEdit } from '@fortawesome/free-solid-svg-icons'
+import { faClipboard } from '@fortawesome/free-solid-svg-icons'
 
 Vue.config.productionTip = false
 
@@ -18,6 +20,8 @@ Vue.use(VueRouter)
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 library.add(faPlay)
 library.add(faCheck)
+library.add(faEdit)
+library.add(faClipboard)
 
 const router = new VueRouter({
   routes: Routes,

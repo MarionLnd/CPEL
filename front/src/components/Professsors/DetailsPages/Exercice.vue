@@ -1,15 +1,17 @@
 <template>
-    <div>
-        <h1>Exercice</h1>
-        <div class="container">
-            <div class="enonce">
+    <div class="container">
+        <h1 class="pt-3 pb-3">Exercice - {{ exercise.name }}</h1>
+        <div class="text-left">
+            <div class="mb-2">
                 <h3>Enoncé</h3>
                 <div class="card">
-                    <p>{{ exercise.wording }}</p>
+                    <p class="align-middle text-center">{{ exercise.wording }}</p>
                 </div>
             </div>
-            <div class="todo">
-                <h3>Réponse</h3>
+            <br>
+            <h3>Correction</h3>
+            <div class="correction-div m-auto" v-if="hasCorrection">
+                <!-- if correction pour l'exercice afficher code sinon afficher, vous n'avez pas encore crée de correction pour cet exercice -->
                 <div class="embed-nav group">
                     <nav id="nt" class="nav nav-tabs">
                         <a class="nav-item nav-linkactive" data-toggle="tab" href="#yourcode">Code</a>
@@ -57,6 +59,12 @@
                     </footer>
                 </div>
             </div>
+            <div v-else>
+                <p>Il n'y a pas encore de correction pour cet exercice</p>
+                <router-link :to="/creer-correction/">
+                    <button class="btn btn-outline-info">Ajouter une correction</button>
+                </router-link>
+            </div>
         </div>
     </div>
 </template>
@@ -77,6 +85,7 @@ export default {
             idExercise: this.$route.params.idExercise,
             exercise: [],
             active: Boolean,
+            hasCorrection: false
         };
     },
     methods: {
@@ -168,11 +177,6 @@ ul {
     font-family: Arial, Helvetica, sans-serif;
     display: inline-block;
 }
-.container {
-    border-radius: 20px;
-    text-align: center;
-    margin-left: 400px;
-}
 h3 {
     margin-left: 20px;
 }
@@ -197,12 +201,8 @@ div.result {
     width: 800px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
-.todo {
+.correction-div {
     text-align: center;
-    width: 800px;
-}
-.enonce {
-    margin-bottom: 50px;
     width: 800px;
 }
 </style>
