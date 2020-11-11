@@ -156,6 +156,15 @@ router.get("/module",async (req,res)=>{
   })
 });
 
+// Recup tous les modules d'un prof
+/*router.route('/module/:idProfessor').get(function async(req,res){
+  mod.findById(req.params.idProfessor, function(err, mod) {
+    if (err)
+      res.send(err);
+    res.json(mod);
+  });
+});*/
+
 // Recupérer un module
 router.route('/module/:idModule').get(function async(req,res){
   mod.findById(req.params.idModule, function(err, mod) {
@@ -294,23 +303,6 @@ router.put("/studentRendering/:id/:idExercise", async (req, res) => {
   }
 })
 
-/*
-// Update Enoncé
-router.put("/wording/:id", async (req, res) => {
-  try {
-    const wording = await wording.findOne({ idWording: req.params.id })
-    if (req.body.content) {
-      wording.content = wording.body.content
-    }
-    await wording.save()
-    res.send(wording)
-  } catch {
-    res.status(404)
-    res.send({ error: "404 " })
-  }
-})
-*/
-
 // -----------------------------------------------
 //                  [ DELETE ]
 // -----------------------------------------------
@@ -358,19 +350,6 @@ router.delete("/studentRendering/:id", async (req, res) => {
     res.send({ error: "404" })
   }
 })
-
-/*
-// Supression d'un énoncé
-router.delete("/wording/:id", async (req, res) => {
-  try {
-    await wording.deleteOne({ idWording: req.params.id })
-    res.status(204).send()
-  } catch {
-    res.status(404)
-    res.send({ error: "404" })
-  }
-})
-*/
 
 module.exports = router;
 
