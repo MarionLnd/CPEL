@@ -178,6 +178,17 @@ router.get("/module",async (req,res)=>{
   })
 });
 
+// Recupérer un module
+router.get("/group/:idGroup", async (req, res) => {
+  try {
+    const grp = await group.findOne({ idGroup: req.params.idGroup })
+    res.send(grp)
+  } catch {
+    res.status(404)
+    res.send({ error: "404" })
+  }
+})
+
 // Récupérer tous les exercices
 router.get("/exercise",async (req,res)=>{
   await exercise.find({}).then((result)=>{
@@ -335,7 +346,6 @@ router.delete("/professor/:id", async (req, res) => {
     res.send({ error: "404" })
   }
 })
-
 
 // Suppression d'un groupe
 router.delete("/group/:id", async (req, res) => {

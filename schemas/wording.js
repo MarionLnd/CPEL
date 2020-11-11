@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const wording  = mongoose.Schema({
-    idWording : String,
+    // idWording : String,
     idExercise : String,
     idCorrection : String,
     content: String,
