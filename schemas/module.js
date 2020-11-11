@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const mod  = mongoose.Schema({
     // idmodule : String,
     name : String,
-    content : String,
+    content : Object,
     groups : Array,
     idProfessor : String,
     createdAt: {type: Date, default: Date.now},
