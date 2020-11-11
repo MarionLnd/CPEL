@@ -1,5 +1,5 @@
 import Dashboard from "../components/Professsors/Dashboards/Dashboard";
-import Profile from "../components/Professsors/Profile";
+import Profile from "../components/Professsors/DetailsPages/Profile";
 import CreateExercise from "@/components/Professsors/CreatePages/CreateExercise";
 import CreateGroup from "@/components/Professsors/CreatePages/CreateGroup";
 import CreateCorrection from "@/components/Professsors/CreatePages/CreateCorrection";
@@ -12,6 +12,7 @@ import Group from "@/components/Professsors/DetailsPages/Group";
 import Exercice from "@/components/Professsors/DetailsPages/Exercice";
 import Student from "@/components/Professsors/DetailsPages/Student";
 import CreateModule from "@/components/Professsors/CreatePages/CreateModule";
+import StudentRending from "../components/Professsors/DetailsPages/StudentRending";
 
 export default [
     {path: '/', component: Dashboard },
@@ -25,8 +26,9 @@ export default [
     {path: '/editer-exercice/:idExercice', component: EditExercise },
     {path: '/editer-groupe/:idGroup', component: EditGroup },
     {path: '/editer-enonce/', component: EditWording },
-    {path: '/module/:id', component: Module },
-    {path: '/group/:id', component: Group },
+    {path: '/module/:idModule', component: Module },
+    {path: '/group/:idGroup', component: Group },
     {path: '/:idModule/exercice/:idExercise', component: Exercice },
-    {path: '/student/:id', component: Student },
+    {path: '/etudiant/:idStudent', component: Student },
+    {path: '/etudiant/:idStudent/rendu-exercice/:idExercise', component: StudentRending },
 ]

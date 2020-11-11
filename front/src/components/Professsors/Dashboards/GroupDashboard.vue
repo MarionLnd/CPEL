@@ -4,22 +4,29 @@
         <table class="table">
             <thead>
             <tr>
-                <th>Identifiant du groupe</th>
                 <th>Nom du groupe</th>
                 <th>Nombre d'étudiants</th>
-                <th>Action</th>
+                <th>Actions</th>
             </tr>
             </thead>
             <tbody>
             <tr v-for="(group, key) in data" :key="key">
-                <td>{{ group.idGroup }}</td>
                 <td>{{ group.name }}</td>
                 <td>{{ group.nbOfStudents }}</td>
                 <td>
-                    <router-link :to="`/group/${group.idGroup}`">Voir le groupe</router-link>
+                    <router-link class="mr-2" :to="`/group/${group._id}`">
+                        <font-awesome-icon icon="eye" size="lg"/>
+                    </router-link>
+                    -
+                    <router-link class="ml-2" :to="`/editer-groupe/${group._id}`">
+                        <font-awesome-icon icon="edit" size="lg"/>
+                    </router-link>
                 </td>
             </tr>
             </tbody>
+            <tfoot>
+
+            </tfoot>
         </table>
     </div>
 </template>

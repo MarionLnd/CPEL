@@ -29,8 +29,8 @@
 
                 <label for="module">Pour le module :</label>
                 <select id="module" class="custom-select" v-model="formData.moduleSelected" required>
-                    <option v-for="(mod) in getModules" v-bind:key="mod.idmodule">
-                        [{{ mod.idmodule }}] {{ mod.name }}
+                    <option v-for="(mod) in getModules" v-bind:key="mod.idmodule" :value="mod">
+                        {{ mod.name }}
                     </option>
                 </select>
 
@@ -55,7 +55,7 @@ export default {
             formData: {
                 idExercice: String,
                 name: "",
-                moduleSelected: "",
+                moduleSelected: {},
                 wording: "",
                 enableSyntaxCriteria: false,
                 enableLogicCriteria: false,
@@ -67,12 +67,6 @@ export default {
         }
     },
     methods: {
-        getIdFromModule(moduleSelected) {
-            return moduleSelected.substring(
-                moduleSelected.lastIndexOf("[") + 1,
-                moduleSelected.lastIndexOf("]")
-            )
-        },
         sendForm() {
             if(this.formData.name === "" || this.formData.wording === "" || this.formData.moduleSelected === "") {
                 this.formData.errorMessage = "Vous n'avez pas rempli tous les champs nécéssaires"
@@ -83,10 +77,11 @@ export default {
                 let exerciseCreated = {
                     idExercise: Math.round(Math.random()),
                     name: this.formData.name,
-                    idModule: this.getIdFromModule(this.formData.moduleSelected),
+                    idModule: this.formData.moduleSelected.idmodule,
                     wording: this.formData.wording,
                     syntaxCriteria: true,
                     logicCriteria: true,
+                    solutionCode: "false",
                 }
 
                 // Ajouter le nouveau groupe a la base
@@ -110,6 +105,19 @@ export default {
                 for(let mod of response.data) {
                     this.getModules.push(mod)
                 }
+                // Sort exercises by their id modules
+                this.getModules.sort((a, b) => {
+                    let ma = a.name.toLowerCase(),
+                        mb = b.name.toLowerCase();
+
+                    if (ma < mb) {
+                        return -1;
+                    }
+                    if (ma > mb) {
+                        return 1;
+                    }
+                    return 0;
+                })
             })
     }
 }

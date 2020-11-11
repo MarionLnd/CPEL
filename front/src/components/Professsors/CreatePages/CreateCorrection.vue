@@ -19,15 +19,20 @@
             <form class="text-left">
                 <div class="form-group">
                     <label class="text-left" for="exercise">Pour l'exercice :</label>
-                    <select id="exercise" class="custom-select" v-model="currentExercise">
-                        <option v-for="exercise in formData.exercises" :key="exercise.idExercise">Module {{ exercise.idModule }}, exercice : {{ exercise.name }}</option>
+                    <select id="exercise" class="custom-select" v-model="formData.selectedExercise">
+                        <option
+                            v-for="exercise in formData.exercises"
+                            :key="exercise.idExercise"
+                            :value="exercise">
+                            [{{ exercise.idModule }}] - Exercice : {{ exercise.name }}
+                        </option>
                     </select>
                 </div>
 
                 <div class="form-group">
                     <p>
                         <strong>Énoncé :</strong> <br>
-                        {{ this.currentExercise.wording }} Parcourez le tableau et selectionnez le 2e element du tableau
+                        {{ this.formData.selectedExercise.wording }}
                     </p>
                     <label class="" for="txt">Correction pour l'énoncé selectionné :</label>
                     <textarea id="txt" class="form-control" v-model.trim="formData.wording"></textarea>
@@ -35,7 +40,7 @@
 
                 <div class="form-group">
                     <label for="correctionCode">Code de correction :</label>
-                    <input id="correctionCode" type="text" class="form-control w-25">
+                    <input id="correctionCode" type="text" class="form-control w-25" v-model="formData.correctionCode">
                 </div>
 
                 <button type="submit" class="btn btn-primary mt-2 text-center" @click.prevent="sendForm">Ajouter la correction</button>
@@ -53,40 +58,57 @@
         props: ['idExercice'],
         data() {
             return {
-                currentExercise: {},
                 formData: {
                     exercises: [],
-                    wordings: [],
-                    currentWording: "",
-                    idCorrection: "",
+                    selectedExercise: {},
+                    content: "",
+                    correctionCode: "",
                     submitted: false,
                     error: false
                 }
             }
         },
         mounted() {
-            axios.get("https://cpel.herokuapp.com/api/exercise/`")
+            axios.get("https://cpel.herokuapp.com/api/exercise")
             .then(response => {
-                console.log(response.data)
                 this.formData.exercises = response.data
+                // Sort exercises by their id modules
+                this.formData.exercises.sort((a, b) => {
+                    let ma = a.idModule.toLowerCase(),
+                        mb = b.idModule.toLowerCase();
+
+                    if (ma < mb) {
+                        return -1;
+                    }
+                    if (ma > mb) {
+                        return 1;
+                    }
+                    return 0;
+                })
             })
         },
         methods: {
             sendForm() {
+                this.formData.submitted = true
 
-            },
-            /*getExerciceById(idExercise) {
-                axios.get("")
-                    .then(exercise => {
-                        this.currentExercise = exercise
+                let correctionCreated = {
+                    idExercise: this.formData.selectedExercise._id,
+                    content: this.formData.content,
+                    correctionCode: this.formData.correctionCode
+                }
+                console.log(correctionCreated)
+                // Ajouter la nouvelle correction a la base
+               /* axios.post("https://cpel.herokuapp.com/api/correction/", correctionCreated)
+                    .then(() => {
+                        // redirect
+                        //this.$router.push(this.$route.query.redirect || '/')
                     })
+                    .catch(error => {
+                        console.log(error)
+                        this.formData.error = true
+                    })*/
+                this.formData.submitted = false
             },
-            getWordingsByExercice() {
-                axios.get("")
-                    .then(wordings => {
-                        this.formData.wordings = wordings
-                    })
-            }*/
         }
     }
 </script>

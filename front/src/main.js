@@ -6,12 +6,15 @@ import VueRouter from "vue-router"
 import Routes from "./js/Routes"
 import 'skulpt/dist/skulpt.min'
 import 'skulpt/dist/skulpt-stdlib'
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome"
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faPlay } from '@fortawesome/free-solid-svg-icons'
-import { faCheck } from '@fortawesome/free-solid-svg-icons'
-import { faEdit } from '@fortawesome/free-solid-svg-icons'
-import { faClipboard } from '@fortawesome/free-solid-svg-icons'
+import {
+    faPlay,
+    faCheck,
+    faEdit,
+    faClipboard,
+    faEye
+} from '@fortawesome/free-solid-svg-icons'
 
 Vue.config.productionTip = false
 
@@ -22,6 +25,7 @@ library.add(faPlay)
 library.add(faCheck)
 library.add(faEdit)
 library.add(faClipboard)
+library.add(faEye)
 
 const router = new VueRouter({
   routes: Routes,

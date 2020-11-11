@@ -19,17 +19,17 @@
             <form class="text-left">
                 <div class="form-inline form-group">
                     <div class="col-6">
-                        <label for="name">L'intitulé du module :</label>
-                        <input type="text" id="name" class="form-control w-100" v-model.lazy="formData.name">
-                    </div>
-                    <div class="col-6">
                         <label for="idModule">L'identifiant du module :</label>
                         <input type="text" id="idModule" class="form-control w-100" v-model.lazy="formData.idModule">
+                    </div>
+                    <div class="col-6">
+                        <label for="name">L'intitulé du module :</label>
+                        <input type="text" id="name" class="form-control w-100" v-model.lazy="formData.name">
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="exampleFormControlFile1">Example file input</label>
+                    <label for="exampleFormControlFile1">Parcourir les fichiers</label>
                     <input type="file" class="form-control-file" id="exampleFormControlFile1">
                     <label for="moduleContent">Contenu</label>
                     <input type="text" class="form-control" id="moduleContent" v-model.lazy="formData.content">
@@ -80,7 +80,6 @@ export default {
                     this.formData.error = true
                 })
             this.formData.submitted = false
-
         },
         getValidIdModule(idModule) {
             axios.get("https://cpel.herokuapp.com/api/module/")

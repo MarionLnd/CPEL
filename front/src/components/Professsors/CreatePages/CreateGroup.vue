@@ -15,7 +15,6 @@
             </div>
         </transition>
 
-
         <div class="container">
             <form>
                 <div class="form-inline form-group">
@@ -46,15 +45,11 @@
 </template>
 
 <script>
-    //import Multiselect from "vue-multiselect"
     import axios from 'axios'
-
-    console.log()
 
     export default {
         name: "CreateGroup",
         components: {
-          //Multiselect
         },
         data() {
             return {
@@ -77,21 +72,16 @@
                         this.formData.students.push(student)
                     }
                 }
-                console.log(this.formData.students)
             });
             axios.get("https://cpel.herokuapp.com/api/module/").then(response => {
-                console.log(response.data)
                 this.formData.modules = response.data
             });
         },
         methods: {
             sendForm() {
-                console.log("cliqué")
-                console.log(this.formData.studentsAdded)
                 this.formData.submitted = true
 
                 let groupCreated = {
-                    idGroup: this.getValidIdGroup(this.formData.idGroup),
                     name: this.formData.name,
                     nbOfStudents: this.formData.studentsAdded.length,
                     modules: this.formData.modulesSelected
@@ -116,17 +106,6 @@
                 this.formData.submitted = false
 
             },
-            getValidIdGroup(idGroup) {
-                axios.get("https://cpel.herokuapp.com/api/group/")
-                    .then(response => {
-                        for (let group of response.data) {
-                            if (idGroup === group.idGroup) {
-                                return "Existing id, retry"
-                            }
-                        }
-                    })
-                return idGroup
-            }
         }
     }
 </script>

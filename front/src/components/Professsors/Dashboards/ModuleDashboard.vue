@@ -5,31 +5,36 @@
       <table class="table">
           <thead>
           <tr>
-              <th>Identifiant du module</th>
               <th>Nom du module</th>
+              <th>Nombre d'exercices</th>
               <th>Groupes concernés</th>
               <th>Action</th>
           </tr>
           </thead>
+
           <tbody>
           <tr v-for="(mod, key) in data" :key="key">
-              <td>{{ mod.idmodule }}</td>
               <td>{{ mod.name }}</td>
-              <td>{{ mod.groups }}</td>
+              <td>{{ mod.nbExercise }}</td>
+              <td v-if="mod.groups.length === 0">
+                  Aucun groupe
+              </td>
+              <td v-else>
+                  {{ mod.groups }}
+              </td>
               <td>
-                  <router-link :to="`/module/${mod.idmodule}`">Voir le module</router-link>
+                  <router-link :to="`/module/${mod._id}`">Voir le module</router-link>
               </td>
           </tr>
           </tbody>
+
       </table>
   </div>
 </template>
 
 <script>
   import axios from 'axios';
-  //import VuetablePagination from 'vuetable-2/src/components/VuetablePagination';
   import _ from 'lodash';
-  //import Vuetable from 'vuetable-2';
 
   export default {
     name: "ModuleDashboard",
@@ -39,20 +44,39 @@
     data(){
       return {
           data: [],
+          paginate: ["modules"],
           fields: [
               {name: 'name', title: 'Nom', sortField: 'name'},
               {name: 'groups', title: 'Groupes concernés', sortField: 'groups'}
           ],
-          perPage: 5
+          perPage: 5,
+          exercises: []
       }
     },
     mounted() {
       axios.get("https://cpel.herokuapp.com/api/module/").then(response => {
-        this.data = response.data;
+          this.data = response.data;
+          for (let mod of response.data) {
+              mod.nbExercise = this.countExercises(mod.idmodule)
+              //console.log(this.countExercises(mod.idmodule))
+          }
       });
+        axios.get("https://cpel.herokuapp.com/api/exercise/").then(response => {
+            this.exercises = response.data;
+        });
     },
     methods: {
-      dataManager(sortOrder, pagination) {
+        countExercises(idModule) {
+            let nbExercises = 0
+            for (let exercise of this.exercises) {
+                if (exercise.idModule === idModule) {
+                    nbExercises++
+                }
+            }
+            console.log(nbExercises) // TODO Pourquoi le bon nombre apparait que avec le console log ?
+            return nbExercises;
+        },
+        dataManager(sortOrder, pagination) {
         if (this.data.length < 1) return;
 
         console.log(this.data)
