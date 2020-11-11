@@ -5,7 +5,7 @@ const exercise  = mongoose.Schema({
     name : String,
     idModule : String,
     wording: String,
-    createdAt : Date
+    createdAt: {type: Date, default: Date.now},
     // syntaxCriteria: String,
     // logicCriteria: String
 })

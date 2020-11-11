@@ -6,6 +6,6 @@ const mod  = mongoose.Schema({
     content : String,
     groups : Array,
     idProfessor : String,
-    createdAt : Date
+    createdAt: {type: Date, default: Date.now},
 })
 module.exports = mongoose.model('module', mod);
