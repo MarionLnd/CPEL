@@ -6,7 +6,8 @@ const exercise  = mongoose.Schema({
     idModule : String,
     wording: String,
     syntaxCriteria: String,
-    logicCriteria: String
+    logicCriteria: String,
+    solutionCode: String
 })
 
 module.exports = mongoose.model('exercise', exercise);

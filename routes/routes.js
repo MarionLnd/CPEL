@@ -119,9 +119,9 @@ router.get("/professor",async (req,res)=>{
 });
 
 // Récupère toutes les informations d’un professeur en fonction de son id
-router.get("/professor/:id", async (req, res) => {
+router.get("/professor/:idProfessor", (req, res) => {
   try {
-    const prof = await professor.findOne({ idProfessor: req.params.id })
+    const prof =  professor.findOne({ idProfessor: req.params.idProfessor })
     res.send(prof)
   } catch {
     res.status(404)
@@ -139,9 +139,9 @@ router.get("/student",async (req,res)=>{
 });
 
 // Récupère les étudiants par ID
-router.get("/student/:id", async (req, res) => {
+router.get("/student/:idStudent", async (req, res) => {
   try {
-    const etu = await student.findOne({ idStudent: req.params.id })
+    const etu = await student.findOne({ idStudent: req.params.idStudent })
     res.send(etu)
   } catch {
     res.status(404)
@@ -159,9 +159,9 @@ router.get("/group",async (req,res)=>{
 });
 
 // Récupère un groupe
-router.get("/group/:id", async (req, res) => {
+router.get("/group/:idGroup", async (req, res) => {
   try {
-    const grp = await group.findOne({ idGroup: req.params.id })
+    const grp = await group.findOne({ idGroup: req.params.idGroup })
     res.send(grp)
   } catch {
     res.status(404)
@@ -180,7 +180,7 @@ router.get("/module",async (req,res)=>{
 
 // Récupérer tous les exercices
 router.get("/exercise",async (req,res)=>{
-  await group.find({}).then((result)=>{
+  await exercise.find({}).then((result)=>{
     res.status(200).json(result)
   },(err)=>{
     res.status(400).json(err)
@@ -188,9 +188,9 @@ router.get("/exercise",async (req,res)=>{
 });
 
 // Récupérer un exercice
-router.get("/exercise/:id", async (req, res) => {
+router.get("/exercise/:idExercise", async (req, res) => {
   try {
-    const exo = await exercise.findOne({ idExercise: req.params.id })
+    const exo = await exercise.findOne({ idExercise: req.params.idExercise })
     res.send(exo)
   } catch {
     res.status(404)
@@ -199,9 +199,9 @@ router.get("/exercise/:id", async (req, res) => {
 })
 
 // Récupérer tous les rendus pour un étudiant
-router.get("/studentRendering/:id", async (req, res) => {
+router.get("/studentRendering/:idStudent", async (req, res) => {
   try {
-    const exo = await studentRendering.findOne({ idStudent: req.params.id })
+    const exo = await studentRendering.findOne({ idStudent: req.params.idStudent })
     res.send(exo)
   } catch {
     res.status(404)
@@ -210,9 +210,9 @@ router.get("/studentRendering/:id", async (req, res) => {
 })
 
 // Récupérer les rendus d'un exercice pour un étudiant
-router.get("/studentRendering/:id/:idStudent", async (req, res) => {
+router.get("/studentRendering/:idExercise/:idStudent", async (req, res) => {
   try {
-    const exo = await exercise.studentRendering({ idExercise: req.params.id, idStudent: req.params.idStudent })
+    const exo = await exercise.studentRendering({ idExercise: req.params.idExercise, idStudent: req.params.idStudent })
     res.send(exo)
   } catch {
     res.status(404)
@@ -221,9 +221,9 @@ router.get("/studentRendering/:id/:idStudent", async (req, res) => {
 })
 
 // Recupere un énoncé
-router.get("/wording/:id", async (req, res) => {
+router.get("/wording/:idWording", async (req, res) => {
   try {
-    const exo = await wording.findOne({ idWording: req.params.id })
+    const exo = await wording.findOne({ idWording: req.params.idWording })
     res.send(exo)
   } catch {
     res.status(404)
@@ -232,9 +232,9 @@ router.get("/wording/:id", async (req, res) => {
 })
 
 // Recupere tous les enoncés d'un exercice
-router.get("/wording/:id", async (req, res) => {
+router.get("/wording/:idExercise", async (req, res) => {
   try {
-    const exo = await wording.findOne({ idExercise: req.params.id })
+    const exo = await wording.findOne({ idExercise: req.params.idExercise })
     res.send(exo)
   } catch {
     res.status(404)
@@ -324,6 +324,18 @@ router.put("/wording/:id", async (req, res) => {
 // -----------------------------------------------
 //                  [ DELETE ]
 // -----------------------------------------------
+
+// Suppression d'un prof
+router.delete("/professor/:id", async (req, res) => {
+  try {
+    await group.deleteOne({ _id: req.params.id })
+    res.status(204).send()
+  } catch {
+    res.status(404)
+    res.send({ error: "404" })
+  }
+})
+
 
 // Suppression d'un groupe
 router.delete("/group/:id", async (req, res) => {

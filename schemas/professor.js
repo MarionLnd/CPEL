@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 const professorSchema  = new Schema({
     idProfessor : String,
     lastname : String,
-    firtname : String,
+    firstname : String,
     email: String,
     password: String,
     idModule: String
