@@ -201,7 +201,7 @@ router.get("/exercise",async (req,res)=>{
 // Récupérer un exercice
 router.get("/exercise/:idExercise", async (req, res) => {
   try {
-    const exo = await exercise.findOne({ idExercise: req.params.idExercise })
+    const exo = await exercise.findOne({ _id : req.params.idExercise })
     res.send(exo)
   } catch {
     res.status(404)
@@ -254,6 +254,27 @@ router.get("/wording/:idExercise", async (req, res) => {
   }
 })
 */
+
+// Récupérer toutes les corrections
+router.get("/correction",async (req,res)=>{
+  await correction.find({}).then((result)=>{
+    res.status(200).json(result)
+  },(err)=>{
+    res.status(400).json(err)
+  })
+});
+
+// Récupérer Correction par ID
+router.get("/correction/:idExercise", async (req, res) => {
+  try {
+    const exo = await exercise.findOne({ _id : req.params.idExercise })
+    res.send(exo)
+  } catch {
+    res.status(404)
+    res.send({ error: "404" })
+  }
+})
+
 
 // -----------------------------------------------
 //                  [ UPDATE ]
