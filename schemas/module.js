@@ -4,6 +4,8 @@ const mod  = mongoose.Schema({
     // idmodule : String,
     name : String,
     content : String,
-    groups : Array
+    groups : Array,
+    idProfessor : String,
+    createdAt : Date
 })
 module.exports = mongoose.model('module', mod);
