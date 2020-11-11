@@ -23,7 +23,7 @@
                   {{ mod.groups }}
               </td>
               <td>
-                  <router-link :to="`/module/${mod._id}`">Voir le module</router-link>
+                  <router-link :to="`/professeur/module/${mod._id}`">Voir le module</router-link>
               </td>
           </tr>
           </tbody>

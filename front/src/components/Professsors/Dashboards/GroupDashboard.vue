@@ -14,11 +14,11 @@
                 <td>{{ group.name }}</td>
                 <td>{{ group.nbOfStudents }}</td>
                 <td>
-                    <router-link class="mr-2" :to="`/group/${group._id}`">
+                    <router-link class="mr-2" :to="`/professeur/groupe/${group._id}`">
                         <font-awesome-icon icon="eye" size="lg"/>
                     </router-link>
                     -
-                    <router-link class="ml-2" :to="`/editer-groupe/${group._id}`">
+                    <router-link class="ml-2" :to="`/professeur/editer-groupe/${group._id}`">
                         <font-awesome-icon icon="edit" size="lg"/>
                     </router-link>
                 </td>

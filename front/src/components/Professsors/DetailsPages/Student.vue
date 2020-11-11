@@ -48,7 +48,7 @@
                             Module 1
                             <ul>
                                 <li>
-                                    <router-link :to="`/etudiant/${id}/rendu-exercice/${id}`">Exercice 1</router-link>
+                                    <router-link :to="`/professeur/etudiant/${id}/rendu-exercice/${id}`">Exercice 1</router-link>
                                 </li>
                                 <li>Exercice 2</li>
                             </ul>

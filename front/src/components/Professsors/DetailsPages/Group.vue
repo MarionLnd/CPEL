@@ -7,7 +7,7 @@
                     <h5 class="text-center clearfix">
                         {{ group.name }}
                         <span class="float-right">
-                            <router-link :to="`/editer-groupe/${group._id}`">
+                            <router-link :to="`/professeur/editer-groupe/${group._id}`">
                                 <font-awesome-icon class="text-left" icon="edit" size="lg" style="color: #333333"/>
                             </router-link>
                         </span>
@@ -20,11 +20,11 @@
                 <p>Ce groupe est composé de {{ group.nbOfStudents }} étudiants : </p>
                 <ul v-for="(stud, key) in groupStudents" :key="key">
                     <li>
-                        <router-link :to="`/etudiant/${stud.idStudent}`">{{ stud.firstname }} (numéro étudiant: {{ stud.idStudent }})</router-link>
+                        <router-link :to="`/professeur/etudiant/${stud.idStudent}`">{{ stud.firstname }} (numéro étudiant: {{ stud.idStudent }})</router-link>
                     </li>
                 </ul>
                 <div id="group-modules">
-                    <div v-if="group.modules.length === 0">
+                    <div>
                         <p>Pour le moment, ce groupe n'est lié à aucun module.</p>
                         <button class="btn btn-outline-info" type="button" data-toggle="collapse" data-target="#collapseModules" aria-expanded="false" aria-controls="collapseModules">
                             Consulter les modules
@@ -51,7 +51,7 @@
                             </div>
                         </div>
                     </div>
-                    <div v-else>
+                    <div>
                         <p>Il est actuellement lié au(x) module(s) suivant(s) :</p>
                         <ul v-for="(mod, key) in group.modules" :key="key">
                             <li>{{ mod }}</li>

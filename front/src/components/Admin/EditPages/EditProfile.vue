@@ -1,12 +1,12 @@
 <template>
     <div>
-        <h1>Éditer un énoncé d'exercice</h1>
+        <h1>Modifier le profil</h1>
     </div>
 </template>
 
 <script>
 export default {
-    name: "EditWording"
+    name: "EditProfile"
 }
 </script>
 

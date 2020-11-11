@@ -3,7 +3,7 @@
         <h1 class="pt-3 pb-3">Module {{ mod.name }}</h1>
         <div class="card">
             <div class="card-header">
-                <h5 class="card-title">{{ mod.name }}yo</h5>
+                <h5 class="card-title">{{ mod.name }}</h5>
                 <h6 class="card-subtitle text-muted">Identifiant du module : {{ id }}</h6>
             </div>
             <div class="card-body">
@@ -11,7 +11,7 @@
                 <p>Il est composé des exercices suivants :</p>
                 <ol v-for="(exercise, key) in exercises" :key="key">
                     <li class="text-left">
-                        <router-link :to="`/${id}/exercice/${exercise.idExercise}`">{{ exercise.name }}</router-link>
+                        <router-link :to="`/professeur/${id}/exercice/${exercise._id}`">{{ exercise.name }}</router-link>
                     </li>
                 </ol>
             </div>
@@ -26,13 +26,13 @@ export default {
     name: "Module",
     data() {
         return {
-            id: this.$route.params.id,
+            id: this.$route.params.idModule,
             mod: {},
             exercises: []
         }
     },
     mounted() {
-        axios.get("https://cpel.herokuapp.com/api/modules/" + this.id).then(response => {
+        axios.get("https://cpel.herokuapp.com/api/module/" + this.id).then(response => {
             console.log(response)
             this.mod = response.data
         })
