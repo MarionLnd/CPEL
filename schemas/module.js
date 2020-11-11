@@ -7,5 +7,6 @@ const mod  = mongoose.Schema({
     groups : Array,
     idProfessor : String,
     createdAt: {type: Date, default: Date.now},
+    nbExercises : Number
 })
 module.exports = mongoose.model('module', mod);
