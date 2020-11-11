@@ -119,9 +119,9 @@ router.get("/professor",async (req,res)=>{
 });
 
 // Récupère toutes les informations d’un professeur en fonction de son id
-router.get("/professor/:idProfessor", (req, res) => {
+router.get("/professor/:_id", (req, res) => {
   try {
-    const prof =  professor.findOne({ idProfessor: req.params.idProfessor })
+    const prof =  professor.findOne({ _id: req.params._id })
     res.send(prof)
   } catch {
     res.status(404)
@@ -179,7 +179,7 @@ router.get("/module",async (req,res)=>{
 });
 
 // Recupérer un module
-router.get("/group/:idGroup", async (req, res) => {
+router.get("/module/:idGroup", async (req, res) => {
   try {
     const grp = await group.findOne({ idGroup: req.params.idGroup })
     res.send(grp)
