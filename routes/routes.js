@@ -11,7 +11,7 @@ const exercise = require('../schemas/exercise');
 const mod = require('../schemas/module');
 const correction = require('../schemas/correction');
 const studentRendering = require('../schemas/studentRendering');
-const wording = require('../schemas/wording');
+// const wording = require('../schemas/wording');
 
 
 // -------------------------------------------
@@ -95,7 +95,7 @@ router.post("/studentRendering/:id/:idStudent",async (req,res)=>{
 });
 
 // Ajout d'un énoncé
-router.post("/wording/:id",async (req,res)=>{
+/*router.post("/wording/:id",async (req,res)=>{
   let newWording = new  wording(req.body);
   newWording.idExercise = req.params.id;
   await newWording.save().then((result)=>{
@@ -103,7 +103,7 @@ router.post("/wording/:id",async (req,res)=>{
   },(err)=>{
     res.status(400).json(err)
   })
-});
+});*/
 
 // -----------------------------------------------
 //                    [ GET ]
@@ -231,6 +231,7 @@ router.get("/studentRendering/:idExercise/:idStudent", async (req, res) => {
   }
 })
 
+/*
 // Recupere un énoncé
 router.get("/wording/:idWording", async (req, res) => {
   try {
@@ -252,6 +253,7 @@ router.get("/wording/:idExercise", async (req, res) => {
     res.send({ error: "404" })
   }
 })
+*/
 
 // -----------------------------------------------
 //                  [ UPDATE ]
@@ -317,6 +319,7 @@ router.put("/studentRendering/:id/:idExercise", async (req, res) => {
   }
 })
 
+/*
 // Update Enoncé
 router.put("/wording/:id", async (req, res) => {
   try {
@@ -331,6 +334,7 @@ router.put("/wording/:id", async (req, res) => {
     res.send({ error: "404 " })
   }
 })
+*/
 
 // -----------------------------------------------
 //                  [ DELETE ]
@@ -380,6 +384,7 @@ router.delete("/studentRendering/:id", async (req, res) => {
   }
 })
 
+/*
 // Supression d'un énoncé
 router.delete("/wording/:id", async (req, res) => {
   try {
@@ -390,6 +395,7 @@ router.delete("/wording/:id", async (req, res) => {
     res.send({ error: "404" })
   }
 })
+*/
 
 module.exports = router;
 

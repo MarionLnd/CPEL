@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+/*const mongoose = require('mongoose');
 
 const wording  = mongoose.Schema({
     // idWording : String,
@@ -8,3 +8,4 @@ const wording  = mongoose.Schema({
 })
 
 module.exports = mongoose.model('wording', wording);
+*/
