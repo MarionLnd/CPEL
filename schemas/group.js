@@ -4,7 +4,8 @@ const group  = mongoose.Schema({
     // idGroup : String,
     name : String,
     nbOfStudents : Number,
-    modules: Array
+    modules: Array,
+    students: Array,
 })
 
 module.exports = mongoose.model('group', group);
