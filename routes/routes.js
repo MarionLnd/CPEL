@@ -160,7 +160,7 @@ router.route('/group/:idGroup').get(function async(req,res){
 });
 
 // Recup tous les modules
-router.get("/mod",async (req,res)=>{
+router.get("/module",async (req,res)=>{
   await mod.find({}).then((result)=>{
     res.status(200).json(result)
   },(err)=>{
@@ -169,7 +169,7 @@ router.get("/mod",async (req,res)=>{
 });
 
 // Recup tous les modules d'un prof
-router.get("/mod/:idProfessor", async (req, res) => {
+router.get("/module/:idProfessor", async (req, res) => {
   try {
     const modules = await mod.findOne({ idProfessor: req.params.idProfessor})
     res.send(modules)
@@ -180,10 +180,11 @@ router.get("/mod/:idProfessor", async (req, res) => {
 });
 
 // Recupérer un module
-router.get("/mod/:_id", async (req, res) => {
+router.get("/modules/:_id", async (req, res) => {
   try {
     const module = await mod.findOne({ _id : req.params._id})
     res.send(module)
+    console.log(module)
   } catch {
     res.status(404)
     res.send({ error: "404" })
