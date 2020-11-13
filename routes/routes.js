@@ -11,15 +11,11 @@ const exercise = require('../schemas/exercise');
 const mod = require('../schemas/module');
 const correction = require('../schemas/correction');
 const studentRendering = require('../schemas/studentRendering');
-const wording = require('../schemas/wording');
-
+const td = require('../schemas/td');
 
 // -------------------------------------------
 //                  [ POST ]
 // -------------------------------------------
-
-// Ajout professeur : supprimer addProfessor code retour 201/location/professor/numeroId
-// Supprimer les verbes
 
 router.post("/professor",async (req,res)=>{
   let newProfessor = new professor(req.body);
@@ -61,9 +57,9 @@ router.post("/module",async (req,res)=>{
 });
 
 // Ajout d’un exercice par module
-router.post("/exercise/:id",async (req,res)=>{
+router.post("/exercise/:idModule",async (req,res)=>{
   let newExercise = new  exercise(req.body);
-  newExercise.idModule = req.params.id;
+  newExercise.idModule = req.params.idModule;
   await newExercise.save().then((result)=>{
     res.status(200).json({ NewExercise : "201 => localhost:3000/api/exercise/"+newExercise._id})
   },(err)=>{
@@ -72,9 +68,9 @@ router.post("/exercise/:id",async (req,res)=>{
 });
 
 // Ajout de la correction d’un exercice
-router.post("/correction/:id",async (req,res)=>{
+router.post("/correction/:idExercise",async (req,res)=>{
   let newCorrection = new  correction(req.body);
-  newCorrection.idExercise = req.params.id;
+  newCorrection.idExercise = req.params.idExercise;
   await newCorrection.save().then((result)=>{
     res.status(200).json({ NewCorrection : "201 => localhost:3000/api/student/"+newCorrection._id})
   },(err)=>{
@@ -83,9 +79,9 @@ router.post("/correction/:id",async (req,res)=>{
 });
 
 // Ajout du rendu d'un étudiant
-router.post("/studentRendering/:id/:idStudent",async (req,res)=>{
+router.post("/studentRendering/:idStudent/:idExercise",async (req,res)=>{
   let newStudentRendering = new  studentRendering(req.body);
-  newStudentRendering.idExercise = req.params.id;
+  newStudentRendering.idExercise = req.params.idExercise;
   newStudentRendering.idStudent = req.params.idStudent;
   await newStudentRendering.save().then((result)=>{
     res.status(200).json({ NewRendering : "201 => localhost:3000/api/studentRendering/"+newStudentRendering._id})
@@ -94,16 +90,16 @@ router.post("/studentRendering/:id/:idStudent",async (req,res)=>{
   })
 });
 
-// Ajout d'un énoncé
-router.post("/wording/:id",async (req,res)=>{
-  let newWording = new  wording(req.body);
-  newWording.idExercise = req.params.id;
-  await newWording.save().then((result)=>{
-    res.status(200).json({ NewWording : "201 => localhost:3000/api/wording/"+newWording._id})
+// Ajout d'un TD
+router.post("/td",async (req,res)=>{
+  let newTD = new td(req.body);
+  await newTD.save().then((result)=>{
+    res.status(200).json({ NewModule : "201 => localhost:3000/api/td/"+newTD._id})
   },(err)=>{
     res.status(400).json(err)
   })
 });
+
 
 // -----------------------------------------------
 //                    [ GET ]
@@ -119,15 +115,13 @@ router.get("/professor",async (req,res)=>{
 });
 
 // Récupère toutes les informations d’un professeur en fonction de son id
-router.get("/professor/:idProfessor", (req, res) => {
-  try {
-    const prof =  professor.findOne({ idProfessor: req.params.idProfessor })
-    res.send(prof)
-  } catch {
-    res.status(404)
-    res.send({ error: "404" })
-  }
-})
+router.route('/professor/:idProfessor').get(function async(req,res){
+      professor.findById(req.params.idProfessor, function(err, professor) {
+        if (err)
+          res.send(err);
+        res.json(professor);
+      });
+    });
 
 // Récupère tous les étudiants
 router.get("/student",async (req,res)=>{
@@ -139,15 +133,13 @@ router.get("/student",async (req,res)=>{
 });
 
 // Récupère les étudiants par ID
-router.get("/student/:idStudent", async (req, res) => {
-  try {
-    const etu = await student.findOne({ idStudent: req.params.idStudent })
-    res.send(etu)
-  } catch {
-    res.status(404)
-    res.send({ error: "404" })
-  }
-})
+router.route('/student/:idStudent').get(function async(req,res){
+      student.findById(req.params.idStudent, function(err, student) {
+        if (err)
+          res.send(err);
+        res.json(student);
+      });
+    });
 
 // Récupère les groupes
 router.get("/group",async (req,res)=>{
@@ -159,15 +151,13 @@ router.get("/group",async (req,res)=>{
 });
 
 // Récupère un groupe
-router.get("/group/:idGroup", async (req, res) => {
-  try {
-    const grp = await group.findOne({ idGroup: req.params.idGroup })
-    res.send(grp)
-  } catch {
-    res.status(404)
-    res.send({ error: "404" })
-  }
-})
+router.route('/group/:idGroup').get(function async(req,res){
+  group.findById(req.params.idGroup, function(err, group) {
+    if (err)
+      res.send(err);
+    res.json(group);
+  });
+});
 
 // Recup tous les modules
 router.get("/module",async (req,res)=>{
@@ -176,6 +166,26 @@ router.get("/module",async (req,res)=>{
   },(err)=>{
     res.status(400).json(err)
   })
+});
+
+// Recup tous les modules d'un prof
+router.get("/module/:idProfessor", async (req, res) => {
+  try {
+    const modules = await mod.findOne({ idProfessor: req.params.idProfessor})
+    res.send(modules)
+  } catch {
+    res.status(404)
+    res.send({ error: "404" })
+  }
+})
+
+// Recupérer un module
+router.route('/module/:idModule').get(function async(req,res){
+  mod.findById(req.params.idModule, function(err, mod) {
+    if (err)
+      res.send(err);
+    res.json(mod);
+  });
 });
 
 // Récupérer tous les exercices
@@ -188,21 +198,28 @@ router.get("/exercise",async (req,res)=>{
 });
 
 // Récupérer un exercice
-router.get("/exercise/:idExercise", async (req, res) => {
-  try {
-    const exo = await exercise.findOne({ idExercise: req.params.idExercise })
-    res.send(exo)
-  } catch {
-    res.status(404)
-    res.send({ error: "404" })
-  }
-})
+router.route('/exercise/:idExercise').get(function async(req,res){
+  exercise.findById(req.params.idExercise, function(err, exercise) {
+    if (err)
+      res.send(err);
+    res.json(exercise);
+  });
+});
+
+// Récupère tous les rendus de tous les étudiants
+router.get("/studentRendering",async (req,res)=>{
+  await studentRendering.find({}).then((result)=>{
+    res.status(200).json(result)
+  },(err)=>{
+    res.status(400).json(err)
+  })
+});
 
 // Récupérer tous les rendus pour un étudiant
 router.get("/studentRendering/:idStudent", async (req, res) => {
   try {
-    const exo = await studentRendering.findOne({ idStudent: req.params.idStudent })
-    res.send(exo)
+    const rendus = await studentRendering.findOne({ idStudent: req.params.idStudent})
+    res.send(rendus)
   } catch {
     res.status(404)
     res.send({ error: "404" })
@@ -212,7 +229,7 @@ router.get("/studentRendering/:idStudent", async (req, res) => {
 // Récupérer les rendus d'un exercice pour un étudiant
 router.get("/studentRendering/:idExercise/:idStudent", async (req, res) => {
   try {
-    const exo = await exercise.studentRendering({ idExercise: req.params.idExercise, idStudent: req.params.idStudent })
+    const exo = await studentRendering.findOne({ idExercise: req.params.idExercise, idStudent: req.params.idStudent })
     res.send(exo)
   } catch {
     res.status(404)
@@ -220,22 +237,47 @@ router.get("/studentRendering/:idExercise/:idStudent", async (req, res) => {
   }
 })
 
-// Recupere un énoncé
-router.get("/wording/:idWording", async (req, res) => {
-  try {
-    const exo = await wording.findOne({ idWording: req.params.idWording })
-    res.send(exo)
-  } catch {
-    res.status(404)
-    res.send({ error: "404" })
-  }
-})
+// Récupérer toutes les corrections
+router.get("/correction",async (req,res)=>{
+  await correction.find({}).then((result)=>{
+    res.status(200).json(result)
+  },(err)=>{
+    res.status(400).json(err)
+  })
+});
 
-// Recupere tous les enoncés d'un exercice
-router.get("/wording/:idExercise", async (req, res) => {
+// Récupérer Correction par ID
+router.route('/correction/:idCorrection').get(function async(req,res){
+  correction.findById(req.params.idCorrection, function(err, correction) {
+    if (err)
+      res.send(err);
+    res.json(correction);
+  });
+});
+
+// Récupérer tous les TDs
+router.get("/td",async (req,res)=>{
+  await td.find({}).then((result)=>{
+    res.status(200).json(result)
+  },(err)=>{
+    res.status(400).json(err)
+  })
+});
+
+// Récupérer un TD
+router.route('/td/:idTD').get(function async(req,res){
+  td.findById(req.params.idTD, function(err, td) {
+    if (err)
+      res.send(err);
+    res.json(td);
+  });
+});
+
+// Récupérer tous les exercices d'un TD
+router.get("/exercise/:idTD", async (req, res) => {
   try {
-    const exo = await wording.findOne({ idExercise: req.params.idExercise })
-    res.send(exo)
+    const exos = await exercise.findOne({ idTD: req.params.idTD})
+    res.send(exos)
   } catch {
     res.status(404)
     res.send({ error: "404" })
@@ -259,7 +301,7 @@ router.put("/student/:id", async (req, res) => {
     res.status(404)
     res.send({ error: "404 " })
   }
-})
+});
 
 // Update Exercice
 router.put("/exercise/:id", async (req, res) => {
@@ -274,7 +316,7 @@ router.put("/exercise/:id", async (req, res) => {
     res.status(404)
     res.send({ error: "404 " })
   }
-})
+});
 
 // Update Correction
 router.put("/correction/:id", async (req, res) => {
@@ -289,7 +331,7 @@ router.put("/correction/:id", async (req, res) => {
     res.status(404)
     res.send({ error: "404 " })
   }
-})
+});
 
 // Update Rendu
 router.put("/studentRendering/:id/:idExercise", async (req, res) => {
@@ -304,22 +346,53 @@ router.put("/studentRendering/:id/:idExercise", async (req, res) => {
     res.status(404)
     res.send({ error: "404 " })
   }
-})
+});
 
-// Update Enoncé
-router.put("/wording/:id", async (req, res) => {
-  try {
-    const wording = await wording.findOne({ idWording: req.params.id })
-    if (req.body.content) {
-      wording.content = wording.body.content
-    }
-    await wording.save()
-    res.send(wording)
-  } catch {
-    res.status(404)
-    res.send({ error: "404 " })
-  }
-})
+// Ajouter des groupes à un module
+router.route("/module/:idModule/:idGroup").put(function(req, res) {
+  mod.updateOne(
+      { _id: req.params.idModule },
+      { $push: { groups: [req.params.idGroup] } },
+      function(err, result) {
+        if (err) {
+          res.send(err);
+        } else {
+          res.json(result);
+        }
+      }
+  );
+});
+
+// Ajouter des modules à un groupe
+router.route("/group/:idGroup/:idModule").put(function(req, res) {
+  mod.updateOne(
+      { _id: req.params.idGroup },
+      { $push: { modules: [req.params.idModule] } },
+      function(err, result) {
+        if (err) {
+          res.send(err);
+        } else {
+          res.json(result);
+        }
+      }
+  );
+});
+
+// Ajouter des étudiants à un groupe
+router.route("/group/:idGroup/:idStudent").put(function(req, res) {
+  mod.updateOne(
+      { _id: req.params.idGroup },
+      { $push: { students: [req.params.idStudent] } },
+      function(err, result) {
+        if (err) {
+          res.send(err);
+        } else {
+          res.json(result);
+        }
+      }
+  );
+});
+
 
 // -----------------------------------------------
 //                  [ DELETE ]
@@ -335,7 +408,6 @@ router.delete("/professor/:id", async (req, res) => {
     res.send({ error: "404" })
   }
 })
-
 
 // Suppression d'un groupe
 router.delete("/group/:id", async (req, res) => {
@@ -363,17 +435,6 @@ router.delete("/exercise/:id", async (req, res) => {
 router.delete("/studentRendering/:id", async (req, res) => {
   try {
     await studentRendering.deleteOne({ idExercise: req.params.id })
-    res.status(204).send()
-  } catch {
-    res.status(404)
-    res.send({ error: "404" })
-  }
-})
-
-// Supression d'un énoncé
-router.delete("/wording/:id", async (req, res) => {
-  try {
-    await wording.deleteOne({ idWording: req.params.id })
     res.status(204).send()
   } catch {
     res.status(404)

@@ -1,10 +1,11 @@
 const mongoose = require('mongoose');
 
 const group  = mongoose.Schema({
-    idGroup : String,
+    // idGroup : String,
     name : String,
     nbOfStudents : Number,
-    modules: Array
+    modules: Array,
+    students: Array,
 })
 
 module.exports = mongoose.model('group', group);

@@ -1,13 +1,10 @@
 const mongoose = require('mongoose');
 
 const exercise  = mongoose.Schema({
-    idExercise: String,
     name : String,
-    idModule : String,
+    idTD : String,
     wording: String,
-    syntaxCriteria: String,
-    logicCriteria: String,
-    solutionCode: String
+    createdAt: {type: Date, default: Date.now},
 })
 
 module.exports = mongoose.model('exercise', exercise);
