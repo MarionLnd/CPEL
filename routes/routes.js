@@ -177,16 +177,19 @@ router.get("/module/:idProfessor", async (req, res) => {
     res.status(404)
     res.send({ error: "404" })
   }
-})
+});
 
 // Recupérer un module
-router.route('/module/:idModule').get(function async(req,res){
-  mod.findById(req.params.idModule, function(err, mod) {
-    if (err)
-      res.send(err);
-    res.json(mod);
-  });
-});
+router.get("/modules/:_id", async (req, res) => {
+  try {
+    const module = await mod.findOne({ _id : req.params._id})
+    res.send(module)
+    console.log(module)
+  } catch {
+    res.status(404)
+    res.send({ error: "404" })
+  }
+})
 
 // Récupérer tous les exercices
 router.get("/exercise",async (req,res)=>{
