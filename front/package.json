@@ -15,6 +15,7 @@
     "popper.js": "^1.16.1",
     "skulpt": "^1.0.0",
     "vue": "^2.6.11",
+    "vue-moment": "^4.1.0",
     "vue-multiselect": "^2.1.6",
     "vue-router": "^3.4.3"
   },

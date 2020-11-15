@@ -27,10 +27,10 @@
                     <textarea id="txt" class="form-control" v-model.trim="formData.wording" required></textarea>
                 </div>
 
-                <label for="module">Pour le module :</label>
-                <select id="module" class="custom-select" v-model="formData.moduleSelected" required>
-                    <option v-for="(mod) in getModules" v-bind:key="mod.idmodule" :value="mod">
-                        {{ mod.name }}
+                <label for="module">Pour le TD :</label>
+                <select id="module" class="custom-select" v-model="formData.tdSelected">
+                    <option v-for="(td) in getTDs" v-bind:key="td.idmodule" :value="td">
+                        {{ td.name }}
                     </option>
                 </select>
 
@@ -51,19 +51,15 @@ export default {
     },
     data() {
         return {
-            getModules: [],
+            getTDs: [],
             formData: {
-                idExercice: String,
                 name: "",
-                moduleSelected: {},
+                tdSelected: {},
                 wording: "",
-                enableSyntaxCriteria: false,
-                enableLogicCriteria: false,
                 submitted: false,
                 error: false,
                 errorMessage: ""
             },
-            idModule: ""
         }
     },
     methods: {
@@ -75,20 +71,16 @@ export default {
                 this.formData.submitted = true
 
                 let exerciseCreated = {
-                    idExercise: Math.round(Math.random()),
                     name: this.formData.name,
-                    idModule: this.formData.moduleSelected.idmodule,
+                    idTD: this.formData.tdSelected._id,
                     wording: this.formData.wording,
-                    syntaxCriteria: true,
-                    logicCriteria: true,
-                    solutionCode: "false",
                 }
 
-                // Ajouter le nouveau groupe a la base
+                // Ajouter le nouvel exercice a la base
                 axios.post(`https://cpel.herokuapp.com/api/exercise/${exerciseCreated.idModule}`, exerciseCreated)
                     .then(() => {
                         // redirect (OK)
-                        this.$router.push(this.$route.query.redirect || '/')
+                        this.$router.push(this.$route.query.redirect || '/professeur')
                     })
                     .catch(error => {
                         console.log(error)
@@ -100,13 +92,13 @@ export default {
         }
     },
     mounted() {
-        axios.get('https://cpel.herokuapp.com/api/module/')
+        axios.get('https://cpel.herokuapp.com/api/td/')
             .then(response => {
-                for(let mod of response.data) {
-                    this.getModules.push(mod)
+                for(let td of response.data) {
+                    this.getTDs.push(td)
                 }
                 // Sort exercises by their id modules
-                this.getModules.sort((a, b) => {
+                this.getTDs.sort((a, b) => {
                     let ma = a.name.toLowerCase(),
                         mb = b.name.toLowerCase();
 

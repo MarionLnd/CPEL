@@ -69,10 +69,10 @@
 <script>
     export default {
         name: "CodeRending",
-        props: ['exercise', 'contentStudent'],
+        props: ['exercise', 'contentStudent', 'hasCorrection'],
         data() {
             return {
-                hasCorrection: false,
+
             }
         },
         methods: {

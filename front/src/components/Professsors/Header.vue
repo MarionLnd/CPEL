@@ -20,6 +20,7 @@
           <div class="dropdown-menu p-1" aria-labelledby="navbarDropdown">
               <router-link class="dropdown-item nav-link text-center" to="/professeur/creer-module">Module</router-link>
               <router-link class="dropdown-item nav-link text-center" to="/professeur/creer-exercice">Exercice</router-link>
+              <router-link class="dropdown-item nav-link text-center" to="/professeur/creer-td">TD</router-link>
               <router-link class="dropdown-item nav-link text-center" to="/professeur/creer-groupe">Groupe</router-link>
               <router-link class="dropdown-item nav-link text-center" to="/professeur/creer-correction">Correction</router-link>
           </div>

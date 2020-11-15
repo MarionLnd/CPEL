@@ -17,25 +17,19 @@
 
         <div class="container">
             <form>
-                <div class="form-inline form-group">
-                    <div class="col-6">
-                        <label for="name">L'intitulé du groupe :</label>
-                        <input type="text" id="name" class="form-control w-100" v-model.lazy="formData.name">
-                    </div>
-                    <div class="col-6">
-                        <label for="idGroup">L'identifiant du groupe :</label>
-                        <input type="text" id="idGroup" class="form-control w-100" v-model.lazy="formData.idGroup">
-                    </div>
+                <div class="form-group">
+                    <label for="idGroup">Le nom du groupe :</label>
+                    <input type="text" id="idGroup" class="form-control w-100" v-model.lazy="formData.groupName" required>
                 </div>
 
                 <label for="students">Ajouter les étudiants :</label>
-                <select id="students" class="form-control" multiple="multiple" v-model="formData.studentsAdded">
+                <select id="students" class="form-control" multiple="multiple" v-model="formData.studentsAdded" required>
                     <option v-for="(student, key) of formData.students" :key="key">{{student.idStudent}} : {{ student.firstname }} {{ student.lastname }}</option>
                 </select>
 
                 <label for="module">Pour le module :</label>
-                <select id="module" class="custom-select" v-model="formData.modulesSelected">
-                    <option v-for="(mod, key) of formData.modules" :key="key">{{ mod.idmodule }} : {{ mod.name }}</option>
+                <select id="module" class="custom-select" v-model="formData.modulesSelected" required>
+                    <option v-for="(mod, key) of formData.modules" :key="key" :value="mod">{{ mod.name }}</option>
                 </select>
 
                 <button type="submit" class="btn btn-primary mt-3" @click.prevent="sendForm">Créer le groupe</button>
@@ -55,7 +49,6 @@
             return {
                 formData: {
                     groupName: "",
-                    idGroup: "",
                     studentsAdded: [],
                     students: [],
                     modules: [],
@@ -82,9 +75,10 @@
                 this.formData.submitted = true
 
                 let groupCreated = {
-                    name: this.formData.name,
+                    name: this.formData.groupName,
                     nbOfStudents: this.formData.studentsAdded.length,
-                    modules: this.formData.modulesSelected
+                    modules: this.formData.modulesSelected,
+                    students: this.formData.studentsAdded
                 }
                 console.log(groupCreated)
                 // Ajouter le nouveau groupe a la base
@@ -92,7 +86,9 @@
                     .then(() => {
                         // Mettre a jour l'etudiant
                         for (let student in this.studentsAdded) {
-                            axios.put(`https://cpel.herokuapp.com/api/student/${student.id}`, this.idGroup)
+                            axios.put(`https://cpel.herokuapp.com/api/student/${student._id}`, this.idGroup)
+                                .then()
+                                .catch(error => console.log(error))
                         }
                     })
                     .catch(error => {

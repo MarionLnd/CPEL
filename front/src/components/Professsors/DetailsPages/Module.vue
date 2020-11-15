@@ -1,17 +1,16 @@
 <template>
     <div class="container">
-        <h1 class="pt-3 pb-3">Module {{ mod.name }}</h1>
+        <h1 class="pt-3 pb-3">{{ mod.name }}</h1>
         <div class="card">
             <div class="card-header">
                 <h5 class="card-title">{{ mod.name }}</h5>
-                <h6 class="card-subtitle text-muted">Identifiant du module : {{ id }}</h6>
             </div>
             <div class="card-body">
-                <p>Ce module est intitulé {{ mod.name }}</p>
-                <p>Il est composé des exercices suivants :</p>
-                <ol v-for="(exercise, key) in exercises" :key="key">
+                <p>Ce module est intitulé "{{ mod.name }}"</p>
+                <p>Il est composé des TD suivants :</p>
+                <ol v-for="(td, key) in tds" :key="key">
                     <li class="text-left">
-                        <router-link :to="`/professeur/${id}/exercice/${exercise._id}`">{{ exercise.name }}</router-link>
+                        <router-link :to="`/professeur/td/${td._id}`">{{ td.name }}</router-link>
                     </li>
                 </ol>
             </div>
@@ -28,21 +27,15 @@ export default {
         return {
             id: this.$route.params.idModule,
             mod: {},
-            exercises: []
+            tds: []
         }
     },
     mounted() {
-        axios.get("https://cpel.herokuapp.com/api/module/" + this.id).then(response => {
-            console.log(response)
+        axios.get("https://cpel.herokuapp.com/api/modules/" + this.id).then(response => {
             this.mod = response.data
         })
-        axios.get("https://cpel.herokuapp.com/api/exercise/").then(response => {
-            console.log(response)
-            for(let exercise of response.data) {
-                if (exercise.idModule === this.id) {
-                    this.exercises.push(exercise)
-                }
-            }
+        axios.get("https://cpel.herokuapp.com/api/td/").then(response => {
+            this.tds = response.data
         })
     }
 }

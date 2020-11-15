@@ -15,15 +15,17 @@
           <tbody>
           <tr v-for="(mod, key) in data" :key="key">
               <td>{{ mod.name }}</td>
-              <td>{{ mod.nbExercise }}</td>
+              <td>{{ mod.nbExercises }}</td>
               <td v-if="mod.groups.length === 0">
                   Aucun groupe
               </td>
               <td v-else>
-                  {{ mod.groups }}
+                  {{ getNameGroupById(mod.groups) }}
               </td>
               <td>
-                  <router-link :to="`/professeur/module/${mod._id}`">Voir le module</router-link>
+                  <router-link class="mr-2" :to="`/professeur/module/${mod._id}`">
+                      <font-awesome-icon icon="eye" size="lg"/>
+                  </router-link>
               </td>
           </tr>
           </tbody>
@@ -50,31 +52,32 @@
               {name: 'groups', title: 'Groupes concernés', sortField: 'groups'}
           ],
           perPage: 5,
-          exercises: []
+          exercises: [],
+          groups: []
       }
     },
     mounted() {
       axios.get("https://cpel.herokuapp.com/api/module/").then(response => {
           this.data = response.data;
-          for (let mod of response.data) {
-              mod.nbExercise = this.countExercises(mod.idmodule)
-              //console.log(this.countExercises(mod.idmodule))
-          }
       });
-        axios.get("https://cpel.herokuapp.com/api/exercise/").then(response => {
-            this.exercises = response.data;
-        });
+        axios.get("https://cpel.herokuapp.com/api/group/").then(response => {
+            this.groups = response.data;
+        })
     },
     methods: {
-        countExercises(idModule) {
-            let nbExercises = 0
-            for (let exercise of this.exercises) {
-                if (exercise.idModule === idModule) {
-                    nbExercises++
-                }
+        getNameGroupById(groups) {
+            let groupsName = "";
+
+            console.log(this.groups.find(group => group._id === ""))
+
+            if (groups.length === 1) {
+                groupsName = this.groups.find(group => group._id === groups[0]).name;
+            } else {
+                groupsName+= this.groups.find(group => group._id === groups[0]).name + ", ";
             }
-            console.log(nbExercises) // TODO Pourquoi le bon nombre apparait que avec le console log ?
-            return nbExercises;
+
+
+            return groupsName
         },
         dataManager(sortOrder, pagination) {
         if (this.data.length < 1) return;

@@ -19,12 +19,12 @@
             <form class="text-left">
                 <div class="form-group">
                     <label class="text-left" for="exercise">Pour l'exercice :</label>
-                    <select id="exercise" class="custom-select" v-model="formData.selectedExercise">
+                    <select id="exercise" class="custom-select" v-model="formData.selectedExercise" required>
                         <option
                             v-for="exercise in formData.exercises"
                             :key="exercise.idExercise"
                             :value="exercise">
-                            [{{ exercise.idModule }}] - Exercice : {{ exercise.name }}
+                            Exercice : {{ exercise.name }}
                         </option>
                     </select>
                 </div>
@@ -35,12 +35,12 @@
                         {{ this.formData.selectedExercise.wording }}
                     </p>
                     <label class="" for="txt">Correction pour l'énoncé selectionné :</label>
-                    <textarea id="txt" class="form-control" v-model.trim="formData.wording"></textarea>
+                    <textarea id="txt" class="form-control" v-model.trim="formData.content" required></textarea>
                 </div>
 
                 <div class="form-group">
                     <label for="correctionCode">Code de correction :</label>
-                    <input id="correctionCode" type="text" class="form-control w-25" v-model="formData.correctionCode">
+                    <input id="correctionCode" type="text" class="form-control w-25" v-model="formData.correctionCode" required>
                 </div>
 
                 <button type="submit" class="btn btn-primary mt-2 text-center" @click.prevent="sendForm">Ajouter la correction</button>
@@ -50,7 +50,6 @@
 </template>
 
 <script>
-
     import axios from 'axios'
 
     export default {
@@ -74,8 +73,8 @@
                 this.formData.exercises = response.data
                 // Sort exercises by their id modules
                 this.formData.exercises.sort((a, b) => {
-                    let ma = a.idModule.toLowerCase(),
-                        mb = b.idModule.toLowerCase();
+                    let ma = a.createdAt,
+                        mb = b.createdAt;
 
                     if (ma < mb) {
                         return -1;
@@ -98,15 +97,15 @@
                 }
                 console.log(correctionCreated)
                 // Ajouter la nouvelle correction a la base
-               /* axios.post("https://cpel.herokuapp.com/api/correction/", correctionCreated)
+               axios.post("https://cpel.herokuapp.com/api/correction/" + correctionCreated.idExercise, correctionCreated)
                     .then(() => {
                         // redirect
-                        //this.$router.push(this.$route.query.redirect || '/')
+                        this.$router.push(this.$route.query.redirect || '/professeur/')
                     })
                     .catch(error => {
                         console.log(error)
                         this.formData.error = true
-                    })*/
+                    })
                 this.formData.submitted = false
             },
         }

@@ -20,7 +20,9 @@
                 <p>Ce groupe est composé de {{ group.nbOfStudents }} étudiants : </p>
                 <ul v-for="(stud, key) in groupStudents" :key="key">
                     <li>
-                        <router-link :to="`/professeur/etudiant/${stud.idStudent}`">{{ stud.firstname }} (numéro étudiant: {{ stud.idStudent }})</router-link>
+                        <router-link :to="`/professeur/etudiant/${stud._id}`">
+                            {{ stud.firstname }} {{ stud.lastname }} (numéro étudiant: {{ stud.idStudent }})
+                        </router-link>
                     </li>
                 </ul>
                 <div id="group-modules">
@@ -35,7 +37,7 @@
                                     <label for="modulesToSelect">Les modules existants :</label>
                                     <select id="modulesToSelect" class="form-control" multiple="multiple" v-model="modulesSelected">
                                         <option v-for="(mod, key) in getModules" :key="key">
-                                            [{{ mod.idmodule }}] {{ mod.name }}
+                                            {{ mod.name }}
                                         </option>
                                     </select>
                                 </form>
@@ -51,7 +53,7 @@
                             </div>
                         </div>
                     </div>
-                    <div>
+                    <div v-if="group.modules.length !== 0">
                         <p>Il est actuellement lié au(x) module(s) suivant(s) :</p>
                         <ul v-for="(mod, key) in group.modules" :key="key">
                             <li>{{ mod }}</li>
@@ -70,7 +72,7 @@ export default {
     name: "Group",
     data() {
         return {
-            id: this.$route.params.id,
+            id: this.$route.params.idGroup,
             group: {},
             groupStudents: [],
             getModules: [],
@@ -78,15 +80,12 @@ export default {
         }
     },
     mounted() {
-        console.log(this.id)
         axios.get("https://cpel.herokuapp.com/api/group/" + this.id).then(response => {
             this.group = response.data
         })
         axios.get("https://cpel.herokuapp.com/api/student/").then(response => {
             for(let student of response.data) {
-                console.log(student)
                 if (student.idGroup === this.id) {
-                    console.log(student)
                     this.groupStudents.push(student)
                 }
             }
@@ -100,6 +99,7 @@ export default {
     methods: {
         addModuleToGroup() {
             console.log(this.modulesSelected)
+            //axios.put(`https://cpel.herokuapp.com/api/group/${this.id}/` )
         }
     }
 }

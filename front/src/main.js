@@ -15,10 +15,12 @@ import {
     faClipboard,
     faEye
 } from '@fortawesome/free-solid-svg-icons'
+import VueMoment from "vue-moment"
 
 Vue.config.productionTip = false
 
 Vue.use(VueRouter)
+Vue.use(VueMoment)
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 library.add(faPlay)

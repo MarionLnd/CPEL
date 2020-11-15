@@ -1,7 +1,7 @@
 <template>
     <div class="container">
         <h1 class="pt-3 pb-3">{{ exercise.name }}</h1>
-        <CodeRending :exercise="exercise" />
+        <CodeRending :exercise="exo" :hasCorrection="hasCorrection" />
         <router-link :to="`/professeur/creer-correction/`">
              <button class="btn btn-outline-info">Ajouter une correction</button>
          </router-link>
@@ -17,6 +17,7 @@ export default {
     components: {
         CodeRending
     },
+    props: ["exo"],
     data: function () {
         return {
             idModule: this.$route.params.idModule,
@@ -27,14 +28,20 @@ export default {
         };
     },
     methods: {
-        checkIfHasCorrection() {
-            console.log(this.exercise)
-        }
+
     },
     mounted() {
         axios.get("https://cpel.herokuapp.com/api/exercise/" + this.idExercise).then(response => {
             this.exercise = response.data
         });
+        /*axios.get("https://cpel.herokuapp.com/api/correction/").then(response => {
+            for (let correction of response.data) {
+                console.log(correction)
+                if (correction.idExercise === this.idExercise) {
+                    this.hasCorrection = true
+                }
+            }
+        })*/
     },
 }
 </script>

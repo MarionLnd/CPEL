@@ -12,6 +12,9 @@ import Exercice from "@/components/Professsors/DetailsPages/Exercice";
 import Student from "@/components/Professsors/DetailsPages/Student";
 import CreateModule from "@/components/Professsors/CreatePages/CreateModule";
 import StudentRending from "../components/Professsors/DetailsPages/StudentRending";
+import CreateTD from "@/components/Professsors/CreatePages/CreateTD";
+import TD from "@/components/Professsors/DetailsPages/TD";
+import Register from "@/components/Register";
 
 export default [
     // Professor interface
@@ -19,6 +22,7 @@ export default [
     {path: '/professeur/tableau-de-bord', component: Dashboard },
     {path: '/professeur/profil', component: Profile },
     {path: '/professeur/creer-exercice', component: CreateExercise },
+    {path: '/professeur/creer-td', component: CreateTD },
     {path: '/professeur/creer-groupe', component: CreateGroup },
     {path: '/professeur/creer-correction', component: CreateCorrection },
     {path: '/professeur/creer-module', component: CreateModule },
@@ -26,6 +30,7 @@ export default [
     {path: '/professeur/editer-exercice/:idExercice', component: EditExercise },
     {path: '/professeur/editer-groupe/:idGroup', component: EditGroup },
     {path: '/professeur/module/:idModule', component: Module },
+    {path: '/professeur/td/:idTD', component: TD },
     {path: '/professeur/groupe/:idGroup', component: Group },
     {path: '/professeur/:idModule/exercice/:idExercise', component: Exercice },
     {path: '/professeur/etudiant/:idStudent', component: Student },
@@ -47,4 +52,7 @@ export default [
     {path: '/admin/professeur/:idProfessor', component: Dashboard },
     {path: '/admin/etudiant/:idStudent', component: Dashboard },
     {path: '/admin/groupe/:idGroup', component: Dashboard },
+
+    // Inscription
+    {path: '/inscription/', component: Register },
 ]
