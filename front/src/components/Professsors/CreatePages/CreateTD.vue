@@ -96,7 +96,7 @@
                 this.formData.submitted = false
             }
         },
-        mounted() {
+        created() {
             axios.get('https://cpel.herokuapp.com/api/module/')
                 .then(response => {
                     for(let mod of response.data) {

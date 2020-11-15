@@ -1,14 +1,12 @@
 <template>
     <div class="text-left">
         <div class="mb-2">
-            <h3>Enoncé</h3>
-            <div class="card">
-                <p class="align-middle text-center">{{ exercise.wording }}</p>
-            </div>
+            <h5>Enoncé :</h5>
+            <p class="align-middle text-left">{{ exercise.wording }}</p>
         </div>
         <br>
-        <h3>Correction</h3>
-        <div class="correction-div m-auto" v-if="hasCorrection">
+        <h4 v-if="contentStudent">Rendu</h4>
+        <div class="correction-div m-auto">
             <!-- if correction pour l'exercice afficher code sinon afficher, vous n'avez pas encore crée de correction pour cet exercice -->
             <div class="embed-nav group">
                 <nav id="nt" class="nav nav-tabs">
@@ -30,35 +28,18 @@
                                 id="yourcode"
                                 class="tab-pane fade show active"
                                 cols="40"
-                                rows="10"></textarea>
-                        <textarea id="sol" class="tab-pane fade" cols="40" rows="10"></textarea>
+                                rows="15" v-model="contentStudent">
+                            </textarea>
                     </div>
                 </div>
                 <div class="result">
-          <textarea id="output" class="form-control" cols="40" rows="10">
-          </textarea>
+                  <textarea id="output" class="form-control" cols="40" rows="15">
+                  </textarea>
                 </div>
-                <footer class="embed-nav group">
-                    <ul>
-                        <li>
-                            <input
-                                id="solution"
-                                class="form-control"
-                                placeholder="Entrez le code de solution "
-                                type="text"
-                            />
-                        </li>
-                        <li>
-                            <button id="test" class="form-control" @click="activeSol()">
-                                <font-awesome-icon icon="check"/>
-                            </button>
-                        </li>
-                    </ul>
+                <footer class="embed-nav group text-left" v-if="!hasCorrection">
+                    <button class="btn btn-outline-light ml-3 m-3">Envoyer le code solution</button>
                 </footer>
             </div>
-        </div>
-        <div v-else>
-            <p>Il n'y a pas encore de correction pour cet exercice</p>
         </div>
     </div>
 </template>
@@ -72,7 +53,8 @@
         props: ['exercise', 'contentStudent', 'hasCorrection'],
         data() {
             return {
-
+                correction: {},//this.hasCorrection,
+                active: false,
             }
         },
         methods: {
@@ -99,19 +81,6 @@
                 } catch (e) {
                     alert(e.toString());
                 }
-            },
-            activeSol() {
-                /* this.exo.forEach((data) => {
-                   if (
-                     data.codeSolution !== undefined &&
-                     data.codeSolution === document.getElementById("dolution").value
-                   ) {
-                     this.active = true;
-                   } else {
-                     this.active = false;
-                   }
-                 });*/
-                this.active = true;
             },
         },
     }

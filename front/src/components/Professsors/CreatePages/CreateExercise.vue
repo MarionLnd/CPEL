@@ -91,7 +91,7 @@ export default {
             }
         }
     },
-    mounted() {
+    created() {
         axios.get('https://cpel.herokuapp.com/api/td/')
             .then(response => {
                 for(let td of response.data) {

@@ -56,7 +56,7 @@
           groups: []
       }
     },
-    mounted() {
+    created() {
       axios.get("https://cpel.herokuapp.com/api/module/").then(response => {
           this.data = response.data;
       });

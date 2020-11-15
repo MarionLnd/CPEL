@@ -1,17 +1,20 @@
 <template>
   <div id="app">
-    <Header />
+        <Header />
+      <!--<HeaderAdmin />-->
     <router-view />
   </div>
 </template>
 
 <script>
 import Header from './components/Professsors/Header.vue'
+//import HeaderAdmin from './components/Admin/Header.vue'
 
 export default {
   name: 'App',
   components: {
-    Header
+      Header,
+      //HeaderAdmin
   }
 }
 </script>

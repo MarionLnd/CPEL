@@ -33,7 +33,7 @@
 
                             <div class="form-group">
                                 <label for="groupName">Groupe:</label>
-                                <input id="groupName" class="form-control" type="text" placeholder="M2MIAA" disabled>
+                                <input id="groupName" class="form-control" type="text" :placeholder="groupName" disabled>
                             </div>
                         </form>
 
@@ -41,23 +41,18 @@
                 </div>
             </div>
             <div class="col-6">
-                <h4>Modules liés</h4>
+                <h4>Exercices effectués</h4>
                 <div class="card mt-4">
                     <div class="card-body text-left">
-                        <div v-for="(mod, key) in modules" :key="key">
-                            Module 1
+                        <div v-for="(rendering, key) in studentRenderings" :key="key">
                             <ul>
                                 <li>
-                                    <router-link :to="`/professeur/etudiant/${idStudent}/rendu-exercice/${id}`">Exercice 1</router-link>
+                                    <router-link
+                                        :to="`/professeur/etudiant/${id}/rendu-exercice/${rendering.idExercise}?idStudentRending=${rendering._id}`"
+                                    >
+                                        {{ getInfosExercise(rendering.idExercise) }}
+                                    </router-link>
                                 </li>
-                                <li>Exercice 2</li>
-                            </ul>
-                        </div>
-                        <div>
-                            Module 1
-                            <ul>
-                                <li>Exercice 1</li>
-                                <li>Exercice 2</li>
                             </ul>
                         </div>
                     </div>
@@ -78,6 +73,8 @@
         data() {
             return {
                 id: this.$route.params.idStudent,
+                groupName: this.$route.query.groupName,
+                currentExercise: {},
                 student: {},
                 modules: [],
                 tds: [],
@@ -85,13 +82,25 @@
                 studentRenderings: [],
             }
         },
-        mounted() {
+        created() {
             axios.get("https://cpel.herokuapp.com/api/student/" + this.id).then(response => {
                 this.student = response.data
+            })
+            axios.get("https://cpel.herokuapp.com/api/exercise/").then(response => {
+                this.exercises = response.data
             })
             axios.get("https://cpel.herokuapp.com/api/studentRendering/").then(response => {
                 this.studentRenderings = response.data
             })
+        },
+        methods: {
+            getInfosExercise(idExercice) {
+                for (let exo of this.exercises) {
+                    if (exo._id === idExercice) {
+                        return exo.name
+                    }
+                }
+            }
         }
     }
 </script>

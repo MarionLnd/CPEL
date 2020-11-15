@@ -58,7 +58,7 @@
                 }
             }
         },
-        mounted() {
+        created() {
             axios.get("https://cpel.herokuapp.com/api/student/").then(response => {
                 for(let student of response.data) {
                     if (student.idGroup === "") {

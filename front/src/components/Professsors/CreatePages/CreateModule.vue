@@ -90,7 +90,7 @@ export default {
             this.formData.submitted = false
         }
     },
-    mounted() {
+    created() {
         axios.get("https://cpel.herokuapp.com/api/group/").then(response => {
             this.getGroups = response.data;
         })

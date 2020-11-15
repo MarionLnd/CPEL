@@ -30,7 +30,7 @@ export default {
             tds: []
         }
     },
-    mounted() {
+    created() {
         axios.get("https://cpel.herokuapp.com/api/modules/" + this.id).then(response => {
             this.mod = response.data
         })

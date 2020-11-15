@@ -67,7 +67,7 @@
                 }
             }
         },
-        mounted() {
+        created() {
             axios.get("https://cpel.herokuapp.com/api/exercise")
             .then(response => {
                 this.formData.exercises = response.data

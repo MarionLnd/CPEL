@@ -20,7 +20,7 @@
                 <p>Ce groupe est composé de {{ group.nbOfStudents }} étudiants : </p>
                 <ul v-for="(stud, key) in groupStudents" :key="key">
                     <li>
-                        <router-link :to="`/professeur/etudiant/${stud._id}`">
+                        <router-link :to="`/professeur/etudiant/${stud._id}?groupName=${group.name}`">
                             {{ stud.firstname }} {{ stud.lastname }} (numéro étudiant: {{ stud.idStudent }})
                         </router-link>
                     </li>
@@ -79,7 +79,7 @@ export default {
             modulesSelected: [],
         }
     },
-    mounted() {
+    created() {
         axios.get("https://cpel.herokuapp.com/api/group/" + this.id).then(response => {
             this.group = response.data
         })

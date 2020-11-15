@@ -1,3 +1,6 @@
+import Register from "@/components/Register";
+
+// Professor
 import Dashboard from "../components/Professsors/Dashboards/Dashboard";
 import Profile from "../components/Professsors/DetailsPages/Profile";
 import CreateExercise from "@/components/Professsors/CreatePages/CreateExercise";
@@ -14,7 +17,18 @@ import CreateModule from "@/components/Professsors/CreatePages/CreateModule";
 import StudentRending from "../components/Professsors/DetailsPages/StudentRending";
 import CreateTD from "@/components/Professsors/CreatePages/CreateTD";
 import TD from "@/components/Professsors/DetailsPages/TD";
-import Register from "@/components/Register";
+
+// Admin
+import ProfileAdmin from "@/components/Admin/DetailsPages/Profile";
+import AddProfessor from "@/components/Admin/CreatePages/AddProfessor";
+import AddStudent from "@/components/Admin/CreatePages/AddStudent";
+import AddGroup from "@/components/Admin/CreatePages/AddGroup";
+import EditProfessor from "@/components/Admin/EditPages/EditProfessor";
+import EditStudent from "@/components/Admin/EditPages/EditStudent";
+import EditGroupAdmin from "@/components/Admin/EditPages/EditGroup";
+import Professors from "@/components/Admin/DetailsPages/Professors";
+import Students from "@/components/Admin/DetailsPages/Students";
+import Groups from "@/components/Admin/DetailsPages/Groups";
 
 export default [
     // Professor interface
@@ -33,22 +47,22 @@ export default [
     {path: '/professeur/td/:idTD', component: TD },
     {path: '/professeur/groupe/:idGroup', component: Group },
     {path: '/professeur/:idModule/exercice/:idExercise', component: Exercice },
-    {path: '/professeur/etudiant/:idStudent', component: Student },
-    {path: '/professeur/etudiant/:idStudent/rendu-exercice/:idExercise', component: StudentRending },
+    {path: '/professeur/etudiant/:idStudent', component: Student, props: (route) => ({ query: route.query.groupName })},
+    {path: '/professeur/etudiant/:idStudent/rendu-exercice/:idExercise', component: StudentRending, props: (route) => ({ query: route.query.idStudentRending })},
 
     // Admin interface
     {path: '/admin/', component: Dashboard },
     {path: '/admin/tableau-de-bord', component: Dashboard },
-    {path: '/admin/profil', component: Dashboard },
-    {path: '/admin/creer-professeur', component: Dashboard },
-    {path: '/admin/creer-etudiant', component: Dashboard },
-    {path: '/admin/creer-groupe', component: Dashboard },
-    {path: '/admin/gerer-professeurs', component: Dashboard },
-    {path: '/admin/gerer-etudiants', component: Dashboard },
-    {path: '/admin/gerer-groupes', component: Dashboard },
-    {path: '/admin/professeurs', component: Dashboard },
-    {path: '/admin/etudiants', component: Dashboard },
-    {path: '/admin/groupes', component: Dashboard },
+    {path: '/admin/profil', component: ProfileAdmin },
+    {path: '/admin/ajouter-professeur', component: AddProfessor },
+    {path: '/admin/ajouter-etudiant', component: AddStudent },
+    {path: '/admin/ajouter-groupe', component: AddGroup },
+    {path: '/admin/gerer-professeurs', component: EditProfessor },
+    {path: '/admin/gerer-etudiants', component: EditStudent },
+    {path: '/admin/gerer-groupes', component: EditGroupAdmin },
+    {path: '/admin/professeurs', component: Professors },
+    {path: '/admin/etudiants', component: Students },
+    {path: '/admin/groupes', component: Groups },
     {path: '/admin/professeur/:idProfessor', component: Dashboard },
     {path: '/admin/etudiant/:idStudent', component: Dashboard },
     {path: '/admin/groupe/:idGroup', component: Dashboard },

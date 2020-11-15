@@ -49,7 +49,7 @@ export default {
             perPage: 5
         }
     },
-    mounted() {
+    created() {
         axios.get("https://cpel.herokuapp.com/api/group/").then(response => {
             this.data = response.data
         })

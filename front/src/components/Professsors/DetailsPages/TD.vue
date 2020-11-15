@@ -28,7 +28,7 @@
                 td: {},
             }
         },
-        mounted() {
+        created() {
             axios.get("https://cpel.herokuapp.com/api/td/" + this.id).then(response => {
                 this.td = response.data
             })

@@ -30,7 +30,7 @@ export default {
     methods: {
 
     },
-    mounted() {
+    created() {
         axios.get("https://cpel.herokuapp.com/api/exercise/" + this.idExercise).then(response => {
             this.exercise = response.data
         });
