@@ -13,14 +13,14 @@ const correction = require('../schemas/correction');
 const studentRendering = require('../schemas/studentRendering');
 const td = require('../schemas/td');
 const user = require('../schemas/user');
-const jwt = require('jsonwebtoken');
-const bcrypt =require('bcrypt');
+//const jwt = require('jsonwebtoken');
+// const bcrypt =require('bcrypt');
 
 // -------------------------------------------
 //                  [ POST ]
 // -------------------------------------------
 
-
+/*
 // Ajout d'un user
 router.post("/user",async (req,res)=>{
     const isUsernameExist = await user.findOne({ username: req.body.username });
@@ -49,7 +49,7 @@ router.post("/login", async (req, res) => {
             message: "Login successful",
         },
     });
-});
+});*/
 
 // Ajout un professeur
 router.post("/professor",async (req,res)=>{
