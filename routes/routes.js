@@ -145,9 +145,6 @@ router.post("/td",async (req,res)=>{
   })
 });
 
-
-// Ajouter un TD à un Module
-
 // -----------------------------------------------
 //                    [ GET ]
 // -----------------------------------------------
@@ -464,10 +461,10 @@ router.route("/group/:idGroup/:idStudent").put(function(req, res) {
 });
 
 // Ajouter un Exercice à un TD
-router.route("/td/:idExercise").put(function(req, res) {
-  const exercise =  user.findOne({ _id: req.body.idExercise });
+router.route("/td/:idTD/:idExercise").put(function(req, res) {
+  const exercise =  exercise.findOne({ _id: req.params.idExercise });
   mod.updateOne(
-      { _id: req.params.idGroup },
+      { _id: req.params.idTD },
       { $push: { exercises: [exercise] } },
       function(err, result) {
         if (err) {
@@ -478,6 +475,23 @@ router.route("/td/:idExercise").put(function(req, res) {
       }
   );
 });
+
+// Ajouter un TD à un Module
+router.route("/module/:idModule/:idTD").put(function(req, res) {
+  const td =  td.findOne({ _id: req.params.idTD });
+  mod.updateOne(
+      { _id: req.params.idModule },
+      { $push: { tds: [td] } },
+      function(err, result) {
+        if (err) {
+          res.send(err);
+        } else {
+          res.json(result);
+        }
+      }
+  );
+});
+
 
 // -----------------------------------------------
 //                  [ DELETE ]
