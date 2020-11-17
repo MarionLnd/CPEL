@@ -2,8 +2,8 @@
 //                [ DECLA ]
 // ------------------------------------------
 
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
 const professor = require('../schemas/professor.js');
 const student = require('../schemas/student');
 const group = require('../schemas/group');
@@ -12,11 +12,46 @@ const mod = require('../schemas/module');
 const correction = require('../schemas/correction');
 const studentRendering = require('../schemas/studentRendering');
 const td = require('../schemas/td');
+const user = require('../schemas/user');
+const jwt = require('jsonwebtoken');
+const bcrypt =require('bcrypt');
 
 // -------------------------------------------
 //                  [ POST ]
 // -------------------------------------------
 
+
+// Ajout d'un user
+router.post("/user",async (req,res)=>{
+    const isUsernameExist = await user.findOne({ username: req.body.username });
+    if (isUsernameExist)
+        return res.status(400).json({ error: "Email already exists" });
+    const salt = await bcrypt.genSalt(10);
+    const password = await bcrypt.hash(req.body.password, salt);
+    let newUser = new user(req.body);
+    newUser.password = password;
+    await newUser.save().then((result)=>{
+        res.status(200).json({ NewUser : "201 => localhost:3000/api/professor/"+newUser._id})
+    },(err)=>{
+        res.status(400).json(err)
+    })
+});
+
+// Connexion d'un user
+router.post("/login", async (req, res) => {
+    const userLogin = await user.findOne({ username: req.body.username });
+    if (!userLogin) return res.status(400).json({ error: "Email is wrong" });
+    const validPassword = await bcrypt.compare(req.body.password, userLogin.password);
+    if (!validPassword) return res.status(400).json({ error: "Password is wrong" });
+    res.json({
+        error: null,
+        data: {
+            message: "Login successful",
+        },
+    });
+});
+
+// Ajout un professeur
 router.post("/professor",async (req,res)=>{
   let newProfessor = new professor(req.body);
   await newProfessor.save().then((result)=>{
@@ -104,6 +139,24 @@ router.post("/td",async (req,res)=>{
 // -----------------------------------------------
 //                    [ GET ]
 // -----------------------------------------------
+
+// Récupère les users
+router.get("/user",async (req,res)=>{
+    await user.find({}).then((result)=>{
+        res.status(200).json(result)
+    },(err)=>{
+        res.status(400).json(err)
+    })
+});
+
+// Récupère un user
+router.route('/user/:idUser').get(function async(req,res){
+    user.findById(req.params.idUser, function(err, professor) {
+        if (err)
+            res.send(err);
+        res.json(professor);
+    });
+});
 
 // Récupère tous les professeurs
 router.get("/professor",async (req,res)=>{
