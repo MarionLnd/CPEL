@@ -20,7 +20,7 @@ const bcrypt =require('bcrypt');
 //                  [ POST ]
 // -------------------------------------------
 
-/*
+
 // Ajout d'un user
 router.post("/user",async (req,res)=>{
     const isUsernameExist = await user.findOne({ username: req.body.username });
@@ -37,6 +37,7 @@ router.post("/user",async (req,res)=>{
     })
 });
 
+/*
 // Connexion d'un user
 router.post("/login", async (req, res) => {
     const userLogin = await user.findOne({ username: req.body.username });
