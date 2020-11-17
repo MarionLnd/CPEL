@@ -13,8 +13,8 @@ const correction = require('../schemas/correction');
 const studentRendering = require('../schemas/studentRendering');
 const td = require('../schemas/td');
 const user = require('../schemas/user');
-//const jwt = require('jsonwebtoken');
-// const bcrypt =require('bcrypt');
+const jwt = require('jsonwebtoken');
+const bcrypt =require('bcrypt');
 
 // -------------------------------------------
 //                  [ POST ]
