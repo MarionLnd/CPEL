@@ -37,7 +37,7 @@ router.post("/user",async (req,res)=>{
     })
 });
 
-/*
+
 // Connexion d'un user
 router.post("/login", async (req, res) => {
     const userLogin = await user.findOne({ username: req.body.username });
@@ -50,7 +50,7 @@ router.post("/login", async (req, res) => {
             message: "Login successful",
         },
     });
-});*/
+});
 
 // Ajout un professeur
 router.post("/professor",async (req,res)=>{
