@@ -20,28 +20,37 @@ const bcrypt =require('bcrypt');
 //                  [ POST ]
 // -------------------------------------------
 
-
 // Ajout d'un user
 router.post("/user",async (req,res)=>{
     const isUsernameExist = await user.findOne({ username: req.body.username });
-    if (isUsernameExist)
-        return res.status(400).json({ error: "Email already exists" });
-    const salt = await bcrypt.genSalt(10);
-    const password = await bcrypt.hash(req.body.password, salt);
-    let newUser = new user(req.body);
-    newUser.password = password;
-    await newUser.save().then((result)=>{
-        res.status(200).json({ NewUser : "201 => localhost:3000/api/professor/"+newUser._id})
-    },(err)=>{
-        res.status(400).json(err)
-    })
+    const isProfessorExist = await professor.findOne({ professorNumber: req.body.username });
+    const isStudentExist = await student.findOne({ studentNumber: req.body.username });
+    if ( isProfessorExist === null && req.body.type === "professor"){
+        return res.status(400).json({ error: "Can't sign up" });
+    }
+    else if ( isStudentExist === null && req.body.type === "student"){
+      return res.status(400).json({ error: "Can't sign up" });
+    }
+    else if(isUsernameExist) {
+      return res.status(400).json({ error: "Email already exists" });
+    }
+    else{
+        const salt = await bcrypt.genSalt(10);
+        const password = await bcrypt.hash(req.body.password, salt);
+        let newUser = new user(req.body);
+        newUser.password = password;
+        await newUser.save().then((result)=>{
+          res.status(200).json({ NewUser : "201 => localhost:3000/api/professor/"+newUser._id})
+        },(err)=>{
+          res.status(400).json(err)
+        })
+      }
 });
 
-
 // Connexion d'un user
-router.post("/login", async (req, res) => {
+router.get("/login", async (req, res) => {
     const userLogin = await user.findOne({ username: req.body.username });
-    if (!userLogin) return res.status(400).json({ error: "Email is wrong" });
+    if (!userLogin) return res.status(400).json({ error: "Username is wrong" });
     const validPassword = await bcrypt.compare(req.body.password, userLogin.password);
     if (!validPassword) return res.status(400).json({ error: "Password is wrong" });
     res.json({
@@ -136,6 +145,9 @@ router.post("/td",async (req,res)=>{
   })
 });
 
+// Ajouter un Exercice à un TD
+
+// Ajouter un TD à un Module
 
 // -----------------------------------------------
 //                    [ GET ]
@@ -293,6 +305,8 @@ router.get("/studentRendering/:idExercise/:idStudent", async (req, res) => {
     res.send({ error: "404" })
   }
 })
+
+// Récupérer un rendu par id
 
 // Récupérer toutes les corrections
 router.get("/correction",async (req,res)=>{
