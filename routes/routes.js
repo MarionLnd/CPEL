@@ -14,7 +14,7 @@ const studentRendering = require('../schemas/studentRendering');
 const td = require('../schemas/td');
 const user = require('../schemas/user');
 const jwt = require('jsonwebtoken');
-// const bcrypt =require('bcrypt');
+const bcrypt =require('bcrypt');
 
 // -------------------------------------------
 //                  [ POST ]
