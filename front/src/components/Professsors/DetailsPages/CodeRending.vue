@@ -28,8 +28,14 @@
                                 id="yourcode"
                                 class="tab-pane fade show active"
                                 cols="40"
-                                rows="15" v-model="contentStudent">
+                                rows="15" v-model="contentStudent" v-if="!hasCorrection">
                             </textarea>
+                            <textarea
+                                id="yourcode"
+                                class="tab-pane fade show active"
+                                cols="40"
+                                rows="15" v-model="contentStudent" v-else>
+                                </textarea>
                     </div>
                 </div>
                 <div class="result">
@@ -50,7 +56,7 @@
 <script>
     export default {
         name: "CodeRending",
-        props: ['exercise', 'contentStudent', 'hasCorrection'],
+        props: ['exercise', 'contentStudent', 'hasCorrection', 'contentCorrection'],
         data() {
             return {
                 correction: {},//this.hasCorrection,

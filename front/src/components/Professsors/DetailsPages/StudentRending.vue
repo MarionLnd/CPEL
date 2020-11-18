@@ -30,7 +30,7 @@ export default {
             }
 
         })
-        axios.get("https://cpel.herokuapp.com/api/studentRendering/").then(response => {
+        axios.get("https://cpel.herokuapp.com/api/studentRendering/" + this.idExercise + "/" + this.idStudent).then(response => {
             this.studentRending = response.data
         })
         axios.get("https://cpel.herokuapp.com/api/exercise/" + this.idExercise).then(response => {

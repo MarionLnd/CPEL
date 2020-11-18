@@ -23,19 +23,33 @@
                         <input id="email" class="form-control" type="text" placeholder="frank.ledoux@univ-evry.fr" disabled>
                     </div>
                 </form>
-                <p>Modules liés: </p>
+                <div>
+                    <h6>Modules liés:</h6>
+                    <ul>
+                        <li></li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
 </template>
 
 <script>
+    import axios from "axios";
+
     export default {
         name: "Profil",
         data() {
             return {
-                professor: {}
+                id: "",
+                professor: {},
+                modules: []
             }
+        },
+        created() {
+            axios.get("https://cpel.herokuapp.com/api/module/" + this.id).then(response => {
+                this.modules = response.data
+            })
         }
     }
 </script>

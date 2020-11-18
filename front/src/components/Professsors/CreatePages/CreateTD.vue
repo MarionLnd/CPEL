@@ -16,6 +16,13 @@
         </transition>
 
         <div class="container">
+            <div id="warning" class="text-warning">
+                <p>
+                    Attention ! Une fois qu'un TD a été crée, <strong>il ne peut plus être modifié.</strong><br>
+                    Il faut faire en sorte d'avoir crée tous les exercices nécéssaires avant de créer un TD.<br>
+                    <a><router-link :to="`/professeur/creer-exercice`">Créer un exercice</router-link></a>
+                </p>
+            </div>
             <form>
                 <div class="form-group">
                     <label for="name">L'intitulé du TD:</label>

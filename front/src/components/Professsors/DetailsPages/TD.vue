@@ -26,6 +26,8 @@
             return {
                 id: this.$route.params.idTD,
                 td: {},
+                corrections: [],
+                currentCorrection: {}
             }
         },
         created() {
