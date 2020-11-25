@@ -8,7 +8,7 @@ const expressSwagger = require('express-swagger-generator')(app);
 let options = {
     swaggerDefinition: {
         info: {
-            description: 'This is a sample server',
+            description: 'CPEL API CRUD',
             title: 'Swagger',
             version: '1.0.0',
         },
