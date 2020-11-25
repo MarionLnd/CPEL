@@ -5,19 +5,18 @@
         <!-- ALERTS -->
         <transition name="slide-fade">
             <div class="alert alert-success" v-if="formData.submitted && !formData.error">
-                La correction a été créée avec succès !
+                Votre inscription a été prise en compte avec succès !
             </div>
         </transition>
 
         <transition>
             <div class="alert alert-danger alert-dismissible" v-if="formData.error">
-                Une erreur est survenue lors de la création de la correction.. Réessayez !
                 {{ errorMessage }}
             </div>
         </transition>
 
         <div class="mt-3">
-            <form class="text-left" @submit="sendForm">
+            <form class="text-left" @submit.prevent="sendForm">
                 <div class="form-group">
                     <label class="label-cpel" for="profileType">Pour quel profil:</label>
                     <select id="profileType" class="custom-select" v-model.lazy="formData.profileType">
@@ -80,26 +79,40 @@
                 this.formData.submitted = true;
 
                 let userRegistered = {
-                    username: this.idNumber,
-                    password: this.password,
-                    type: this.profileType
+                    username: this.formData.idNumber,
+                    password: this.formData.password,
+                    type: this.formData.profileType
                 }
 
                 if (this.formData.password !== this.formData.confirmPassword) {
                     this.formData.error = true
-                    this.errorMessage = "Les mots de passe saisis sont différents, assurez vous de mettre le bon mot de passe dans les deux champs."
-                    console.log("mdp ≠")
+                    this.errorMessage = "Les mots de passe saisis sont différents, assurez vous de mettre le même mot de passe dans les deux champs."
                 } else {
-                    this.formData.error = false
-                    console.log(userRegistered)
-                    console.log("mdp =")
                    axios.post("https://cpel.herokuapp.com/api/user/", userRegistered).then(
-                        () => this.$router.push(this.$route.query.redirect || '/professeur/')
-                    ).catch(error => {
-                        console.log(error)
-                        this.formData.error = true
-                        this.formData.submitted = false
-                    })
+                        response => {
+                            this.formData.error = false
+                            console.log(response)
+                            //this.$router.push(this.$route.query.redirect || '/professeur/')
+                        }
+                   ).catch(error => {
+                       console.log(error)
+                       this.formData.error = true
+                       this.formData.submitted = false
+                       switch(error.response.status) {
+                           case 400:
+                               this.errorMessage = "Une erreur est survenue lors de votre inscription.. Réessayez !"
+                               break;
+                           case 410:
+                               this.errorMessage = "Votre numéro d'identification professeur n'existe pas dans notre base."
+                               break;
+                           case 411:
+                               this.errorMessage = "Votre numéro étudiant n'existe pas dans notre base."
+                               break;
+                           case 412:
+                               this.errorMessage = "Votre numéro d'identification administrateur n'existe pas dans notre base."
+                               break;
+                       }
+                   })
                 }
 
             }

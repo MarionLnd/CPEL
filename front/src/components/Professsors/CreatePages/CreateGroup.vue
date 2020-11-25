@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h2>Créer un groupe</h2>
+        <h2 class="pt-3 pb-3">Créer un groupe</h2>
 
         <!-- ALERTS -->
         <transition name="slide-fade">
@@ -16,21 +16,25 @@
         </transition>
 
         <div class="container">
-            <form>
+            <form class="text-left">
                 <div class="form-group">
                     <label for="idGroup">Le nom du groupe :</label>
                     <input type="text" id="idGroup" class="form-control w-100" v-model.lazy="formData.groupName" required>
                 </div>
 
-                <label for="students">Ajouter les étudiants :</label>
-                <select id="students" class="form-control" multiple="multiple" v-model="formData.studentsAdded" required>
-                    <option v-for="(student, key) of formData.students" :key="key">{{student.idStudent}} : {{ student.firstname }} {{ student.lastname }}</option>
-                </select>
+                <div class="form-group">
+                    <label for="students">Ajouter les étudiants :</label>
+                    <select id="students" class="form-control" multiple="multiple" v-model="formData.studentsAdded" required>
+                        <option v-for="(student, key) of formData.students" :key="key">{{student.idStudent}} : {{ student.firstname }} {{ student.lastname }}</option>
+                    </select>
+                </div>
 
-                <label for="module">Pour le module :</label>
-                <select id="module" class="custom-select" v-model="formData.modulesSelected" required>
-                    <option v-for="(mod, key) of formData.modules" :key="key" :value="mod">{{ mod.name }}</option>
-                </select>
+                <div class="form-group">
+                    <label for="module">Pour le module :</label>
+                    <select id="module" class="custom-select" v-model="formData.modulesSelected" required>
+                        <option v-for="(mod, key) of formData.modules" :key="key" :value="mod">{{ mod.name }}</option>
+                    </select>
+                </div>
 
                 <button type="submit" class="btn btn-primary mt-3" @click.prevent="sendForm">Créer le groupe</button>
             </form>

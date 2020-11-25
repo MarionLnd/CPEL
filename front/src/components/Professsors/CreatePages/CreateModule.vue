@@ -81,7 +81,7 @@ export default {
             axios.post("https://cpel.herokuapp.com/api/module/", moduleCreated)
                 .then(() => {
                     // redirect
-                    this.$router.push(this.$route.query.redirect || '/professeur')
+                    //this.$router.push(this.$route.query.redirect || '/professeur')
                 })
                 .catch(error => {
                     console.log(error)

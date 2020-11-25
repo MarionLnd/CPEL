@@ -19,6 +19,7 @@ import CreateTD from "@/components/Professsors/CreatePages/CreateTD";
 import TD from "@/components/Professsors/DetailsPages/TD";
 
 // Admin
+import DashboardAdmin from "@/components/Admin/Dashboard/Dashboard";
 import ProfileAdmin from "@/components/Admin/DetailsPages/Profile";
 import AddProfessor from "@/components/Admin/CreatePages/AddProfessor";
 import AddStudent from "@/components/Admin/CreatePages/AddStudent";
@@ -31,6 +32,12 @@ import Students from "@/components/Admin/DetailsPages/Students";
 import Groups from "@/components/Admin/DetailsPages/Groups";
 
 export default [
+    // Register
+    {path: '/inscription/', component: Register },
+
+    // Login
+    //{path: '/login', component: },
+
     // Professor interface
     {path: '/professeur/', component: Dashboard },
     {path: '/professeur/tableau-de-bord', component: Dashboard },
@@ -51,8 +58,8 @@ export default [
     {path: '/professeur/etudiant/:idStudent/rendu-exercice/:idExercise', component: StudentRending, props: (route) => ({ query: route.query.idStudentRending })},
 
     // Admin interface
-    {path: '/admin/', component: Dashboard },
-    {path: '/admin/tableau-de-bord', component: Dashboard },
+    {path: '/admin/', component: DashboardAdmin },
+    {path: '/admin/tableau-de-bord', component: DashboardAdmin },
     {path: '/admin/profil', component: ProfileAdmin },
     {path: '/admin/ajouter-professeur', component: AddProfessor },
     {path: '/admin/ajouter-etudiant', component: AddStudent },
@@ -67,6 +74,5 @@ export default [
     {path: '/admin/etudiant/:idStudent', component: Dashboard },
     {path: '/admin/groupe/:idGroup', component: Dashboard },
 
-    // Inscription
-    {path: '/inscription/', component: Register },
+
 ]

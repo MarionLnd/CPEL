@@ -19,7 +19,7 @@ export default {
     props: ["exo", "contentCorrection"],
     data: function () {
         return {
-            idModule: this.$route.params.idModule,
+            idTD: this.$route.params.idTD,
             idExercise: this.exo._id,
             exercise: {},
             active: Boolean,
@@ -36,7 +36,7 @@ export default {
         });
         axios.get("https://cpel.herokuapp.com/api/correction/").then(response => {
             for (let correction of response.data) {
-                if (correction.idExercise === this.currentExo._id) {
+                if (correction.idExercise === this.idExercise) {
                     this.hasCorrection = true
                     this.correctionContent = correction
                 }

@@ -76,11 +76,25 @@ export default {
                     wording: this.formData.wording,
                 }
 
+                axios.all([
+                    axios.post(`https://cpel.herokuapp.com/api/exercise/${exerciseCreated.idTD}`, exerciseCreated),
+                    axios.put(`https://cpel.herokuapp.com/api/id/${exerciseCreated.idTD}/`, exerciseCreated)
+                ])
+
                 // Ajouter le nouvel exercice a la base
                 axios.post(`https://cpel.herokuapp.com/api/exercise/${exerciseCreated.idModule}`, exerciseCreated)
                     .then(() => {
                         // redirect (OK)
-                        this.$router.push(this.$route.query.redirect || '/professeur')
+                        axios.put(`https://cpel.herokuapp.com/api/id/${exerciseCreated.idTD}/`, exerciseCreated)
+                            .then(() => {
+                                this.$router.push(this.$route.query.redirect || '/professeur')
+                            })
+                            .catch(error => {
+                                console.log("Error in adding exercise in TD")
+                                console.log(error)
+                                this.formData.error = true
+                                this.formData.errorMessage = "Une erreur est survenue lors de l'ajout de l'exercice au TD.. Réessayez !"
+                            })
                     })
                     .catch(error => {
                         console.log(error)

@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <h1 class="pt-3 pb-3">Module - {{ mod.name }}</h1>
+        <h1 class="pt-3 pb-3">{{ mod.name }}</h1>
         <div class="card">
             <div class="card-header">
                 <h4 class="card-title">

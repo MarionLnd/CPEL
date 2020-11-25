@@ -1,6 +1,6 @@
 <template>
   <nav class="navbar navbar-expand-md navbar-light bg-header fixed-top">
-    <a class="navbar-brand" href="#">CPEL</a>
+      <router-link class="navbar-brand" to="/professeur/tableau-de-bord">CPEL</router-link>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -18,14 +18,14 @@
             Créer
           </a>
           <div class="dropdown-menu p-1" aria-labelledby="navbarDropdown">
+              <router-link class="dropdown-item nav-link text-center" to="/professeur/creer-groupe">Groupe</router-link>
               <router-link class="dropdown-item nav-link text-center" to="/professeur/creer-module">Module</router-link>
               <router-link class="dropdown-item nav-link text-center" to="/professeur/creer-exercice">Exercice</router-link>
-              <router-link class="dropdown-item nav-link text-center" to="/professeur/creer-td">TD</router-link>
-              <router-link class="dropdown-item nav-link text-center" to="/professeur/creer-groupe">Groupe</router-link>
               <router-link class="dropdown-item nav-link text-center" to="/professeur/creer-correction">Correction</router-link>
+              <router-link class="dropdown-item nav-link text-center" to="/professeur/creer-td">TD</router-link>
           </div>
         </li>
-        <li class="nav-item">
+        <li class="nav-item float-right">
           <a class="nav-link disabled" href="#">Déconnexion</a>
         </li>
       </ul>

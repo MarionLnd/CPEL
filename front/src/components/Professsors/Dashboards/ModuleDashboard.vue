@@ -6,7 +6,7 @@
           <thead>
           <tr>
               <th>Nom du module</th>
-              <th>Nombre d'exercices</th>
+              <th>Nombre de TDs</th>
               <th>Groupes concernés</th>
               <th>Action</th>
           </tr>
@@ -15,8 +15,11 @@
           <tbody>
           <tr v-for="(mod, key) in data" :key="key">
               <td>{{ mod.name }}</td>
-              <td>{{ mod.nbExercises }}</td>
-              <td v-if="mod.groups.length === 0">
+              <td v-if="mod.tds.length === 0">
+                  Aucun TD
+              </td>
+              <td v-else>{{ mod.tds.length }}</td>
+              <td v-if="mod.groups.length === 0 || mod.groups[0] === null">
                   Aucun groupe
               </td>
               <td v-else>
@@ -68,16 +71,17 @@
         getNameGroupById(groups) {
             let groupsName = "";
 
-            console.log(this.groups.find(group => group._id === ""))
-
-            if (groups.length === 1) {
-                groupsName = this.groups.find(group => group._id === groups[0]).name;
-            } else {
-                groupsName+= this.groups.find(group => group._id === groups[0]).name + ", ";
+            if(groups[0] !== null || groups[0] !== undefined && this.groups[0]) {
+                if (groups.length === 1) {
+                    groupsName = this.groups.find(group => group._id === groups[0]).name;
+                } else {
+                    for (let group of this.groups) {
+                        groupsName+= this.groups.find(grp => grp._id === group._id).name + ", ";
+                    }
+                }
             }
 
-
-            return groupsName
+            return groupsName.substring(0, groupsName.length - 2)
         },
         dataManager(sortOrder, pagination) {
         if (this.data.length < 1) return;
