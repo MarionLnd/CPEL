@@ -20,7 +20,13 @@ const bcrypt =require('bcrypt');
 //                  [ POST ]
 // -------------------------------------------
 
-// Ajout d'un user
+/**
+ * Post user url
+ * @route POST /user
+ * @group user - Operations about user
+ * @returns {object} 201 - A new user
+ * @returns {Error}  default - Unexpected error
+ */
 router.post("/user",async (req,res)=>{
     const isUsernameExist = await user.findOne({ username: req.body.username });
     const isProfessorExist = await professor.findOne({ professorNumber: req.body.username });
@@ -40,19 +46,26 @@ router.post("/user",async (req,res)=>{
         let newUser = new user(req.body);
         newUser.password = password;
         await newUser.save().then((result)=>{
-          res.status(200).json({ NewUser : "201 => localhost:3000/api/professor/"+newUser._id})
+          res.status(201).json({ NewUser : "201 => localhost:3000/api/professor/"+newUser._id})
         },(err)=>{
           res.status(400).json(err)
         })
       }
 });
 
+/**
+ * Get user url
+ * @route GET /user
+ * @group user - Operations about user
+ * @returns {object} 200 - User
+ * @returns {Error}  404 - User Not found
+ */
 // Connexion d'un user
 router.get("/login", async (req, res) => {
     const userLogin = await user.findOne({ username: req.body.username });
-    if (!userLogin) return res.status(400).json({ error: "Username is wrong" });
+    if (!userLogin) return res.status(401).json({ error: "Username is wrong" });
     const validPassword = await bcrypt.compare(req.body.password, userLogin.password);
-    if (!validPassword) return res.status(400).json({ error: "Password is wrong" });
+    if (!validPassword) return res.status(401).json({ error: "Password is wrong" });
     res.json({
         error: null,
         data: {
@@ -61,85 +74,145 @@ router.get("/login", async (req, res) => {
     });
 });
 
+/**
+ * Post professor url
+ * @route POST /professor
+ * @group professor - Operations about professor
+ * @returns {object} 201 - A new professor
+ * @returns {Error}  default - Unexpected error
+ */
 // Ajout un professeur
 router.post("/professor",async (req,res)=>{
   let newProfessor = new professor(req.body);
   await newProfessor.save().then((result)=>{
-    res.status(200).json({ NewProfessor : "201 => localhost:3000/api/professor/"+newProfessor._id})
+    res.status(201).json({ NewProfessor : "201 => localhost:3000/api/professor/"+newProfessor._id})
   },(err)=>{
     res.status(400).json(err)
   })
 });
 
+/**
+ * Post student url
+ * @route POST /student
+ * @group student - Operations about student
+ * @returns {object} 201 - A new student
+ * @returns {Error}  default - Unexpected error
+ */
 // Ajout étudiant
 router.post("/student",async (req,res)=>{
   let newStudent = new  student(req.body);
   await newStudent.save().then((result)=>{
-    res.status(200).json({ NewStudent : "201 => localhost:3000/api/student/"+newStudent._id})
+    res.status(201).json({ NewStudent : "201 => localhost:3000/api/student/"+newStudent._id})
   },(err)=>{
     res.status(400).json(err)
   })
 });
 
+/**
+ * Post group url
+ * @route POST /group
+ * @group group - Operations about group
+ * @returns {object} 201 - A new group
+ * @returns {Error}  default - Unexpected error
+ */
 // Ajout d’un groupe étudiant
 router.post("/group",async (req,res)=>{
   let newGroup = new  group(req.body);
   await newGroup.save().then((result)=>{
-    res.status(200).json({ NewGroup : "201 => localhost:3000/api/group/"+newGroup._id})
+    res.status(201).json({ NewGroup : "201 => localhost:3000/api/group/"+newGroup._id})
   },(err)=>{
     res.status(400).json(err)
   })
 });
 
+/**
+ * Post module url
+ * @route POST /module
+ * @group module - Operations about module
+ * @returns {object} 201 - A new module
+ * @returns {Error}  default - Unexpected error
+ */
 // Ajout d'un module
 router.post("/module",async (req,res)=>{
   let newModule = new mod(req.body);
   await newModule.save().then((result)=>{
-    res.status(200).json({ NewModule : "201 => localhost:3000/api/module/"+newModule._id})
+    res.status(201).json({ NewModule : "201 => localhost:3000/api/module/"+newModule._id})
   },(err)=>{
     res.status(400).json(err)
   })
 });
 
+/**
+ * Post exercise url
+ * @route POST /exercise
+ * @group exercise - Operations about exercise
+ * @param {string} idModule.path.required - idModule
+ * @returns {object} 201 - A new exercise
+ * @returns {Error}  default - Unexpected error
+ */
 // Ajout d’un exercice par module
 router.post("/exercise/:idModule",async (req,res)=>{
   let newExercise = new  exercise(req.body);
   newExercise.idModule = req.params.idModule;
   await newExercise.save().then((result)=>{
-    res.status(200).json({ NewExercise : "201 => localhost:3000/api/exercise/"+newExercise._id})
+    res.status(201).json({ NewExercise : "201 => localhost:3000/api/exercise/"+newExercise._id})
   },(err)=>{
     res.status(400).json(err)
   })
 });
 
+/**
+ * Post correction url
+ * @route POST /correction
+ * @group correction - Operations about correction
+ * @param {string} idExercise.path.required - idExercise
+ * @returns {object} 201 - A new correction
+ * @returns {Error}  default - Unexpected error
+ */
 // Ajout de la correction d’un exercice
 router.post("/correction/:idExercise",async (req,res)=>{
   let newCorrection = new  correction(req.body);
   newCorrection.idExercise = req.params.idExercise;
   await newCorrection.save().then((result)=>{
-    res.status(200).json({ NewCorrection : "201 => localhost:3000/api/student/"+newCorrection._id})
+    res.status(201).json({ NewCorrection : "201 => localhost:3000/api/student/"+newCorrection._id})
   },(err)=>{
     res.status(400).json(err)
   })
 });
 
+/**
+ * Post studentRendering url
+ * @route POST /studentRendering
+ * @group studentRendering - Operations about studentRendering
+ * @param {string} idStudent.path.required - idStudent
+ * @param {string} idExercise.path.required - idExercise
+ * @returns {object} 201 - A new studentRendering
+ * @returns {Error}  default - Unexpected error
+ */
 // Ajout du rendu d'un étudiant
 router.post("/studentRendering/:idStudent/:idExercise",async (req,res)=>{
   let newStudentRendering = new  studentRendering(req.body);
   newStudentRendering.idExercise = req.params.idExercise;
   newStudentRendering.idStudent = req.params.idStudent;
   await newStudentRendering.save().then((result)=>{
-    res.status(200).json({ NewRendering : "201 => localhost:3000/api/studentRendering/"+newStudentRendering._id})
+    res.status(201).json({ NewRendering : "201 => localhost:3000/api/studentRendering/"+newStudentRendering._id})
   },(err)=>{
     res.status(400).json(err)
   })
 });
 
+/**
+ * Post td url
+ * @route POST /td
+ * @group td - Operations about td
+ * @returns {object} 201 - A new td
+ * @returns {Error}  default - Unexpected error
+ */
 // Ajout d'un TD
 router.post("/td",async (req,res)=>{
   let newTD = new td(req.body);
   await newTD.save().then((result)=>{
-    res.status(200).json({ NewModule : "201 => localhost:3000/api/td/"+newTD._id})
+    res.status(201).json({ NewTD : "201 => localhost:3000/api/td/"+newTD._id})
   },(err)=>{
     res.status(400).json(err)
   })
@@ -461,36 +534,21 @@ router.route("/group/:idGroup/:idStudent").put(function(req, res) {
 });
 
 // Ajouter un Exercice à un TD
-router.route("/td/:idTD/:idExercise").put(function(req, res) {
-  const exercise =  exercise.findOne({ _id: req.params.idExercise });
-  mod.updateOne(
-      { _id: req.params.idTD },
-      { $push: { exercises: [exercise] } },
-      function(err, result) {
-        if (err) {
-          res.send(err);
-        } else {
-          res.json(result);
-        }
-      }
-  );
+router.put("/td/:idTD/:idExercise", async (req, res) => {
+    try {
+        //const exo = await exercise.findOne({ _id: req.params.idExercise})
+        //console.log("EXO" + exo)
+        const td = await td.findOne({ _id: req.params.idTD})
+        console.log(td)
+        //td.exercises.push(ex);
+    } catch {
+        res.status(404)
+        res.send({ error: "404 " })
+    }
 });
 
+
 // Ajouter un TD à un Module
-router.route("/module/:idModule/:idTD").put(function(req, res) {
-  const td =  td.findOne({ _id: req.params.idTD });
-  mod.updateOne(
-      { _id: req.params.idModule },
-      { $push: { tds: [td] } },
-      function(err, result) {
-        if (err) {
-          res.send(err);
-        } else {
-          res.json(result);
-        }
-      }
-  );
-});
 
 
 // -----------------------------------------------

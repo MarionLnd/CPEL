@@ -4,6 +4,33 @@ const bodyParser= require('body-parser');
 const mongoose = require('mongoose');
 const connexionChain = 'mongodb+srv://CPEL_USER:coucoucpel@cluster0.82glw.mongodb.net/CPEL?retryWrites=true&w=majority'
 var routes = require('./routes/routes');
+const expressSwagger = require('express-swagger-generator')(app);
+let options = {
+    swaggerDefinition: {
+        info: {
+            description: 'This is a sample server',
+            title: 'Swagger',
+            version: '1.0.0',
+        },
+        host: 'localhost:3000',
+        basePath: '/v1',
+        produces: [
+            "application/json",
+            "application/xml"
+        ],
+        schemes: ['http', 'https'],
+        securityDefinitions: {
+            JWT: {
+                type: 'apiKey',
+                in: 'header',
+                name: 'Authorization',
+                description: "",
+            }
+        }
+    },
+    basedir: __dirname, //app absolute path
+    files: ['./routes/*.js'] //Path to the API handle folder
+};
 
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(function (req, res, next) {
@@ -19,7 +46,9 @@ app.use('/api', routes);
 mongoose.connect(connexionChain, { useUnifiedTopology: true, useNewUrlParser: true  })
     .then(client => {
       console.log('Base de données : OK')
-    })
+    });
+
+expressSwagger(options);
 
 app.listen(process.env.PORT || 3000, function() {
   console.log('Server : OK');
