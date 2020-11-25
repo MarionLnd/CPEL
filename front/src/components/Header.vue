@@ -23,7 +23,7 @@
           </div>
         </li>
         <li class="nav-item">
-          <a class="nav-link disabled" href="#">Déconnexion</a>
+          <router-link class="nav-link" to="/login">Déconnexion</router-link>
         </li>
       </ul>
     </div>

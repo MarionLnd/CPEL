@@ -11,9 +11,11 @@ import { faCheck } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import VueDropdown from 'vue-dynamic-dropdown'
 import VueSidebarMenu from 'vue-sidebar-menu'
+import store from "./store";
+import 'vue-sidebar-menu/dist/vue-sidebar-menu.css'
 import 'skulpt/dist/skulpt.min';
 import 'skulpt/dist/skulpt-stdlib';
-
+import VueFilterDateFormat from '@vuejs-community/vue-filter-date-format';
 
 
 Vue.use(VueCookies)
@@ -22,7 +24,7 @@ Vue.config.productionTip = false
 
 Vue.use(VueRouter)
 Vue.use(VueSidebarMenu)
-
+Vue.use(VueFilterDateFormat);
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 Vue.component('vue-dropdown', VueDropdown);
 
@@ -35,5 +37,6 @@ const router = new VueRouter({
 
 new Vue({
   router: router,
+  store,
   render: h => h(App), 
 }).$mount('#app')

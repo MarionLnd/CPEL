@@ -70,6 +70,7 @@ router.post("/module/addModule",(req,res)=>{
 
 // Ajout d’un exercice par module
 router.post("/exercise/addExercise/:id",(req,res)=>{
+ 
   let newExercise = new  exercise(req.body);
   newExercise.idModule = req.params.id;
   newExercise.save().then((result)=>{
@@ -117,7 +118,9 @@ router.get("/professor/:id", async (req, res) => {
 
 // Récupère tous les étudiants
 router.get("/student",(req,res)=>{
+ 
   student.find({}).then((result)=>{
+  
     res.status(200).json(result)
   },(err)=>{
     res.status(400).json(err)
@@ -157,6 +160,7 @@ router.get("/group/:id", async (req, res) => {
 
 // Récupérer tous les exercices
 router.get("/exercise",(req,res)=>{
+ 
   group.find({}).then((result)=>{
     res.status(200).json(result)
   },(err)=>{

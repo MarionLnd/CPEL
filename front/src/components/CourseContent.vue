@@ -1,6 +1,8 @@
 <template>
   <div class="container">
-    <Header />
+   <Header />
+      
+      <LeftMenu/>
 
     <div v-for="item in moduleData" :key="item">
       <div class="card">
@@ -35,10 +37,15 @@
 </style>
 <script>
 import axios from "axios";
-//import Header from "./Header";
-//import LeftDashboard from "./LeftDashboard";
+import Header from "./Header";
+import LeftMenu from "./LeftMenu";
+
 export default {
   name: "modules",
+   components: {
+    Header,
+   LeftMenu
+  },
 
   data() {
     return {
@@ -48,7 +55,7 @@ export default {
   mounted() {
     axios.get("https://cpel.herokuapp.com/api/module/").then((response) => {
       response.data.forEach((mod) => {
-        if (mod.idmodule === this.$route.params.id)
+        if (mod._id === this.$route.params.id)
           this.moduleData.push({
             module: mod.name,
 
