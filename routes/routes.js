@@ -222,60 +222,115 @@ router.post("/td",async (req,res)=>{
 //                    [ GET ]
 // -----------------------------------------------
 
+/**
+ * Get all user url
+ * @route GET /user
+ * @group user - Operations about user
+ * @returns {object} 200 - All User
+ * @returns {Error}  404 - User Not found
+ */
 // Récupère les users
 router.get("/user",async (req,res)=>{
     await user.find({}).then((result)=>{
         res.status(200).json(result)
     },(err)=>{
-        res.status(400).json(err)
+        res.status(404).json(err)
     })
 });
 
+/**
+ * Get a user url
+ * @route GET /user
+ * @group user - Operations about user
+ * @param {string} idUser.path.required - idUser
+ * @returns {object} 200 - A user
+ * @returns {Error}  404 - User Not found
+ */
 // Récupère un user
 router.route('/user/:idUser').get(function async(req,res){
-    user.findById(req.params.idUser, function(err, professor) {
+    user.findById(req.params.idUser, function(err, user) {
         if (err)
             res.send(err);
-        res.json(professor);
+        res.status(200).json(user)
+        // res.json(professor);
     });
 });
 
+/**
+ * Get all professor url
+ * @route GET /professor
+ * @group professor - Operations about professor
+ * @returns {object} 200 - All professor
+ * @returns {Error}  404 - Professor Not found
+ */
 // Récupère tous les professeurs
 router.get("/professor",async (req,res)=>{
   await professor.find({}).then((result)=>{
     res.status(200).json(result)
   },(err)=>{
-    res.status(400).json(err)
+    res.status(404).json(err)
   })
 });
 
+/**
+ * Get a professor url
+ * @route GET /professor
+ * @group professor - Operations about professor
+ * @param {string} idProfessor.path.required - idProfessor
+ * @returns {object} 200 - A professor
+ * @returns {Error}  404 - Professor Not found
+ */
 // Récupère toutes les informations d’un professeur en fonction de son id
 router.route('/professor/:idProfessor').get(function async(req,res){
       professor.findById(req.params.idProfessor, function(err, professor) {
         if (err)
-          res.send(err);
-        res.json(professor);
+          res.status(404).json(err);
+        res.status(200).json(professor);
       });
     });
 
+/**
+ * Get all student url
+ * @route GET /student
+ * @group student - Operations about student
+ * @returns {object} 200 - All student
+ * @returns {Error}  404 - Student Not found
+ */
 // Récupère tous les étudiants
 router.get("/student",async (req,res)=>{
   await student.find({}).then((result)=>{
     res.status(200).json(result)
   },(err)=>{
-    res.status(400).json(err)
+    res.status(404).json(err)
   })
 });
 
+/**
+ * Get a student url
+ * @route GET /student
+ * @group student - Operations about student
+ * @param {string} idStudent.path.required - idStudent
+ * @returns {object} 200 - A student
+ * @returns {Error}  404 - Student Not found
+ */
 // Récupère les étudiants par ID
 router.route('/student/:idStudent').get(function async(req,res){
       student.findById(req.params.idStudent, function(err, student) {
         if (err)
-          res.send(err);
-        res.json(student);
+          //res.send(err);
+          res.status(404).json(err);
+        //res.json(student);
+        res.status(200).json(student)
       });
     });
 
+/**
+ * Get all group url
+ * @route GET /group
+ * @group group - Operations about group
+ * @returns {object} 200 - All group
+ * @returns {Error}  404 - Group Not found
+ */
 // Récupère les groupes
 router.get("/group",async (req,res)=>{
   await group.find({}).then((result)=>{
