@@ -382,7 +382,7 @@ router.get("/module",async (req,res)=>{
 // Recup tous les modules d'un prof
 router.get("/module/:idProfessor", async (req, res) => {
   try {
-    const modules = await mod.findOne({ idProfessor: req.params.idProfessor})
+    const modules = await mod.find({ idProfessor: req.params.idProfessor})
       res.status(200).json(modules)
   } catch {
         res.status(404)
@@ -579,23 +579,21 @@ router.route('/td/:idTD').get(function async(req,res){
 
 /**
  * Get all exercise for a TD url
- * @route GET /exercise
+ * @route GET /exercises/{idTD}
  * @group exercise - Operations about exercise
  * @param {string} idTD.path.required - idTD
  * @returns {object} 200 - A exercise
  * @returns {Error}  404 - Exercise Not found
  */
 // Récupérer tous les exercices d'un TD
-router.get("/exercise/:idTD", async (req, res) => {
-  try {
-    const exos = await exercise.findOne({ idTD: req.params.idTD})
-    res.send(exos);
-    res.status(200).json(exos);
-  } catch {
-    res.status(404)
-    res.send({ error: "404" })
-  }
-})
+router.get("/exercises/:idTD", async (req, res) => {
+    try {
+        const exs = await exercise.find({ idTD: req.params.idTD})
+        res.status(200).json(exs)
+    } catch {
+        res.status(404)
+    }
+});
 
 // -----------------------------------------------
 //                  [ UPDATE ]
