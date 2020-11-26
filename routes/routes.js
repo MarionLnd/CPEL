@@ -390,20 +390,19 @@ router.get("/module/:idProfessor", async (req, res) => {
 
 /**
  * Get a module url
- * @route GET /module/{_id}
+ * @route GET /module/{idModule}
  * @group module - Operations about module
  * @returns {object} 200 - A module
  * @returns {Error}  404 - Module Not found
  */
 // Recupérer un module
-router.get("/modules/:_id", async (req, res) => {
-  try {
-    const module = await mod.findOne({ _id : req.params._id})
-      res.status(200).json(module)
-  } catch {
-      res.status(404)
-  }
-})
+router.route('/modules/:idModule').get(function async(req,res){
+    mod.findById(req.params.idModule, function(err, module) {
+        if (err)
+            res.status(404).json(err);
+        res.status(200).json(module);
+    });
+});
 
 /**
  * Get all exercise url
