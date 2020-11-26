@@ -4,9 +4,7 @@ const studentRendering  = mongoose.Schema({
     idStudent : String,
     idExercise : String,
     createdAt: {type: Date, default: Date.now},
-    content : String,
-    exerciseDone: Boolean,
-    comment : String
+    content : String
 })
 
 module.exports = mongoose.model('studentRendering', studentRendering);

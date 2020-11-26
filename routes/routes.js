@@ -16,6 +16,7 @@ const user = require('../schemas/user');
 const jwt = require('jsonwebtoken');
 const bcrypt =require('bcrypt');
 
+
 // -------------------------------------------
 //                  [ POST ]
 // -------------------------------------------
@@ -54,8 +55,8 @@ router.post("/user",async (req,res)=>{
 });
 
 /**
- * Get user url
- * @route GET /user
+ * Login
+ * @route GET /login
  * @group user - Operations about user
  * @returns {object} 200 - User
  * @returns {Error}  404 - User Not found
@@ -144,16 +145,14 @@ router.post("/module",async (req,res)=>{
 
 /**
  * Post exercise url
- * @route POST /exercise/{idModule}
+ * @route POST /exercise
  * @group exercise - Operations about exercise
- * @param {string} idModule.path.required - idModule
  * @returns {object} 201 - A new exercise
  * @returns {Error}  default - Unexpected error
  */
 // Ajout d’un exercice par module
-router.post("/exercise/:idModule",async (req,res)=>{
+router.post("/exercise",async (req,res)=>{
   let newExercise = new  exercise(req.body);
-  newExercise.idModule = req.params.idModule;
   await newExercise.save().then((result)=>{
     res.status(201).json({ NewExercise : "201 => localhost:3000/api/exercise/"+newExercise._id})
   },(err)=>{
@@ -599,79 +598,130 @@ router.get("/exercises/:idTD", async (req, res) => {
 //                  [ UPDATE ]
 // -----------------------------------------------
 
+/**
+ * Update a student
+ * @route PUT /student/{idStudent}
+ * @group student - Operations about student
+ * @param {string} idStudent.path.required - idStudent
+ * @returns {object} 200 - A student
+ * @returns {Error}  404 - Student Not found
+ */
 // MAJ du groupe d'un étudiant
-router.put("/student/:id", async (req, res) => {
-  try {
-    const etu = await student.findOne({ idStudent: req.params.id })
-    if (req.body.idGroup) {
-      etu.idGroup = req.body.idGroup
+router.put('/student/:idStudent', async (req, res) => {
+    try {
+        await student.findByIdAndUpdate(req.params.idStudent, req.body)
+        await student.save()
+        res.status(200).send('Student '+ student._id + ' is updated');
+    } catch (err) {
+        res.status(204).send(err);
     }
-    await etu.save()
-    res.send(etu)
-  } catch {
-    res.status(404)
-    res.send({ error: "404 " })
-  }
 });
 
-// Update Exercice
-router.put("/exercise/:id", async (req, res) => {
-  try {
-    const exo = await exercise.findOne({ idExercise: req.params.id })
-    if (req.body.wording) {
-      exo.wording = req.body.wording
+// MAJ groupe d'un student
+
+
+/**
+ * Update a professor
+ * @route PUT /professor/{idProfessor}
+ * @group professor - Operations about professor
+ * @param {string} idProfessor.path.required - idProfessor
+ * @returns {object} 200 - A professor
+ * @returns {Error}  404 - Professor Not found
+ */
+// MAJ d'un professeur
+router.put('/professor/:idProfessor', async (req, res) => {
+    try {
+        await professor.findByIdAndUpdate(req.params.idProfessor, req.body)
+        await professor.save()
+        res.status(200).send('Professor '+ professor._id + ' is updated');
+    } catch (err) {
+        res.status(204).send(err);
     }
-    await exo.save()
-    res.send(exo)
-  } catch {
-    res.status(404)
-    res.send({ error: "404 " })
-  }
 });
 
-// Update Correction
-router.put("/correction/:id", async (req, res) => {
-  try {
-    const correct = await correction.findOne({ idCorrection: req.params.id })
-    if (req.body.content) {
-      correct.content = correct.body.content
+/**
+ * Update a exercise
+ * @route PUT /exercise/{idExercise}
+ * @group exercise - Operations about exercise
+ * @param {string} idExercise.path.required - idExercise
+ * @returns {object} 200 - A exercise
+ * @returns {Error}  404 - Exercise Not found
+ */
+router.put("/exercise/:idExercise", async (req, res) => {
+    try {
+        await exercise.findByIdAndUpdate(req.params.idExercise, req.body)
+        await exercise.save()
+        res.status(200).send('Exercise '+ exercise._id + ' is updated');
+    } catch (err) {
+        res.status(204).send(err);
     }
-    await correct.save()
-    res.send(correct)
-  } catch {
-    res.status(404)
-    res.send({ error: "404 " })
-  }
 });
 
-// Update Rendu
-router.put("/studentRendering/:id/:idExercise", async (req, res) => {
-  try {
-    const correct = await studentRendering.findOne({ idStudent: req.params.id, idExercise: req.params.idExercise })
-    if (req.body.content) {
-      correct.content = correct.body.content
+/**
+ * Update a correction
+ * @route PUT /correction/{idCorrection}
+ * @group correction - Operations about correction
+ * @param {string} idCorrection.path.required - idCorrection
+ * @returns {object} 200 - A correction
+ * @returns {Error}  404 - Correction Not found
+ */
+router.put("/correction/:idCorrection", async (req, res) => {
+    try {
+        await correction.findByIdAndUpdate(req.params.idCorrection, req.body)
+        await correction.save()
+        res.status(200).send('Correction '+ correction._id + ' is updated');
+    } catch (err) {
+        res.status(204).send(err);
     }
-    await correct.save()
-    res.send(correct)
-  } catch {
-    res.status(404)
-    res.send({ error: "404 " })
-  }
 });
 
+/**
+ * Update a student rendering
+ * @route PUT /studentRendering/{idStudentRendering}
+ * @group studentRendering - Operations about studentRendering
+ * @param {string} idStudentRendering.path.required - idStudentRendering
+ * @returns {object} 200 - A studentRendering
+ * @returns {Error}  404 - Student Rendering Not found
+ */
+router.put("/studentRendering/:idStudentRendering", async (req, res) => {
+    try {
+        await studentRendering.findByIdAndUpdate(req.params.idStudentRendering, req.body)
+        await studentRendering.save()
+        res.status(200).send('Student Rendering '+ studentRendering._id + ' is updated');
+    } catch (err) {
+        res.status(204).send(err);
+    }
+});
+
+/**
+ * Add groups to a module
+ * @route PUT /module/{idModule}/{idGroup}
+ * @group module - Operations about module
+ * @param {string} idModule.path.required - idModule
+ * @param {string} idGroup.path.required - idGroup
+ * @returns {object} 200 - A studentRendering
+ * @returns {Error}  204 - Student Rendering Not found
+ */
 // Ajouter des groupes à un module
-router.route("/module/:idModule/:idGroup").put(function(req, res) {
-  mod.updateOne(
-      { _id: req.params.idModule },
-      { $push: { groups: [req.params.idGroup] } },
-      function(err, result) {
-        if (err) {
-          res.send(err);
-        } else {
-          res.json(result);
-        }
-      }
-  );
+router.put("/module/:idModule/:idGroup", async (req, res) => {
+    try {
+        const grp = await group.findOne({ _id: req.params.idGroup});
+        console.log(grp);
+        mod.findOneAndUpdate(
+            { _id: req.params.idModule },
+            { $push: { groups: grp  } },
+            { new: true, useFindAndModify: false },
+        function (error, success) {
+                if (error) {
+                    res.status(204);
+                } else {
+                    res.status(204);
+                }
+            });
+    } catch {
+        res.status(404)
+        res.send({ error: "404 " })
+    }
 });
 
 // Ajouter des modules à un groupe
@@ -705,22 +755,20 @@ router.route("/group/:idGroup/:idStudent").put(function(req, res) {
 });
 
 // Ajouter un Exercice à un TD
-router.put("/td/:idTD/:idExercise", async (req, res) => {
+router.post("/td/:idTD/:idExercise", async (req, res) => {
     try {
-        //const exo = await exercise.findOne({ _id: req.params.idExercise})
-        //console.log("EXO" + exo)
-        const td = await td.findOne({ _id: req.params.idTD})
-        console.log(td)
-        //td.exercises.push(ex);
+        const exo = await exercise.findOne({ _id: req.params.idExercise});
+        td.findByIdAndUpdate(req.params.idTD, { $push: { exercises: exo } }).exec();
+        res.status(200);
     } catch {
         res.status(404)
         res.send({ error: "404 " })
     }
 });
 
-
 // Ajouter un TD à un Module
 
+// Modifier un user
 
 // -----------------------------------------------
 //                  [ DELETE ]

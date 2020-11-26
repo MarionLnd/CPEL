@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const connexionChain = 'mongodb+srv://CPEL_USER:coucoucpel@cluster0.82glw.mongodb.net/CPEL?retryWrites=true&w=majority'
 var routes = require('./routes/routes');
 const expressSwagger = require('express-swagger-generator')(app);
+mongoose.set('useFindAndModify', false);
 let options = {
     swaggerDefinition: {
         info: {

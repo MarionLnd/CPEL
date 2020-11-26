@@ -6,7 +6,6 @@ const professorSchema  = new Schema({
     firstname : String,
     professorNumber : String,
     email: String,
-    password: String,
     idModule: String
 })
 
