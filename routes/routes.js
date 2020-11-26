@@ -144,7 +144,7 @@ router.post("/module",async (req,res)=>{
 
 /**
  * Post exercise url
- * @route POST /exercise
+ * @route POST /exercise/{idModule}
  * @group exercise - Operations about exercise
  * @param {string} idModule.path.required - idModule
  * @returns {object} 201 - A new exercise
@@ -163,7 +163,7 @@ router.post("/exercise/:idModule",async (req,res)=>{
 
 /**
  * Post correction url
- * @route POST /correction
+ * @route POST /correction/{idExercise}
  * @group correction - Operations about correction
  * @param {string} idExercise.path.required - idExercise
  * @returns {object} 201 - A new correction
@@ -182,7 +182,7 @@ router.post("/correction/:idExercise",async (req,res)=>{
 
 /**
  * Post studentRendering url
- * @route POST /studentRendering
+ * @route POST /studentRendering/{idStudent}/{idExercise}
  * @group studentRendering - Operations about studentRendering
  * @param {string} idStudent.path.required - idStudent
  * @param {string} idExercise.path.required - idExercise
@@ -240,7 +240,7 @@ router.get("/user",async (req,res)=>{
 
 /**
  * Get a user url
- * @route GET /user
+ * @route GET /user/{idUser}
  * @group user - Operations about user
  * @param {string} idUser.path.required - idUser
  * @returns {object} 200 - A user
@@ -274,7 +274,7 @@ router.get("/professor",async (req,res)=>{
 
 /**
  * Get a professor url
- * @route GET /professor
+ * @route GET /professor/{idProfessor}
  * @group professor - Operations about professor
  * @param {string} idProfessor.path.required - idProfessor
  * @returns {object} 200 - A professor
@@ -307,7 +307,7 @@ router.get("/student",async (req,res)=>{
 
 /**
  * Get a student url
- * @route GET /student
+ * @route GET /student/{idStudent}
  * @group student - Operations about student
  * @param {string} idStudent.path.required - idStudent
  * @returns {object} 200 - A student
@@ -340,7 +340,7 @@ router.get("/group",async (req,res)=>{
 
 /**
  * Get a group url
- * @route GET /group
+ * @route GET /group/{idGroup}
  * @group group - Operations about group
  * @param {string} idGroup.path.required - idGroup
  * @returns {object} 200 - A group
@@ -373,7 +373,7 @@ router.get("/module",async (req,res)=>{
 
 /**
  * Get all professor's module url
- * @route GET /module
+ * @route GET /module/{idProfessor}
  * @group module - Operations about module
  * @param {string} idProfessor.path.required - idProfessor
  * @returns {object} 200 - All module of a professor
@@ -391,7 +391,7 @@ router.get("/module/:idProfessor", async (req, res) => {
 
 /**
  * Get a module url
- * @route GET /module
+ * @route GET /module/{_id}
  * @group module - Operations about module
  * @returns {object} 200 - A module
  * @returns {Error}  404 - Module Not found
@@ -424,7 +424,7 @@ router.get("/exercise",async (req,res)=>{
 
 /**
  * Get a exercise url
- * @route GET /exercise
+ * @route GET /exercise/{idExercise}
  * @group exercise - Operations about exercise
  * @param {string} idExercise.path.required - idExercise
  * @returns {object} 200 - A exercise
@@ -457,7 +457,7 @@ router.get("/studentRendering",async (req,res)=>{
 
 /**
  * Get all rendering for a student url
- * @route GET /studentRendering
+ * @route GET /studentRendering/{idStudent}
  * @group studentRendering - Operations about studentRendering
  * @param {string} idStudent.path.required - idStudent
  * @returns {object} 200 - A studentRendering
@@ -476,7 +476,7 @@ router.get("/studentRendering/:idStudent", async (req, res) => {
 
 /**
  * Get all rendering for a exercise by a student url
- * @route GET /studentRendering
+ * @route GET /studentRendering/{idExercise}/{idStudent}
  * @group studentRendering - Operations about studentRendering
  * @param {string} idExercise.path.required - idExercise
  * @param {string} idStudent.path.required - idStudent
@@ -496,7 +496,7 @@ router.get("/studentRendering/:idExercise/:idStudent", async (req, res) => {
 
 /**
  * Get a studentRendering url
- * @route GET /studentRendering
+ * @route GET /studentRendering/{idStudentRendering}
  * @group studentRendering - Operations about studentRendering
  * @param {string} idStudentRendering.path.required - idStudentRendering
  * @returns {object} 200 - A studentRendering
@@ -529,7 +529,7 @@ router.get("/correction",async (req,res)=>{
 
 /**
  * Get a correction url
- * @route GET /correction
+ * @route GET /correction/{idCorrection}
  * @group correction - Operations about correction
  * @param {string} idCorrection.path.required - idCorrection
  * @returns {object} 200 - A correction
@@ -562,7 +562,7 @@ router.get("/td",async (req,res)=>{
 
 /**
  * Get a TD url
- * @route GET /td
+ * @route GET /td/{idTD}
  * @group td - Operations about td
  * @param {string} idTD.path.required - idTD
  * @returns {object} 200 - A td
