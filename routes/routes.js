@@ -606,7 +606,7 @@ router.get("/exercises/:idTD", async (req, res) => {
  * @returns {object} 200 - A student
  * @returns {Error}  404 - Student Not found
  */
-// MAJ du groupe d'un étudiant
+// MAJ d'un étudiant
 router.put('/student/:idStudent', async (req, res) => {
     try {
         await student.findByIdAndUpdate(req.params.idStudent, req.body)
@@ -617,8 +617,25 @@ router.put('/student/:idStudent', async (req, res) => {
     }
 });
 
+/**
+ * Update student's group
+ * @route PUT /student/{idStudent}
+ * @group student - Operations about student
+ * @param {string} idStudent.path.required - idStudent
+ * @returns {object} 200 - Student updated
+ * @returns {Error}  404 - Student Not updated
+ */
 // MAJ groupe d'un student
-
+router.put('/student/:idStudent', function(req, res) {
+    student.findByIdAndUpdate(req.params.idStudent,
+        {idGroup:req.body.idGroup}, function(err, data) {
+            if (err) {
+                res.status(204);
+            } else {
+                res.status(200);
+            }
+        });
+});
 
 /**
  * Update a professor
@@ -706,7 +723,6 @@ router.put("/studentRendering/:idStudentRendering", async (req, res) => {
 router.put("/module/:idModule/:idGroup", async (req, res) => {
     try {
         const grp = await group.findOne({ _id: req.params.idGroup});
-        console.log(grp);
         mod.findOneAndUpdate(
             { _id: req.params.idModule },
             { $push: { groups: grp  } },
@@ -724,60 +740,162 @@ router.put("/module/:idModule/:idGroup", async (req, res) => {
     }
 });
 
+/**
+ * Add module to a group
+ * @route PUT /group/{idGroup}/{idModule}
+ * @group group - Operations about group
+ * @param {string} idGroup.path.required - idGroup
+ * @param {string} idModule.path.required - idModule
+ * @returns {object} 200 - Group updated
+ * @returns {Error}  204 - Group not updated
+ */
 // Ajouter des modules à un groupe
-router.route("/group/:idGroup/:idModule").put(function(req, res) {
-  mod.updateOne(
-      { _id: req.params.idGroup },
-      { $push: { modules: [req.params.idModule] } },
-      function(err, result) {
-        if (err) {
-          res.send(err);
-        } else {
-          res.json(result);
-        }
-      }
-  );
-});
-
-// Ajouter des étudiants à un groupe
-router.route("/group/:idGroup/:idStudent").put(function(req, res) {
-  mod.updateOne(
-      { _id: req.params.idGroup },
-      { $push: { students: [req.params.idStudent] } },
-      function(err, result) {
-        if (err) {
-          res.send(err);
-        } else {
-          res.json(result);
-        }
-      }
-  );
-});
-
-// Ajouter un Exercice à un TD
-router.post("/td/:idTD/:idExercise", async (req, res) => {
+router.put("/group/:idGroup/:idModule", async (req, res) => {
     try {
-        const exo = await exercise.findOne({ _id: req.params.idExercise});
-        td.findByIdAndUpdate(req.params.idTD, { $push: { exercises: exo } }).exec();
-        res.status(200);
+        const modul = await mod.findOne({ _id: req.params.idModule});
+        group.findOneAndUpdate(
+            { _id: req.params.idGroup },
+            { $push: { modules: modul } },
+            { new: true, useFindAndModify: false },
+            function (error, success) {
+                if (error) {
+                    res.status(204);
+                } else {
+                    res.status(200);
+                }
+            });
     } catch {
         res.status(404)
-        res.send({ error: "404 " })
+        res.send({ error: "404" })
     }
 });
 
-// Ajouter un TD à un Module
+/**
+ * Add students to a group
+ * @route PUT /group/{idGroup}/{idStudent}
+ * @group group - Operations about group
+ * @param {string} idGroup.path.required - idGroup
+ * @param {string} idStudent.path.required - idStudent
+ * @returns {object} 200 - Student added
+ * @returns {Error}  204 - Student not updated
+ */
+// Ajouter des étudiants à un groupe
+router.put("/group/:idGroup/:idStudent", async (req, res) => {
+    try {
+        const etudiant = await student.findOne({ _id: req.params.idStudent});
+        group.findOneAndUpdate(
+            { _id: req.params.idGroup },
+            { $push: { students: etudiant } },
+            { new: true, useFindAndModify: false },
+            function (error, success) {
+                if (error) {
+                    res.status(204);
+                } else {
+                    res.status(200);
+                }
+            });
+    } catch {
+        res.status(404)
+        res.send({ error: "404" })
+    }
+});
 
+/**
+ * Add exercise to a TD
+ * @route PUT /td/{idTD}/{idExercise}
+ * @group td - Operations about td
+ * @param {string} idTD.path.required - idTD
+ * @param {string} idExercise.path.required - idExercise
+ * @returns {object} 200 - Exercise added
+ * @returns {Error}  204 - Exercise not added
+ */
+// Ajouter un Exercice à un TD
+router.put("/td/:idTD/:idExercise", async (req, res) => {
+    try {
+        const exo = await exercise.findOne({ _id: req.params.idExercise});
+        td.findOneAndUpdate(
+            { _id: req.params.idTD },
+            { $push: { exercises: exo } },
+            { new: true, useFindAndModify: false },
+            function (error, success) {
+                if (error) {
+                    res.status(204);
+                } else {
+                    res.status(200);
+                }
+            });
+    } catch {
+        res.status(404)
+        res.send({ error: "404" })
+    }
+});
+
+/**
+ * Add TD to a Module
+ * @route PUT /module/{idModule}/{idTD}
+ * @group module - Operations about module
+ * @param {string} idModule.path.required - idModule
+ * @param {string} idTD.path.required - idTD
+ * @returns {object} 200 - TD added
+ * @returns {Error}  204 - TD not added
+ */
+// Ajouter un TD à un Module
+router.put("/module/:idModule/:idTD", async (req, res) => {
+    try {
+        const td = await td.findOne({ _id: req.params.idTD});
+        td.findOneAndUpdate(
+            { _id: req.params.idModule },
+            { $push: { tds: td } },
+            { new: true, useFindAndModify: false },
+            function (error, success) {
+                if (error) {
+                    res.status(204);
+                } else {
+                    res.status(200);
+                }
+            });
+    } catch {
+        res.status(404)
+        res.send({ error: "404" })
+    }
+});
+
+/**
+ * Update user password
+ * @route PUT /user/{idUser}
+ * @group user - Operations about user
+ * @param {string} idUser.path.required - idUser
+ * @returns {object} 200 - user added
+ * @returns {Error}  204 - user not added
+ */
 // Modifier un user
+router.put('/user/:idUser', function(req, res) {
+    user.findByIdAndUpdate(req.params.idUser,
+        {password:req.body.password}, function(err, data) {
+            if (err) {
+                res.status(204);
+            } else {
+                res.status(200);
+            }
+        });
+});
 
 // -----------------------------------------------
 //                  [ DELETE ]
 // -----------------------------------------------
 
+/**
+ * Delete professor
+ * @route DELETE /professor/{idProfessor}
+ * @group professor - Operations about professor
+ * @param {string} idProfessor.path.required - idProfessor
+ * @returns {object} 200 - professor deleted
+ * @returns {Error}  204 - professor not deleted
+ */
 // Suppression d'un prof
-router.delete("/professor/:id", async (req, res) => {
+router.delete("/professor/:idProfessor", async (req, res) => {
   try {
-    await group.deleteOne({ _id: req.params.id })
+    await group.deleteOne({ _id: req.params.idProfessor })
     res.status(204).send()
   } catch {
     res.status(404)
@@ -785,10 +903,18 @@ router.delete("/professor/:id", async (req, res) => {
   }
 })
 
+/**
+ * Delete group
+ * @route DELETE /group/{idGroup}
+ * @group group - Operations about group
+ * @param {string} idGroup.path.required - idGroup
+ * @returns {object} 200 - group deleted
+ * @returns {Error}  204 - group not deleted
+ */
 // Suppression d'un groupe
-router.delete("/group/:id", async (req, res) => {
+router.delete("/group/:idGroup", async (req, res) => {
   try {
-    await group.deleteOne({ idGroup: req.params.id })
+    await group.deleteOne({ _id: req.params.idGroup })
     res.status(204).send()
   } catch {
     res.status(404)
@@ -796,10 +922,18 @@ router.delete("/group/:id", async (req, res) => {
   }
 })
 
+/**
+ * Delete exercise
+ * @route DELETE /exercise/{idExercise}
+ * @group exercice - Operations about exercise
+ * @param {string} idExercise.path.required - idExercise
+ * @returns {object} 200 - exercise deleted
+ * @returns {Error}  204 - exercise not deleted
+ */
 // Suppression d'un exercice
-router.delete("/exercise/:id", async (req, res) => {
+router.delete("/exercise/:idExercise", async (req, res) => {
   try {
-    await exercise.deleteOne({ idExercise: req.params.id })
+    await exercise.deleteOne({ _id: req.params.idExercise })
     res.status(204).send()
   } catch {
     res.status(404)
@@ -807,8 +941,16 @@ router.delete("/exercise/:id", async (req, res) => {
   }
 })
 
+/**
+ * Delete studentRendering
+ * @route DELETE /studentRendering/{idStudentRendering}
+ * @group studentRendering - Operations about studentRendering
+ * @param {string} idStudentRendering.path.required - idStudentRendering
+ * @returns {object} 200 - studentRendering deleted
+ * @returns {Error}  204 - studentRendering not deleted
+ */
 // Supression d'un rendu
-router.delete("/studentRendering/:id", async (req, res) => {
+router.delete("/studentRendering/:idStudentRendering", async (req, res) => {
   try {
     await studentRendering.deleteOne({ idExercise: req.params.id })
     res.status(204).send()
