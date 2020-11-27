@@ -901,7 +901,7 @@ router.put("/tds/:idTD/:idExercise", async (req, res) => {
 
 /**
  * Add TD to a Module
- * @route PUT /modules/{idModule}/{idTD}
+ * @route PUT /modules/{idModule}/tds/{idTD}
  * @group module - Operations about module
  * @param {string} idModule.path.required - The id of the module you want to add the tds into
  * @param {string} idTD.path.required - The id of the td you want to add
@@ -909,7 +909,7 @@ router.put("/tds/:idTD/:idExercise", async (req, res) => {
  * @returns {Error}  default - Unexpected error
  */
 // Ajouter un TD à un Module
-router.put("/modules/:idModule/:idTD", async (req, res) => {
+router.put("/modules/:idModule/tds/:idTD", async (req, res) => {
     try {
         const td = await td.findOne({ _id: req.params.idTD});
         td.findOneAndUpdate(
