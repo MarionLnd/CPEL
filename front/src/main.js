@@ -16,6 +16,7 @@ import 'vue-sidebar-menu/dist/vue-sidebar-menu.css'
 import 'skulpt/dist/skulpt.min';
 import 'skulpt/dist/skulpt-stdlib';
 import VueFilterDateFormat from '@vuejs-community/vue-filter-date-format';
+import Notifications from 'vue-notification'
 
 
 Vue.use(VueCookies)
@@ -25,6 +26,7 @@ Vue.config.productionTip = false
 Vue.use(VueRouter)
 Vue.use(VueSidebarMenu)
 Vue.use(VueFilterDateFormat);
+Vue.use(Notifications);
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 Vue.component('vue-dropdown', VueDropdown);
 

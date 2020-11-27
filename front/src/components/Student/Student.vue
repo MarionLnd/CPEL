@@ -42,7 +42,7 @@ export default {
     };
   },
   mounted() {
-    axios.get("https://cpel.herokuapp.com/api/module/").then((response) => {
+    axios.get("https://cpel.herokuapp.com/api/modules/").then((response) => {
       console.log(response.data[0].name);
 
       this.moduleData = response.data;

@@ -103,31 +103,62 @@ export default {
   mounted() {
        
      
-    axios.get("https://cpel.herokuapp.com/api/exercise/").then((response) => {
+    axios.get("https://cpel.herokuapp.com/api/exercises/"+this.$cookies.get("idTD")).then((response) => {
       response.data.forEach((exo) => {
        
         axios
-          .get("https://cpel.herokuapp.com/api/td/")
-          .then((response) => {
-            response.data.forEach((td) => {
-             
-
-              if (td._id === exo.idTD) {
+          .get("https://cpel.herokuapp.com/api/tds/"+this.$cookies.get("idTD"))
+          .then((td) => {
+           // response.data.forEach((td) => {
+   console.log(td)
+           
+   
                 this.exoData.push({
-                  td: td.name,
+                  td: td.data.name,
                   exercice: exo.name,
                   idexercise:exo._id,
                   wording:exo.wording,
                  
                 });
-                this.date= td.dateLimit
-             
+                this.date= td.data.dateLimit
+                console.log(this.date)
                 console.log(this.exoData)
-              }
+              
             });
           });
-      });
+    // });
     });
+      
+    axios.get("https://cpel.herokuapp.com/api/exercises/").then((response) => {
+      response.data.forEach((exo) => {
+       
+        axios
+          .get("https://cpel.herokuapp.com/api/tds/"+this.$cookies.get("idTD"))
+          .then((td) => {
+            console.log(exo)
+           // response.data.forEach((td) => {
+             if(exo.idTD === this.$cookies.get("idTD")){
+  
+           
+   
+                this.exoData.push({
+                  td: td.data.name,
+                  exercice: exo.name,
+                  idexercise:exo._id,
+                  wording:exo.wording,
+                 
+                });
+                this.date= td.data.dateLimit
+                console.log(this.date)
+                console.log(this.exoData)
+            
+             }
+  
+            });
+          });
+    // });
+    });
+ 
   },
   methods : {
    

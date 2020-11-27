@@ -27,8 +27,8 @@
 
 
 <style scoped>
-@import "../../node_modules/@syncfusion/ej2-base/styles/material.css";
-@import "../../node_modules/@syncfusion/ej2-vue-notifications/styles/material.css";
+@import "../../../node_modules/@syncfusion/ej2-base/styles/material.css";
+@import "../../../node_modules/@syncfusion/ej2-vue-notifications/styles/material.css";
 #first {
   margin-top: 50px;
 }
@@ -70,6 +70,7 @@ a:focus{
 }
 .container {
   margin-left: 0%;
+  
 }
 #deconexion {
   position: absolute;
@@ -107,9 +108,9 @@ export default {
     };
   },
   mounted() {
-    axios.get("https://cpel.herokuapp.com/api/td/").then((response) => {
+    axios.get("https://cpel.herokuapp.com/api/tds/").then((response) => {
       response.data.forEach((td) => {
-        axios.get("https://cpel.herokuapp.com/api/module/").then((response) => {
+        axios.get("https://cpel.herokuapp.com/api/modules/").then((response) => {
           response.data.forEach((mod) => {
             
             
@@ -119,20 +120,21 @@ export default {
                 td: td.name,
                 idTD: td._id,
                 moduleId: mod._id,
+                date: td.createdAt
               });
               console.log(this.exoData);
             }
           });
         });
         axios
-          .get("https://cpel.herokuapp.com/api/exercise/")
+          .get("https://cpel.herokuapp.com/api/exercises/")
           .then((response) => {
             response.data.forEach((exr) => {
               if (exr.idTD === td._id) {
                 console.log(exr._id);
 
                 axios
-                  .get("https://cpel.herokuapp.com/api/correction/")
+                  .get("https://cpel.herokuapp.com/api/corrections/")
                   .then((response) => {
                     response.data.forEach((corr) => {
                       this.count = 0;
@@ -148,6 +150,8 @@ export default {
                         }
                       }
 
+                      
+                      this.exoData.sort((a, b) => new Date(a.date) - new Date(b.date));
                       console.log(this.exoData);
                     });
                   });
@@ -156,7 +160,7 @@ export default {
           });
       });
     });
-     axios.get("https://cpel.herokuapp.com/api/module/").then((response) => {
+     axios.get("https://cpel.herokuapp.com/api/modules/").then((response) => {
           response.data.forEach((mod) => {
             this.modules.push({
               modid: mod._id,

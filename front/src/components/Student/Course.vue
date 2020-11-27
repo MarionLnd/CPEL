@@ -24,8 +24,8 @@
 
 
 <style scoped>
-@import "../../node_modules/@syncfusion/ej2-base/styles/material.css";
-@import "../../node_modules/@syncfusion/ej2-vue-notifications/styles/material.css";
+@import "../../../node_modules/@syncfusion/ej2-base/styles/material.css";
+@import "../../../node_modules/@syncfusion/ej2-vue-notifications/styles/material.css";
 
 #first{
   margin-top: 50px;
@@ -91,7 +91,6 @@ a:focus{
 <script>
 import axios from "axios";
 import Header from "./Header";
-//import LeftDashboard from "./LeftDashboard";
 import LeftMenu from "./LeftMenu";
 
 
@@ -111,18 +110,24 @@ export default {
   mounted() {
        
      
-    axios.get("https://cpel.herokuapp.com/api/module/").then((response) => {
+    axios.get("https://cpel.herokuapp.com/api/modules/").then((response) => {
       response.data.forEach((mod) => {
+        console.log(mod)
         axios
-          .get("https://cpel.herokuapp.com/api/professor/")
+          .get("https://cpel.herokuapp.com/api/professors/")
           .then((response) => {
+           
             response.data.forEach((prof) => {
+              console.log(mod._id +"     and    " +prof.idModule)
               if (mod._id === prof.idModule) {
+               console.log("test")
                 this.moduleData.push({
                   module: mod.name,
                   professor: prof.lastname,
-                  idmodule:mod._id
+                  idmodule:mod._id,
                 });
+                
+                 console.log(this.moduleData)
               }
             });
           });

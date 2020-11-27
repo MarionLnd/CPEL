@@ -2,10 +2,15 @@
   <div class="container">
     <Header />
 
-   <LeftMenu />
+    <LeftMenu />
     <div class="exreciseCntent">
       <div class="enonce">
         <h3 class="title">Enoncé</h3>
+       <notifications group="custom-style"
+                   position="top center"
+                   classes="n-light"
+                   :max="3"
+                   :width="400"/>
         <div class="card">
           <div v-for="item in exo" :key="item">
             <p>
@@ -73,16 +78,26 @@
                   <font-awesome-icon icon="check" />
                 </button>
               </li>
-             <li>
-                <input type="button" :disabled='isDisabled' class="form-control" id="update" @click="updateSolution()" value=" Modifier">
+              <li>
+                <input
+                  type="button"
+                  :disabled="isDisabled"
+                  class="form-control"
+                  id="update"
+                  @click="updateSolution()"
+                  value=" Modifier"
+                />
               </li>
               <li>
-            
-                <input type="button" :disabled='isDisabled' class="form-control" id="send" @click="sendSolution()" value=" Envoyer">
-                 
-              
+                <input
+                  type="button"
+                  :disabled="isDisabled"
+                  class="form-control"
+                  id="send"
+                  @click="sendSolution()"
+                  value=" Envoyer"
+                />
               </li>
-               
             </ul>
           </footer>
         </div>
@@ -106,15 +121,14 @@ ul {
   margin-top: 7px;
   margin-left: 30px;
 }
-.title{
+.title {
   font-family: Georgia, serif;
   font-size: 19px;
   font-weight: bold;
-  
 }
 
-h4{
-  color: #2F7777;
+h4 {
+  color: #2f7777;
 }
 .nav-item {
   background-color: #666666;
@@ -187,10 +201,26 @@ div.result {
   margin-left: 5px;
   width: 100px;
 }
-#update{
-   margin-left: 300px;
+#update {
+  margin-left: 300px;
   width: 100px;
 }
+.notification.n-light {
+  margin: 10px;
+  margin-bottom: 0;
+  border-radius: 3px;
+  font-size: 13px;
+  padding: 10px 20px;
+  color: #495061;
+  background: #EAF4FE;
+  border: 1px solid #D4E8FD;
+  }
+  .notification-title {
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-size: 10px;
+    color: #2589F3;
+  }
 
 </style>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js" type="text/javascript"></script> 
@@ -203,14 +233,14 @@ div.result {
 import axios from "axios";
 import Header from "./Header";
 import LeftMenu from "./LeftMenu";
-import moment from 'moment'
+import moment from "moment";
 
 export default {
   name: "exrecises",
 
   components: {
     Header,
-  LeftMenu
+    LeftMenu,
   },
   data: function () {
     return {
@@ -218,8 +248,9 @@ export default {
       active: Boolean,
       today: Date,
       disable: true,
-      date:Date,
-      dateLimit: Date
+      date: Date,
+      dateLimit: Date,
+      notifMsg: String,
     };
   },
   methods: {
@@ -251,6 +282,7 @@ export default {
       }
     },
     activeSol() {
+      this.$notify({ group: 'custom-style', text: 'Wrong password, please try again later' })
       this.exo.forEach((data) => {
         if (data.codeSolution === document.getElementById("solution").value) {
           this.active = true;
@@ -265,106 +297,117 @@ export default {
       console.log(this.$route.params);
 
       axios
-        .post(
-          "https://cpel.herokuapp.com/api/studentRendering/" +
-            this.$cookies.get("idStudent") +
-            "/" +
-            this.$route.params.id,
-          {
-            idStudent: this.$cookies.get("idStudent"),
-            idExercise: this.$route.params.id,
-            createdAt: new Date(),
-            content: document.getElementById("yourcode").value,
-            exerciseDone: true,
-            comment: "bon debut",
-          }
-        )
+        .post("https://cpel.herokuapp.com/api/studentRendering/", {
+          idStudent: this.$cookies.get("idStudent"),
+          idExercise: this.$route.params.id,
+          createdAt: new Date(),
+          content: document.getElementById("yourcode").value,
+        })
         .then(function (response) {
           console.log(response);
-         
         });
     },
-    updateSolution(){
-        axios
-        .put(
-          "https://cpel.herokuapp.com/api/studentRendering/" +
+
+    updateSolution() {
+      axios
+        .get(
+          "https://cpel.herokuapp.com/api/students/" +
             this.$cookies.get("idStudent") +
-            "/" +
-            this.$route.params.id,
-          {
-           
-            createdAt: new Date(),
-            content: document.getElementById("yourcode").value,
-           
-          }
+            "/studentRenderings"
         )
-        .then(function (response) {
-          console.log(response);
-         
+        .then((response) => {
+          response.data.forEach((renderings) => {
+            if (renderings.idExercise === this.$route.params.id) {
+              // console.log(renderings.idExercise  +"     and         "+exercise._id);
+              axios
+                .put(
+                  "https://cpel.herokuapp.com/api/studentRenderings/" +
+                    renderings._id,
+                  {
+                    content: document.getElementById("yourcode").value,
+                  }
+                )
+                .then(function (response) {
+                  console.log(response);
+                  this.notifMsg = "Votre modification a bien été enregistrer";
+                  this.$notify({
+                    group: "custom-style",
+               
+                    text:"Votre modification a bien été enregistrer"
+                    
+                    
+                  });
+                });
+            }
+          });
         });
-    }
+    },
   },
 
   mounted() {
     axios
-      .get(
-        "https://cpel.herokuapp.com/api/exercise/" +
-          this.$cookies.get("idexercice")
-      )
+      .get("https://cpel.herokuapp.com/api/exercises/" + this.$route.params.id)
       .then((ex) => {
-       
-        
-          console.log(this.$cookies.get("idexercice"));
-          this.exo.push({
-            name: ex.data.wording,
+        console.log(ex.data._id);
+        // console.log(this.$cookies.get("idexercice"));
+        this.exo.push({
+          name: ex.data.wording,
+        });
+        console.log(ex.data.wording);
+        axios
+          .get("https://cpel.herokuapp.com/api/corrections")
+          .then((response) => {
+            response.data.forEach((corr) => {
+              // console.log(ex.data._id);
+              // console.log(corr.idExercise);
+              if (ex.data._id === corr.idExercise) {
+                console.log(ex.data._id);
+                console.log(corr.idExercise);
+                this.exo.push({
+                  codeSolution: corr.correctionCode,
+                  solution: corr.content,
+                });
+                //  console.log(corr.correctionCode);
+              }
+            });
           });
-          console.log(ex.data.wording);
-          axios
-            .get("https://cpel.herokuapp.com/api/correction")
-            .then((response) => {
-              response.data.forEach((corr) => {
-                if (ex.data._id === corr.idExercise) {
-                  
-                  this.exo.push({
-                    codeSolution: corr.correctionCode,
-                    solution: corr.content,
-                  });
+        axios.get("https://cpel.herokuapp.com/api/tds").then((response) => {
+          response.data.forEach((td) => {
+            //  console.log(td._id);
+            // console.log(ex.data._id);
+            if (ex.data.idTD === td._id) {
+              this.dateLimit = moment(String(td.dateLimit)).format(
+                "YYYY/MM/DD"
+              );
+              this.date = moment(String(new Date())).format("YYYY/MM/DD");
 
-                  
-                }
-              });
-            });
-                 axios
-            .get("https://cpel.herokuapp.com/api/td")
-            .then((response) => {
-             
-              response.data.forEach((td) => {
-                 console.log(td._id)
-                 console.log(ex.data._id )
-                if (ex.data.idTD === td._id) {
-                  
-                 this.dateLimit =moment(String( td.dateLimit)).format('YYYY/MM/DD');
-                 this.date =  moment(String(new Date() )).format('YYYY/MM/DD');
-                 
-                
-                 console.log(this.dateLimit < this.date)
-                 console.log(this.dateLimit)
-                 console.log(this.date)
-                }
-              });
-            });
+              //console.log(this.dateLimit < this.date);
+              //  console.log(this.dateLimit);
+            }
+          });
+        });
+        axios
+          .get(
+            "https://cpel.herokuapp.com/api/students/" +
+              this.$cookies.get("idStudent") +
+              "/studentRenderings"
+          )
+          .then((response) => {
+            response.data.forEach((renderings) => {
+              //   console.log(ex._id);
 
-          console.log(this.exo);
-        
+              if (renderings.idExercise === ex.data._id) {
+                document.getElementById("yourcode").value = renderings.content;
+              }
+            });
+          });
+        // console.log(this.exo);
       });
   },
   computed: {
-   isDisabled: function() {
-     console.log("hi")
-    return(
-       this.date > this.dateLimit
-      )
-     
+    isDisabled: function () {
+      console.log("hi");
+      return this.date > this.dateLimit;
     },
   },
 };

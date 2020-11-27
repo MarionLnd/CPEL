@@ -5,11 +5,12 @@
       <LeftMenu/>
 
     <div v-for="item in moduleData" :key="item">
-      <div class="card">
+     <h1>
         {{ item.module }}
-      </div>
-      <div class="content">
-        {{ item.content }} 
+     </h1>
+      <div class="card">
+        <a :href=   item.content  download>{{ item.module }}</a>
+       
       </div>
     </div>
   </div>
@@ -18,10 +19,9 @@
   
 <style scoped>
 .card {
-  width: 60%;
-  height: 50px;
-  background-color: #84a9ac;
-  margin-left: 50%;
+
+ margin-top: 5%;
+  margin-left: 20%;
 }
 .content{
   margin-top: 5%;
@@ -33,6 +33,13 @@
 #deconexion {
   position: absolute;
   bottom: 0px;
+}
+h1 {
+  font-family: Georgia, serif;
+  font-size: 40px;
+  font-weight: bold;
+  text-align: center;
+  margin-left: 30%;
 }
 </style>
 <script>
@@ -53,7 +60,7 @@ export default {
     };
   },
   mounted() {
-    axios.get("https://cpel.herokuapp.com/api/module/").then((response) => {
+    axios.get("https://cpel.herokuapp.com/api/modules/").then((response) => {
       response.data.forEach((mod) => {
         if (mod._id === this.$route.params.id)
           this.moduleData.push({
@@ -61,6 +68,7 @@ export default {
 
             content: mod.content,
           });
+          console.log(mod.content)
       });
     });
   },
