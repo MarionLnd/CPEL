@@ -122,7 +122,7 @@ export default {
                 moduleId: mod._id,
                 date: td.createdAt
               });
-              console.log(this.exoData);
+              //console.log(this.exoData);
             }
           });
         });

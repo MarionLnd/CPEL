@@ -9,7 +9,7 @@
          <h2 @click="setCookie()"> {{ message }} </h2>
     </div-->
 
-		<a href="https://python.sdv.univ-paris-diderot.fr/cours-python.pdf" download="download">Download</a>
+		<!--a href="https://python.sdv.univ-paris-diderot.fr/cours-python.pdf" download="download">Download</a-->
     <!--pdf src="https://cdn.mozilla.net/pdfjs/tracemonkey.pdf" ></pdf-->
 
     <table class="table">
@@ -88,7 +88,7 @@ export default {
          this.message.push({
           msg:"Un nouveau Cours est disponible ",
           modid: mod._id,
-          date: mod.createdAt,
+          date: moment(mod.createdAt).format('YYYY/MM/DD'),
           link:"/courseContent"
         });
        //  this.message = "Un nouveau Cours est disponible ";
@@ -109,9 +109,10 @@ export default {
         this.message.push({
           msg:"Un nouveau TD est disponible ",
           tdId: td._id,
-          date: moment(String(td.createdAt)).format('YYYY/MM/DD'),
+          date: moment(td.createdAt).format('YYYY/MM/DD'),
           link : "/exercise"
         });
+       
       //  this.message = "Un nouveau TD est disponible "
        // this.link = "/exercise"
 
@@ -126,7 +127,7 @@ export default {
           exerciseId: exo._id,
           msg:"Un nouveau Exercice est disponible ",
           exerciseName: exo.name,
-          date: exo.createdAt ,
+          date: moment(String(exo.createdAt)).format('YYYY/MM/DD') ,
           link : "/exerciceContent/"+exo._id
         });
         console.log(this.message)
@@ -149,12 +150,13 @@ export default {
         this.message.push({
           msg: "La Correction de l'exercise  '  "+ exo.name+"  'est disponible. Le Code de correction est : "+ corr.correctionCode,
           correctionId: corr._id,
-          date: corr.createdAt,
+          date: moment(corr.createdAt).format('YYYY/MM/DD'),
           link:"/exerciceContent/"+exo._id
         });
        // this.message = "La Correction de l'exercise  '  "+ exo.name+"  'est disponible. Le Code de correction est : "+ corr.correctionCode;
        // this.link = "/exerciceContent/"+exo._id;
         this.count ++;
+         console.log(corr.createdAt.date())
           }
           }
       });

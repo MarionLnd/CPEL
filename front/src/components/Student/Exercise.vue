@@ -3,7 +3,7 @@
     <Header />
      <LeftMenu />
      <h1> Exercices </h1>
-     <h3>A Rendre Avant {{  format_date(date) }}</h3>
+     <h3>A Rendre Avant {{  date | moment("DD/MM/YYYY") }}</h3>
     <div class="course" >
      
       <div v-for="item in exoData" :key="item">
@@ -85,7 +85,7 @@ import axios from "axios";
 import Header from "./Header";
 //import LeftDashboard from "./LeftDashboard";
 import LeftMenu from "./LeftMenu";
-import moment from 'moment'
+//import moment from 'moment'
 
 export default {
   name: "modules",
@@ -170,7 +170,7 @@ export default {
      },
      format_date(value){
          if (value) {
-           return moment(String(value)).format('YYYY/MM/DD')
+         //  return moment(String(value)).format('YYYY/MM/DD')
           }
       },
    
