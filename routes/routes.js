@@ -647,7 +647,7 @@ router.route('/tds/:idTD').get(function async(req,res){
 
 /**
  * Get all exercise for a TD
- * @route GET /tds/{idTD}/exercise
+ * @route GET /tds/{idTD}/exercises
  * @group td - Operations about td
  * @param {string} idTD.path.required - The id of the td whose exercises we are looking for
  * @returns {object} 200 - All exercise for the td
