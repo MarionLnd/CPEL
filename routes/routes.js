@@ -305,16 +305,16 @@ router.route('/users/:idUser').get(function async(req,res){
 
 /**
  * User Login
- * @route GET /login/{idUser}
+ * @route GET /login/{username}/{password}
  * @group user - Operations about user
  * @returns {user.model} 201 - Successful login
  * @returns {Error}  400 - Bad request
  */
 // Connexion d'un user
-router.get("/login/:idUser", async (req, res) => {
-    const userLogin = await user.findOne({ username: req.body.username });
+router.get("/login/:username/:password", async (req, res) => {
+    const userLogin = await user.findOne({ username: req.params.username });
     if (!userLogin) return res.status(401).json({ error: "Username is wrong" });
-    const validPassword = await bcrypt.compare(req.body.password, userLogin.password);
+    const validPassword = await bcrypt.compare(req.params.password, userLogin.password);
     if (!validPassword) return res.status(401).json({ error: "Password is wrong" });
     res.status(200).json({userLogin})
 });
