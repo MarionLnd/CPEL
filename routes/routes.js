@@ -647,14 +647,14 @@ router.route('/tds/:idTD').get(function async(req,res){
 
 /**
  * Get all exercise for a TD
- * @route GET /tds/{idTD}/exercises
+ * @route GET /tds/{idTD}/exercise
  * @group td - Operations about td
  * @param {string} idTD.path.required - The id of the td whose exercises we are looking for
  * @returns {object} 200 - All exercise for the td
  * @returns {Error}  404 - Exercise Not found
  */
 // Récupérer tous les exercices d'un TD
-router.get("/tds/{idTD}/exercises", async (req, res) => {
+router.get('/tds/:idTD/exercises', async (req, res) => {
     try {
         const exs = await exercise.find({ idTD: req.params.idTD})
         res.status(200).json(exs)
