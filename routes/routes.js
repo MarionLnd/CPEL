@@ -913,7 +913,7 @@ router.put("/modules/:idModule/tds/:idTD", async (req, res) => {
     try {
         const newtd = await td.findOne({ _id: req.params.idTD});
         console.log(newtd);
-        td.findOneAndUpdate(
+        mod.findOneAndUpdate(
             { _id: req.params.idModule },
             { $push: { tds: newtd } },
             { new: true, useFindAndModify: false },
@@ -974,6 +974,25 @@ router.delete("/professors/:idProfessor", async (req, res) => {
 })
 
 /**
+ * Delete student
+ * @route DELETE /students/{idStudent}
+ * @group student - Operations about student
+ * @param {string} idStudent.path.required - The id of the student to be deleted
+ * @returns {object} 200 - student deleted
+ * @returns {Error}  404 - student not found
+ */
+// Suppression d'un student
+router.delete("/students/:idStudent", async (req, res) => {
+    try {
+        await student.deleteOne({ _id: req.params.idStudent })
+        res.status(200).send()
+    } catch {
+        res.status(404)
+        res.send({ error: "404" })
+    }
+})
+
+/**
  * Delete group
  * @route DELETE /groups/{idGroup}
  * @group group - Operations about group
@@ -990,6 +1009,44 @@ router.delete("/groups/:idGroup", async (req, res) => {
     res.status(404)
     res.send({ error: "204" })
   }
+})
+
+/**
+ * Delete td
+ * @route DELETE /tds/{idTD}
+ * @group td - Operations about td
+ * @param {string} idTD.path.required - The id of the td to be deleted
+ * @returns {object} 200 - td deleted
+ * @returns {Error}  404 - td not deleted
+ */
+// Suppression d'un td
+router.delete("/tds/:idTD", async (req, res) => {
+    try {
+        await td.deleteOne({ _id: req.params.idTD })
+        res.status(200).send()
+    } catch {
+        res.status(404)
+        res.send({ error: "204" })
+    }
+})
+
+/**
+ * Delete td
+ * @route DELETE /modules/{idModule}
+ * @group module - Operations about module
+ * @param {string} idModule.path.required - The id of the module to be deleted
+ * @returns {object} 200 - module deleted
+ * @returns {Error}  404 - module not deleted
+ */
+// Suppression d'un module
+router.delete("/modules/:idModule", async (req, res) => {
+    try {
+        await mod.deleteOne({ _id: req.params.idModule })
+        res.status(200).send()
+    } catch {
+        res.status(404)
+        res.send({ error: "404" })
+    }
 })
 
 /**
