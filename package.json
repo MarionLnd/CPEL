@@ -6,18 +6,17 @@
     "start": "node app.cjs"
   },
   "dependencies": {
-    "@fortawesome/fontawesome-svg-core": "^1.2.32",
-    "@fortawesome/free-solid-svg-icons": "^5.15.1",
-    "@fortawesome/vue-fontawesome": "^2.0.0",
+    "@vuejs-community/vue-filter-date-format": "^1.6.3",
     "body-parser": "^1.19.0",
     "cookie-parser": "~1.4.4",
+    "cors": "^2.8.5",
     "debug": "~2.6.9",
     "express": "~4.16.1",
     "http-errors": "~1.6.3",
     "mongoose": "^5.10.6",
     "morgan": "~1.9.1",
     "pug": "2.0.0-beta11",
-    "skulpt": "^1.0.0"
+    "vue-cookies": "^1.7.4"
   },
   "devDependencies": {
     "mongodb": "^3.6.2",
