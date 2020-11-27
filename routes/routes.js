@@ -671,7 +671,7 @@ router.get('/tds/:idTD/exercises', async (req, res) => {
  * @group student - Operations about student
  * @param {string} idStudent.path.required - The id of the student you want to update
  * @returns {object} 200 - Student updated
- * @returns {Error}  400 - Student not updated
+ * @returns {Error}  default - Unexpected error
  */
 // MAJ d'un étudiant
 router.put('/students/:idStudent', async (req, res) => {
@@ -690,7 +690,7 @@ router.put('/students/:idStudent', async (req, res) => {
  * @group student - Operations about student
  * @param {string} idStudent.path.required - The id of the student you want to update
  * @returns {object} 200 - Student updated
- * @returns {Error}  204 - Student Not updated
+ * @returns {Error}  default - Unexpected error
  */
 // MAJ groupe d'un student
 router.put('/students/group/:idStudent', function(req, res) {
@@ -710,7 +710,7 @@ router.put('/students/group/:idStudent', function(req, res) {
  * @group professor - Operations about professor
  * @param {string} idProfessor.path.required - The id of the professor you want to update
  * @returns {object} 200 - Professor updated
- * @returns {Error}  204 - Professor Not updated
+ * @returns {Error}  default - Unexpected error
  */
 // MAJ d'un professeur
 router.put('/professors/:idProfessor', async (req, res) => {
@@ -729,7 +729,7 @@ router.put('/professors/:idProfessor', async (req, res) => {
  * @group exercise - Operations about exercise
  * @param {string} idExercise.path.required - The id of the exercise you want to update
  * @returns {object} 200 - Exercise updated
- * @returns {Error}  204 - Exercise Not updated
+ * @returns {Error}  default - Unexpected error
  */
 router.put("/exercises/:idExercise", async (req, res) => {
     try {
@@ -747,7 +747,7 @@ router.put("/exercises/:idExercise", async (req, res) => {
  * @group correction - Operations about correction
  * @param {string} idCorrection.path.required - The id of the correction you want to update
  * @returns {object} 200 - Correction updated
- * @returns {Error}  204 - Correction Not updated
+ * @returns {Error}  default - Unexpected error
  */
 router.put("/corrections/:idCorrection", async (req, res) => {
     try {
@@ -765,7 +765,7 @@ router.put("/corrections/:idCorrection", async (req, res) => {
  * @group studentRendering - Operations about studentRendering
  * @param {string} idStudentRendering.path.required - The id of the rendering you want to update
  * @returns {object} 200 - StudentRendering updated
- * @returns {Error}  204 - Student Rendering Not updated
+ * @returns {Error}  default - Unexpected error
  */
 router.put("/studentRenderings/:idStudentRendering", async (req, res) => {
     try {
@@ -784,7 +784,7 @@ router.put("/studentRenderings/:idStudentRendering", async (req, res) => {
  * @param {string} idModule.path.required - The id of the module you want to add the group into
  * @param {string} idGroup.path.required - The id of the group you want to add
  * @returns {object} 200 - Group added
- * @returns {Error}  204 - Group not added
+ * @returns {Error}  default - Unexpected error
  */
 // Ajouter des groupes à un module
 router.put("/modules/:idModule/:idGroup", async (req, res) => {
@@ -810,15 +810,15 @@ router.put("/modules/:idModule/:idGroup", async (req, res) => {
 
 /**
  * Add module to a group
- * @route PUT /groups/{idGroup}/{idModule}
+ * @route PUT /groups/{idGroup}/modules/{idModule}
  * @group group - Operations about group
  * @param {string} idGroup.path.required - The id of the group you want to add the modules into
  * @param {string} idModule.path.required - The id of the module you want to add
  * @returns {object} 200 - Module added
- * @returns {Error}  204 - Module not added
+ * @returns {Error}  default - Unexpected error
  */
 // Ajouter des modules à un groupe
-router.put("/groups/:idGroup/:idModule", async (req, res) => {
+router.put("/groups/:idGroup/modules/:idModule", async (req, res) => {
     try {
         const modul = await mod.findOne({ _id: req.params.idModule});
         modul.groups = [];
@@ -841,15 +841,15 @@ router.put("/groups/:idGroup/:idModule", async (req, res) => {
 
 /**
  * Add students to a group
- * @route PUT /groups/{idGroup}/{idStudent}
+ * @route PUT /groups/{idGroup}/students/{idStudent}
  * @group group - Operations about group
  * @param {string} idGroup.path.required - The id of the group you want to add the students into
  * @param {string} idStudent.path.required - The id of the student you want to add
  * @returns {object} 200 - Student added
- * @returns {Error}  204 - Student not updated
+ * @returns {Error}  default - Unexpected error
  */
 // Ajouter des étudiants à un groupe
-router.put("/groups/:idGroup/:idStudent", async (req, res) => {
+router.put("/groups/:idGroup/students/:idStudent", async (req, res) => {
     try {
         const etudiant = await student.findOne({ _id: req.params.idStudent});
         group.findOneAndUpdate(
@@ -858,13 +858,13 @@ router.put("/groups/:idGroup/:idStudent", async (req, res) => {
             { new: true, useFindAndModify: false },
             function (error, success) {
                 if (error) {
-                    res.status(204).json({ Result : "204 - Student not added"})
+                    res.status(404).json({ Result : "204 - Student not added"})
                 } else {
                     res.status(200).json({ Result : "200 - Student added"})
                 }
             });
     } catch {
-        res.status(204)
+        res.status(404)
         res.send({ error: "204 - Student not added" })
     }
 });
@@ -876,7 +876,7 @@ router.put("/groups/:idGroup/:idStudent", async (req, res) => {
  * @param {string} idTD.path.required - The id of the TD you want to add the exercises into
  * @param {string} idExercise.path.required - The id of the exercise you want to add
  * @returns {object} 200 - Exercise added
- * @returns {Error}  204 - Exercise not added
+ * @returns {Error}  default - Unexpected error
  */
 // Ajouter un Exercice à un TD
 router.put("/tds/:idTD/:idExercise", async (req, res) => {
@@ -906,7 +906,7 @@ router.put("/tds/:idTD/:idExercise", async (req, res) => {
  * @param {string} idModule.path.required - The id of the module you want to add the tds into
  * @param {string} idTD.path.required - The id of the td you want to add
  * @returns {object} 200 - TD added
- * @returns {Error}  204 - TD not added
+ * @returns {Error}  default - Unexpected error
  */
 // Ajouter un TD à un Module
 router.put("/modules/:idModule/:idTD", async (req, res) => {
@@ -935,7 +935,7 @@ router.put("/modules/:idModule/:idTD", async (req, res) => {
  * @group user - Operations about user
  * @param {string} idUser.path.required - username
  * @returns {object} 200 - user added
- * @returns {Error}  204 - user not added
+ * @returns {Error}  default - Unexpected error
  */
 // Modifier un user
 router.put('/users/:idUser', function(req, res) {
