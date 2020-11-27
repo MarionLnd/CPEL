@@ -190,8 +190,8 @@ router.post("/group",async (req,res)=>{
 // Ajout d'un module
 router.post("/module",async (req,res)=>{
   let newModule = new mod(req.body);
-  let data = fs.readFileSync(newModule.content);
-  newModule.content = Binary(data);
+  //let data = fs.readFileSync(newModule.content);
+  //newModule.content = Binary(data);
   await newModule.save().then((result)=>{
     res.status(201).json({ NewModule : "201 => https://cpel.herokuapp.com/api/modules/"+newModule._id})
   },(err)=>{
@@ -311,7 +311,7 @@ router.route('/users/:idUser').get(function async(req,res){
  * @route GET /login/{username}/{password}
  * @group user - Operations about user
  * @returns {user.model} 201 - Successful login
- * @returns {Error}  400 - Bad request
+ * @returns {Error}  401 - unauthorized
  */
 // Connexion d'un user
 router.get("/login/:username/:password", async (req, res) => {
@@ -400,7 +400,7 @@ router.get("/groups",async (req,res)=>{
   await group.find({}).then((result)=>{
     res.status(200).json(result)
   },(err)=>{
-    res.status(400).json(err)
+    res.status(404).json(err)
   })
 });
 
@@ -433,7 +433,7 @@ router.get("/modules",async (req,res)=>{
   await mod.find({}).then((result)=>{
     res.status(200).json(result)
   },(err)=>{
-    res.status(400).json(err)
+    res.status(404).json(err)
   })
 });
 
