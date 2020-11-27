@@ -197,6 +197,33 @@ router.post("/module",async (req,res)=>{
 });
 
 /**
+ * Add a new module
+ * @route POST /modules
+ * @group module - Operations about module
+ * @returns {module.model} 201 - A new module is added
+ * @returns {Error}  400 - Bad request
+ */
+// Ajout d'un module
+router.post("/modules",async (req,res)=>{
+    let newModule = new mod(req.body);
+    newModule.mod.content.data = await readFile(newModule.content);
+    newModule.mod.content.contentType = 'application/pdf';
+    newModule
+        .save()
+        .then(result => {
+            res.status(200).json({
+                message: 'Handling POST request to /completed',
+                result: result
+            });
+        })
+        .catch(err => {
+            res.status(500).json({
+                message: err.message
+            });
+        });
+});
+
+/**
  * Add a new TD
  * @route POST /td
  * @group td - Operations about td
@@ -313,9 +340,9 @@ router.route('/users/:idUser').get(function async(req,res){
 // Connexion d'un user
 router.get("/login/:username/:password", async (req, res) => {
     const userLogin = await user.findOne({ username: req.params.username });
-    if (!userLogin) return res.status(401).json({ error: "Username is wrong" });
+    if (!userLogin) return res.status(401).json({ error: "Nom d'utilisateur incorrect" });
     const validPassword = await bcrypt.compare(req.params.password, userLogin.password);
-    if (!validPassword) return res.status(401).json({ error: "Password is wrong" });
+    if (!validPassword) return res.status(401).json({ error: "Mot de passe incorrect" });
     res.status(200).json({userLogin})
 });
 
