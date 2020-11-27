@@ -912,6 +912,7 @@ router.put("/tds/:idTD/:idExercise", async (req, res) => {
 router.put("/modules/:idModule/tds/:idTD", async (req, res) => {
     try {
         const newtd = await td.findOne({ _id: req.params.idTD});
+        console.log(newtd);
         td.findOneAndUpdate(
             { _id: req.params.idModule },
             { $push: { tds: newtd } },
