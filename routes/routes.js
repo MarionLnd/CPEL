@@ -911,10 +911,10 @@ router.put("/tds/:idTD/:idExercise", async (req, res) => {
 // Ajouter un TD à un Module
 router.put("/modules/:idModule/tds/:idTD", async (req, res) => {
     try {
-        const td = await td.findOne({ _id: req.params.idTD});
+        const newtd = await td.findOne({ _id: req.params.idTD});
         td.findOneAndUpdate(
             { _id: req.params.idModule },
-            { $push: { tds: td } },
+            { $push: { tds: newtd } },
             { new: true, useFindAndModify: false },
             function (error, success) {
                 if (error) {
