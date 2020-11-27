@@ -5,5 +5,6 @@ const td  = mongoose.Schema({
     idModule : String,
     exercises : Array,
     dateLimit : Date,
+    createdAt: {type: Date, default: Date.now}
 })
 module.exports = mongoose.model('td', td);

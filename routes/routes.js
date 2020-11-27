@@ -16,30 +16,138 @@ const user = require('../schemas/user');
 const jwt = require('jsonwebtoken');
 const bcrypt =require('bcrypt');
 
+// -------------------------------------------
+//             [Typedef Swagger]
+// -------------------------------------------
+
+/**
+ * @typedef correction
+ * @property {string} idExercise
+ * @property {string} correctionCode
+ * @property {string} content
+ * @property {boolean} sendCorrection
+ */
+
+/**
+ * @typedef exercise
+ * @property {string} name
+ * @property {string} idTD
+ * @property {string} wording
+ */
+
+/**
+ * @typedef group
+ * @property {string} name
+ * @property {Array} modules
+ * @property {Array} students
+ */
+
+/**
+ * @typedef module
+ * @property {string} name
+ * @property {string} content
+ * @property {Array} groups
+ * @property {string} idProfessor
+ * @property {Array} tds
+ */
+
+/**
+ * @typedef professor
+ * @property {string} lastname
+ * @property {string} firstname
+ * @property {string} professorNumber
+ * @property {string} email
+ * @property {string} idModule
+ */
+
+/**
+ * @typedef student
+ * @property {string} lastname
+ * @property {string} firstname
+ * @property {string} studentNumber
+ * @property {string} email
+ * @property {string} idGroup
+ */
+
+/**
+ * @typedef studentRendering
+ * @property {string} idStudent
+ * @property {string} idExercise
+ * @property {string} content
+ */
+
+/**
+ * @typedef td
+ * @property {string} name
+ * @property {string} idModule
+ * @property {Array} exercises
+ * @property {Date} dateLimit
+ */
+
+/**
+ * @typedef user
+ * @property {string} username.required
+ * @property {string} password.required
+ * @property {string} type
+ */
 
 // -------------------------------------------
 //                  [ POST ]
 // -------------------------------------------
 
 /**
- * Post user url
+ * Add a new professor
+ * @route POST /professor
+ * @group professor - Operations about professor
+ * @returns {professor.model} 201 - A new professor is added
+ * @returns {Error}  400 -  Bad Request
+ */
+// Ajout un professeur
+router.post("/professor",async (req,res)=>{
+    let newProfessor = new professor(req.body);
+    await newProfessor.save().then((result)=>{
+        res.status(201).json({ NewProfessor : "201 => https://cpel.herokuapp.com/api/professor/"+newProfessor._id})
+    },(err)=>{
+        res.status(400).json(err)
+    })
+});
+
+/**
+ * Add a new student
+ * @route POST /student
+ * @group student - Operations about student
+ * @returns {student.model} 201 - A new student is added
+ * @returns {Error}  400 - Bad Request
+ */
+// Ajout étudiant
+router.post("/student",async (req,res)=>{
+    let newStudent = new  student(req.body);
+    await newStudent.save().then((result)=>{
+        res.status(201).json({ NewStudent : "201 => https://cpel.herokuapp.com/api/professor/api/student/"+newStudent._id})
+    },(err)=>{
+        res.status(400).json(err)
+    })
+});
+
+/**
+ * Add a new user
  * @route POST /user
  * @group user - Operations about user
- * @returns {object} 201 - A new user
- * @returns {Error}  default - Unexpected error
+ * @returns {user.model} 201 - A new user is added
+ * @returns {Error}  400 - Bad request
  */
 router.post("/user",async (req,res)=>{
     const isUsernameExist = await user.findOne({ username: req.body.username });
     const isProfessorExist = await professor.findOne({ professorNumber: req.body.username });
     const isStudentExist = await student.findOne({ studentNumber: req.body.username });
     if ( isProfessorExist === null && req.body.type === "professor"){
-        return res.status(400).json({ error: "Can't sign up" });
+        return res.status(401).json({ error: "Can't sign up" });
     }
     else if ( isStudentExist === null && req.body.type === "student"){
-      return res.status(400).json({ error: "Can't sign up" });
+      return res.status(401).json({ error: "Can't sign up" });
     }
     else if(isUsernameExist) {
-      return res.status(400).json({ error: "Email already exists" });
+      return res.status(401).json({ error: "Email already exists" });
     }
     else{
         const salt = await bcrypt.genSalt(10);
@@ -47,19 +155,19 @@ router.post("/user",async (req,res)=>{
         let newUser = new user(req.body);
         newUser.password = password;
         await newUser.save().then((result)=>{
-          res.status(201).json({ NewUser : "201 => localhost:3000/api/professor/"+newUser._id})
+          res.status(201).json({ NewUser : "201 => https://cpel.herokuapp.com/api/professor/"+newUser._id})
         },(err)=>{
-          res.status(400).json(err)
+          res.status(401).json(err)
         })
       }
 });
 
 /**
- * Login
+ * User Login
  * @route GET /login
  * @group user - Operations about user
- * @returns {object} 200 - User
- * @returns {Error}  404 - User Not found
+ * @returns {user.model} 201 - Successful login
+ * @returns {Error}  400 - Bad request
  */
 // Connexion d'un user
 router.get("/login", async (req, res) => {
@@ -76,160 +184,122 @@ router.get("/login", async (req, res) => {
 });
 
 /**
- * Post professor url
- * @route POST /professor
- * @group professor - Operations about professor
- * @returns {object} 201 - A new professor
- * @returns {Error}  default - Unexpected error
- */
-// Ajout un professeur
-router.post("/professor",async (req,res)=>{
-  let newProfessor = new professor(req.body);
-  await newProfessor.save().then((result)=>{
-    res.status(201).json({ NewProfessor : "201 => localhost:3000/api/professor/"+newProfessor._id})
-  },(err)=>{
-    res.status(400).json(err)
-  })
-});
-
-/**
- * Post student url
- * @route POST /student
- * @group student - Operations about student
- * @returns {object} 201 - A new student
- * @returns {Error}  default - Unexpected error
- */
-// Ajout étudiant
-router.post("/student",async (req,res)=>{
-  let newStudent = new  student(req.body);
-  await newStudent.save().then((result)=>{
-    res.status(201).json({ NewStudent : "201 => localhost:3000/api/student/"+newStudent._id})
-  },(err)=>{
-    res.status(400).json(err)
-  })
-});
-
-/**
- * Post group url
+ * Add a new group
  * @route POST /group
  * @group group - Operations about group
- * @returns {object} 201 - A new group
- * @returns {Error}  default - Unexpected error
+ * @returns {group.model} 201 - A new group is added
+ * @returns {Error}  400 - Bad request
  */
 // Ajout d’un groupe étudiant
 router.post("/group",async (req,res)=>{
   let newGroup = new  group(req.body);
   await newGroup.save().then((result)=>{
-    res.status(201).json({ NewGroup : "201 => localhost:3000/api/group/"+newGroup._id})
+    res.status(201).json({ NewGroup : "201 => https://cpel.herokuapp.com/api/group/"+newGroup._id})
   },(err)=>{
     res.status(400).json(err)
   })
 });
 
 /**
- * Post module url
+ * Add a new module
  * @route POST /module
  * @group module - Operations about module
- * @returns {object} 201 - A new module
- * @returns {Error}  default - Unexpected error
+ * @returns {module.model} 201 - A new module is added
+ * @returns {Error}  400 - Bad request
  */
 // Ajout d'un module
 router.post("/module",async (req,res)=>{
   let newModule = new mod(req.body);
   await newModule.save().then((result)=>{
-    res.status(201).json({ NewModule : "201 => localhost:3000/api/module/"+newModule._id})
+    res.status(201).json({ NewModule : "201 => https://cpel.herokuapp.com/api/module/"+newModule._id})
   },(err)=>{
     res.status(400).json(err)
   })
 });
 
 /**
- * Post exercise url
- * @route POST /exercise
- * @group exercise - Operations about exercise
- * @returns {object} 201 - A new exercise
- * @returns {Error}  default - Unexpected error
- */
-// Ajout d’un exercice par module
-router.post("/exercise",async (req,res)=>{
-  let newExercise = new  exercise(req.body);
-  await newExercise.save().then((result)=>{
-    res.status(201).json({ NewExercise : "201 => localhost:3000/api/exercise/"+newExercise._id})
-  },(err)=>{
-    res.status(400).json(err)
-  })
-});
-
-/**
- * Post correction url
- * @route POST /correction/{idExercise}
- * @group correction - Operations about correction
- * @param {string} idExercise.path.required - idExercise
- * @returns {object} 201 - A new correction
- * @returns {Error}  default - Unexpected error
- */
-// Ajout de la correction d’un exercice
-router.post("/correction/:idExercise",async (req,res)=>{
-  let newCorrection = new  correction(req.body);
-  newCorrection.idExercise = req.params.idExercise;
-  await newCorrection.save().then((result)=>{
-    res.status(201).json({ NewCorrection : "201 => localhost:3000/api/student/"+newCorrection._id})
-  },(err)=>{
-    res.status(400).json(err)
-  })
-});
-
-/**
- * Post studentRendering url
- * @route POST /studentRendering/{idStudent}/{idExercise}
- * @group studentRendering - Operations about studentRendering
- * @param {string} idStudent.path.required - idStudent
- * @param {string} idExercise.path.required - idExercise
- * @returns {object} 201 - A new studentRendering
- * @returns {Error}  default - Unexpected error
- */
-// Ajout du rendu d'un étudiant
-router.post("/studentRendering/:idStudent/:idExercise",async (req,res)=>{
-  let newStudentRendering = new  studentRendering(req.body);
-  newStudentRendering.idExercise = req.params.idExercise;
-  newStudentRendering.idStudent = req.params.idStudent;
-  await newStudentRendering.save().then((result)=>{
-    res.status(201).json({ NewRendering : "201 => localhost:3000/api/studentRendering/"+newStudentRendering._id})
-  },(err)=>{
-    res.status(400).json(err)
-  })
-});
-
-/**
- * Post td url
+ * Add a new TD
  * @route POST /td
  * @group td - Operations about td
- * @returns {object} 201 - A new td
- * @returns {Error}  default - Unexpected error
+ * @returns {td.model} 201 - A new td
+ * @returns {Error}  400 - Bad request
  */
 // Ajout d'un TD
 router.post("/td",async (req,res)=>{
-  let newTD = new td(req.body);
-  await newTD.save().then((result)=>{
-    res.status(201).json({ NewTD : "201 => localhost:3000/api/td/"+newTD._id})
+    let newTD = new td(req.body);
+    await newTD.save().then((result)=>{
+        res.status(201).json({ NewTD : "201 => https://cpel.herokuapp.com/api/td/"+newTD._id})
+    },(err)=>{
+        res.status(400).json(err)
+    })
+});
+
+/**
+ * Add a new exercise
+ * @route POST /exercise
+ * @group exercise - Operations about exercise
+ * @returns {exercise.model} 201 - A new exercise is added
+ * @returns {Error}  400 - Bad request
+ */
+// Ajout d’un exercice
+router.post("/exercise",async (req,res)=>{
+  let newExercise = new  exercise(req.body);
+  await newExercise.save().then((result)=>{
+    res.status(201).json({ NewExercise : "201 => https://cpel.herokuapp.com/api/exercise/"+newExercise._id})
   },(err)=>{
     res.status(400).json(err)
   })
 });
+
+/**
+ * Add a correction for an exercise
+ * @route POST /correction
+ * @group correction - Operations about correction
+ * @returns {correction.model} 201 - A new correction is added
+ * @returns {Error}  400 - Bad request
+ */
+// Ajout de la correction d’un exercice
+router.post("/correction",async (req,res)=>{
+  let newCorrection = new  correction(req.body);
+  await newCorrection.save().then((result)=>{
+    res.status(201).json({ NewCorrection : "201 => https://cpel.herokuapp.com/api/correction/"+newCorrection._id})
+  },(err)=>{
+    res.status(400).json(err)
+  })
+});
+
+/**
+ * Add a new student rendering
+ * @route POST /studentRendering
+ * @group studentRendering - Operations about studentRendering
+ * @returns {studentRendering.model} 201 - A new student rendering is added
+ * @returns {Error}  400 - Bad request
+ */
+// Ajout du rendu pour un étudiant
+router.post("/studentRendering",async (req,res)=>{
+  let newStudentRendering = new  studentRendering(req.body);
+  await newStudentRendering.save().then((result)=>{
+    res.status(201).json({ NewRendering : "201 => https://cpel.herokuapp.com/api/studentRendering/"+newStudentRendering._id})
+  },(err)=>{
+    res.status(400).json(err)
+  })
+});
+
+
 
 // -----------------------------------------------
 //                    [ GET ]
 // -----------------------------------------------
 
 /**
- * Get all user url
+ * Get all user
  * @route GET /user
  * @group user - Operations about user
  * @returns {object} 200 - All User
  * @returns {Error}  404 - User Not found
  */
 // Récupère les users
-router.get("/user",async (req,res)=>{
+router.get("/users",async (req,res)=>{
     await user.find({}).then((result)=>{
         res.status(200).json(result)
     },(err)=>{
@@ -924,7 +994,7 @@ router.delete("/group/:idGroup", async (req, res) => {
 /**
  * Delete exercise
  * @route DELETE /exercise/{idExercise}
- * @group exercice - Operations about exercise
+ * @group exercise - Operations about exercise
  * @param {string} idExercise.path.required - idExercise
  * @returns {object} 200 - exercise deleted
  * @returns {Error}  204 - exercise not deleted
