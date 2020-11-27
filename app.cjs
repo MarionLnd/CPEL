@@ -6,6 +6,7 @@ const connexionChain = 'mongodb+srv://CPEL_USER:coucoucpel@cluster0.82glw.mongod
 const routes = require('./routes/routes');
 const expressSwagger = require('express-swagger-generator')(app);
 mongoose.set('useFindAndModify', false);
+
 let options = {
     swaggerDefinition: {
         info: {
@@ -44,10 +45,12 @@ app.use(function (req, res, next) {
 app.use(express.json()) // new
 app.use('/api', routes);
 
-mongoose.connect(connexionChain, { useUnifiedTopology: true, useNewUrlParser: true  })
+mongoose.connect(
+    connexionChain, { useUnifiedTopology: true, useNewUrlParser: true  })
     .then(client => {
-      console.log('Base de données : OK')
+      console.log('Base de données : OK');
     });
+
 
 expressSwagger(options);
 

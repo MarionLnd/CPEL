@@ -15,6 +15,7 @@ const td = require('../schemas/td');
 const user = require('../schemas/user');
 const jwt = require('jsonwebtoken');
 const bcrypt =require('bcrypt');
+var Binary = require('mongodb').Binary;
 
 // -------------------------------------------
 //             [Typedef Swagger]
@@ -189,38 +190,13 @@ router.post("/group",async (req,res)=>{
 // Ajout d'un module
 router.post("/module",async (req,res)=>{
   let newModule = new mod(req.body);
+  //let data = fs.readFileSync(newModule.content);
+  //newModule.content = Binary(data);
   await newModule.save().then((result)=>{
     res.status(201).json({ NewModule : "201 => https://cpel.herokuapp.com/api/module/"+newModule._id})
   },(err)=>{
     res.status(400).json(err)
   })
-});
-
-/**
- * Add a new module
- * @route POST /modules
- * @group module - Operations about module
- * @returns {module.model} 201 - A new module is added
- * @returns {Error}  400 - Bad request
- */
-// Ajout d'un module
-router.post("/modules",async (req,res)=>{
-    let newModule = new mod(req.body);
-    newModule.mod.content.data = await readFile(newModule.content);
-    newModule.mod.content.contentType = 'application/pdf';
-    newModule
-        .save()
-        .then(result => {
-            res.status(200).json({
-                message: 'Handling POST request to /completed',
-                result: result
-            });
-        })
-        .catch(err => {
-            res.status(500).json({
-                message: err.message
-            });
-        });
 });
 
 /**
