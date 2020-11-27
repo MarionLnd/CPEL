@@ -671,7 +671,7 @@ router.get('/tds/:idTD/exercises', async (req, res) => {
  * @group student - Operations about student
  * @param {string} idStudent.path.required - The id of the student you want to update
  * @returns {object} 200 - Student updated
- * @returns {Error}  204 - Student not updated
+ * @returns {Error}  400 - Student not updated
  */
 // MAJ d'un étudiant
 router.put('/students/:idStudent', async (req, res) => {
@@ -680,7 +680,7 @@ router.put('/students/:idStudent', async (req, res) => {
         await student.save()
         res.status(200).json({ Result : "200 - Student updated"})
     } catch (err) {
-        res.status(204).json({ Result : "204 - Student not updated"})
+        res.status(400).json({ Result : "400 - Student not updated"})
     }
 });
 
