@@ -107,7 +107,7 @@ var Binary = require('mongodb').Binary;
 router.post("/professor",async (req,res)=>{
     let newProfessor = new professor(req.body);
     await newProfessor.save().then((result)=>{
-        res.status(201).json({ NewProfessor : "201 => https://cpel.herokuapp.com/api/professor/"+newProfessor._id})
+        res.status(201).json({ NewProfessor : "201 => https://cpel.herokuapp.com/api/professors/"+newProfessor._id})
     },(err)=>{
         res.status(400).json(err)
     })
@@ -124,7 +124,7 @@ router.post("/professor",async (req,res)=>{
 router.post("/student",async (req,res)=>{
     let newStudent = new  student(req.body);
     await newStudent.save().then((result)=>{
-        res.status(201).json({ NewStudent : "201 => https://cpel.herokuapp.com/api/professor/api/student/"+newStudent._id})
+        res.status(201).json({ NewStudent : "201 => https://cpel.herokuapp.com/api/professors/api/student/"+newStudent._id})
     },(err)=>{
         res.status(400).json(err)
     })
@@ -156,7 +156,7 @@ router.post("/user",async (req,res)=>{
         let newUser = new user(req.body);
         newUser.password = password;
         await newUser.save().then((result)=>{
-          res.status(201).json({ NewUser : "201 => https://cpel.herokuapp.com/api/professor/"+newUser._id})
+          res.status(201).json({ NewUser : "201 => https://cpel.herokuapp.com/api/professors/"+newUser._id})
         },(err)=>{
           res.status(401).json(err)
         })
@@ -174,7 +174,7 @@ router.post("/user",async (req,res)=>{
 router.post("/group",async (req,res)=>{
   let newGroup = new  group(req.body);
   await newGroup.save().then((result)=>{
-    res.status(201).json({ NewGroup : "201 => https://cpel.herokuapp.com/api/group/"+newGroup._id})
+    res.status(201).json({ NewGroup : "201 => https://cpel.herokuapp.com/api/groups/"+newGroup._id})
   },(err)=>{
     res.status(400).json(err)
   })
@@ -190,10 +190,10 @@ router.post("/group",async (req,res)=>{
 // Ajout d'un module
 router.post("/module",async (req,res)=>{
   let newModule = new mod(req.body);
-  //let data = fs.readFileSync(newModule.content);
-  //newModule.content = Binary(data);
+  let data = fs.readFileSync(newModule.content);
+  newModule.content = Binary(data);
   await newModule.save().then((result)=>{
-    res.status(201).json({ NewModule : "201 => https://cpel.herokuapp.com/api/module/"+newModule._id})
+    res.status(201).json({ NewModule : "201 => https://cpel.herokuapp.com/api/modules/"+newModule._id})
   },(err)=>{
     res.status(400).json(err)
   })
@@ -210,7 +210,7 @@ router.post("/module",async (req,res)=>{
 router.post("/td",async (req,res)=>{
     let newTD = new td(req.body);
     await newTD.save().then((result)=>{
-        res.status(201).json({ NewTD : "201 => https://cpel.herokuapp.com/api/td/"+newTD._id})
+        res.status(201).json({ NewTD : "201 => https://cpel.herokuapp.com/api/tds/"+newTD._id})
     },(err)=>{
         res.status(400).json(err)
     })
@@ -227,7 +227,7 @@ router.post("/td",async (req,res)=>{
 router.post("/exercise",async (req,res)=>{
   let newExercise = new  exercise(req.body);
   await newExercise.save().then((result)=>{
-    res.status(201).json({ NewExercise : "201 => https://cpel.herokuapp.com/api/exercise/"+newExercise._id})
+    res.status(201).json({ NewExercise : "201 => https://cpel.herokuapp.com/api/exercises/"+newExercise._id})
   },(err)=>{
     res.status(400).json(err)
   })
@@ -244,7 +244,7 @@ router.post("/exercise",async (req,res)=>{
 router.post("/correction",async (req,res)=>{
   let newCorrection = new  correction(req.body);
   await newCorrection.save().then((result)=>{
-    res.status(201).json({ NewCorrection : "201 => https://cpel.herokuapp.com/api/correction/"+newCorrection._id})
+    res.status(201).json({ NewCorrection : "201 => https://cpel.herokuapp.com/api/corrections/"+newCorrection._id})
   },(err)=>{
     res.status(400).json(err)
   })
@@ -261,7 +261,7 @@ router.post("/correction",async (req,res)=>{
 router.post("/studentRendering",async (req,res)=>{
   let newStudentRendering = new  studentRendering(req.body);
   await newStudentRendering.save().then((result)=>{
-    res.status(201).json({ NewRendering : "201 => https://cpel.herokuapp.com/api/studentRendering/"+newStudentRendering._id})
+    res.status(201).json({ NewRendering : "201 => https://cpel.herokuapp.com/api/studentRenderings/"+newStudentRendering._id})
   },(err)=>{
     res.status(400).json(err)
   })
