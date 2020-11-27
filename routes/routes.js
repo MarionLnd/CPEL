@@ -546,7 +546,7 @@ router.route('/studentRenderings/:idStudentRendering').get(function async(req,re
 // Récupérer tous les rendus pour un étudiant
 router.get("/students/:idStudent/studentRenderings", async (req, res) => {
   try {
-    const rendus = await studentRendering.findOne({ idStudent: req.params.idStudent})
+    const rendus = await studentRendering.find({ idStudent: req.params.idStudent})
       res.status(200).json(rendus);
   } catch {
         res.status(404);
