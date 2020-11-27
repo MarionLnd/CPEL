@@ -12,7 +12,7 @@
             <tbody>
             <tr v-for="(group, key) in data" :key="key">
                 <td>{{ group.name }}</td>
-                <td>{{ group.nbOfStudents }}</td>
+                <td>{{ group.students.length }}</td>
                 <td>
                     <router-link class="mr-2" :to="`/professeur/groupe/${group._id}`">
                         <font-awesome-icon icon="eye" size="lg"/>
@@ -50,7 +50,7 @@ export default {
         }
     },
     created() {
-        axios.get("https://cpel.herokuapp.com/api/group/").then(response => {
+        axios.get("https://cpel.herokuapp.com/api/groups/").then(response => {
             this.data = response.data
         })
     },

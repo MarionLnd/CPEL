@@ -15,7 +15,9 @@ import {
     faClipboard,
     faEye,
     faFileDownload,
-    faFilePdf
+    faFilePdf,
+    faUserMinus,
+    faTrashAlt
 } from '@fortawesome/free-solid-svg-icons'
 import VueMoment from "vue-moment"
 
@@ -32,6 +34,8 @@ library.add(faClipboard)
 library.add(faEye)
 library.add(faFileDownload)
 library.add(faFilePdf)
+library.add(faUserMinus)
+library.add(faTrashAlt)
 
 const router = new VueRouter({
   routes: Routes,

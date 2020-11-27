@@ -25,8 +25,10 @@
                 </form>
                 <div>
                     <h6>Modules liés:</h6>
-                    <ul>
-                        <li></li>
+                    <ul v-for="(mod, key) in modules" :key="key">
+                        <li>
+                            <router-link :to="`/professeur/module/${mod._id}`">{{ mod.name }}</router-link>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -47,7 +49,7 @@
             }
         },
         created() {
-            axios.get("https://cpel.herokuapp.com/api/module/" + this.id).then(response => {
+            axios.get("https://cpel.herokuapp.com/api/professors/" + this.id + "/modules").then(response => {
                 this.modules = response.data
             })
         }

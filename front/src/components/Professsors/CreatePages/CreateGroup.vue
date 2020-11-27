@@ -80,7 +80,6 @@
 
                 let groupCreated = {
                     name: this.formData.groupName,
-                    nbOfStudents: this.formData.studentsAdded.length,
                     modules: this.formData.modulesSelected,
                     students: this.formData.studentsAdded
                 }

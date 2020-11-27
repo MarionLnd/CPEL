@@ -27,12 +27,12 @@
                     <textarea id="txt" class="form-control" v-model.trim="formData.wording" required></textarea>
                 </div>
 
-                <label for="module">Pour le TD :</label>
+                <!--<label for="module">Pour le TD :</label>
                 <select id="module" class="custom-select" v-model="formData.tdSelected">
                     <option v-for="(td) in getTDs" v-bind:key="td.idmodule" :value="td">
                         {{ td.name }}
                     </option>
-                </select>
+                </select>-->
 
                 <button type="submit" class="btn btn-primary mt-2" @click.prevent="sendForm">Ajouter l'exercice</button>
             </form>
@@ -76,25 +76,31 @@ export default {
                     wording: this.formData.wording,
                 }
 
-                axios.all([
+                /*axios.all([
                     axios.post(`https://cpel.herokuapp.com/api/exercise/${exerciseCreated.idTD}`, exerciseCreated),
                     axios.put(`https://cpel.herokuapp.com/api/id/${exerciseCreated.idTD}/`, exerciseCreated)
-                ])
+                ])*/
 
                 // Ajouter le nouvel exercice a la base
-                axios.post(`https://cpel.herokuapp.com/api/exercise/${exerciseCreated.idModule}`, exerciseCreated)
+                axios.post(`https://cpel.herokuapp.com/api/exercise/`, exerciseCreated)
                     .then(() => {
                         // redirect (OK)
-                        axios.put(`https://cpel.herokuapp.com/api/id/${exerciseCreated.idTD}/`, exerciseCreated)
-                            .then(() => {
-                                this.$router.push(this.$route.query.redirect || '/professeur')
-                            })
-                            .catch(error => {
-                                console.log("Error in adding exercise in TD")
-                                console.log(error)
-                                this.formData.error = true
-                                this.formData.errorMessage = "Une erreur est survenue lors de l'ajout de l'exercice au TD.. Réessayez !"
-                            })
+                        this.$router.push(this.$route.query.redirect || '/professeur')
+
+                        /*if (this.formData.tdSelected._id !== "") {
+                            axios.put(`https://cpel.herokuapp.com/api/id/${exerciseCreated.idTD}/`, exerciseCreated)
+                                .then(() => {
+                                    this.$router.push(this.$route.query.redirect || '/professeur')
+                                })
+                                .catch(error => {
+                                    console.log("Error in adding exercise in TD")
+                                    console.log(error)
+                                    this.formData.error = true
+                                    this.formData.errorMessage = "Une erreur est survenue lors de l'ajout de l'exercice au TD.. Réessayez !"
+                                })
+                        } else {
+                            this.$router.push(this.$route.query.redirect || '/professeur')
+                        }*/
                     })
                     .catch(error => {
                         console.log(error)

@@ -1,17 +1,12 @@
 <template>
     <div>
-        <h1 class="pt-3 pb-3">Ajouter un étudiant</h1>
+        <h1 class="pt-3 pb-1">Ajouter un étudiant</h1>
 
         <!-- ALERTS -->
         <transition name="slide-fade">
-            <div class="alert alert-success" v-if="formData.submitted">
-                L'enseignant(e) a été ajouté(e) avec succès !
-            </div>
-        </transition>
-
-        <transition>
-            <div class="alert alert-danger alert-dismissible" v-if="formData.error" style="transition-delay: 1.5s">
-                Une erreur est survenue lors de l'ajout de l'étudiant(e).. Réessayez !
+            <div class="alert"
+                 :class="{'alert-success': formData.submitted, 'alert-danger': formData.error}">
+                {{ alertMessage }}
             </div>
         </transition>
 
@@ -51,7 +46,7 @@
                     </select>
                 </div>
 
-                <button type="submit" class="btn btn-outline-success mt-3" @click.prevent="sendForm">Ajouter un(e) étudiant(e)</button>
+                <button type="submit" class="btn btn-outline-success mt-3" @click="sendForm">Ajouter un(e) étudiant(e)</button>
             </form>
         </div>
     </div>
@@ -75,32 +70,30 @@ export default {
                 error: false,
                 submitted: false
             },
-            errorMessage: ""
+            alertMessage: ""
         }
     },
     methods: {
         sendForm() {
-            this.formData.submitted = true
 
             let studentCreated = {
                 lastname: this.formData.lastname,
                 firstname: this.formData.firstname,
                 studentNumber: this.formData.idNumber,
                 email: this.formData.email,
-                password: "",
                 idGroup: this.formData.groupSelected,
             }
             console.log(studentCreated)
-
-            // Add student ot the base
+                // Add student ot the base
             axios.post("https://cpel.herokuapp.com/api/student/", studentCreated)
-                .then(() => this.$router.push("/admin/tableau-de-bord"))
+                .then(() => {
+                    this.formData.submitted = true
+                    this.$router.push("/admin/tableau-de-bord")
+                })
                 .catch(error => {
                     console.log(error)
                     this.formData.error = true
                 })
-            this.formData.submitted = false
-
         }
     },
     created() {

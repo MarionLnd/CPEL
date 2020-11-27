@@ -15,15 +15,15 @@
           <tbody>
           <tr v-for="(mod, key) in data" :key="key">
               <td>{{ mod.name }}</td>
-              <td v-if="mod.tds.length === 0">
+              <td v-if="getTDsByModules(mod._id) === 0">
                   Aucun TD
               </td>
-              <td v-else>{{ mod.tds.length }}</td>
+              <td v-else>{{ getTDsByModules(mod._id) }}</td>
               <td v-if="mod.groups.length === 0 || mod.groups[0] === null">
                   Aucun groupe
               </td>
               <td v-else>
-                  {{ getNameGroupById(mod.groups) }}
+                  {{ mod.groups.length }} groupe(s)
               </td>
               <td>
                   <router-link class="mr-2" :to="`/professeur/module/${mod._id}`">
@@ -49,39 +49,37 @@
     data(){
       return {
           data: [],
+          tds: [],
           paginate: ["modules"],
           fields: [
               {name: 'name', title: 'Nom', sortField: 'name'},
               {name: 'groups', title: 'Groupes concernés', sortField: 'groups'}
           ],
           perPage: 5,
-          exercises: [],
           groups: []
       }
     },
     created() {
-      axios.get("https://cpel.herokuapp.com/api/module/").then(response => {
+      axios.get("https://cpel.herokuapp.com/api/modules/").then(response => {
+          console.log(response.data)
           this.data = response.data;
       });
-        axios.get("https://cpel.herokuapp.com/api/group/").then(response => {
-            this.groups = response.data;
-        })
+      axios.get("https://cpel.herokuapp.com/api/groups/").then(response => {
+          this.groups = response.data;
+      })
+        axios.get("https://cpel.herokuapp.com/api/tds/")
+            .then(response => this.tds = response.data)
+            .catch(error => console.log(error))
     },
     methods: {
-        getNameGroupById(groups) {
-            let groupsName = "";
-
-            if(groups[0] !== null || groups[0] !== undefined && this.groups[0]) {
-                if (groups.length === 1) {
-                    groupsName = this.groups.find(group => group._id === groups[0]).name;
-                } else {
-                    for (let group of this.groups) {
-                        groupsName+= this.groups.find(grp => grp._id === group._id).name + ", ";
-                    }
-                }
-            }
-
-            return groupsName.substring(0, groupsName.length - 2)
+        getTDsByModules(moduleId) {
+          let count = 0;
+          for (let td of this.tds) {
+              if (td.idModule === moduleId) {
+                  count++
+              }
+          }
+          return count
         },
         dataManager(sortOrder, pagination) {
         if (this.data.length < 1) return;

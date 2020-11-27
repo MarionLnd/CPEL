@@ -9,7 +9,7 @@
 
             <div>
                 <h5>Étudiants</h5>
-                <p v-if="group.nbOfStudents !== 0">Ce groupe est composé de {{ group.nbOfStudents }} étudiants.</p>
+                <p v-if="group.students.length !== 0">Ce groupe est composé de {{ group.students.length }} étudiants.</p>
                 <p v-else>Ce groupe n'a aucun étudiants.</p>
 
                 <div class="form-group">
@@ -55,13 +55,13 @@ export default {
         }
     },
     created() {
-        axios.get("https://cpel.herokuapp.com/api/group/" + this.id).then(response => {
+        axios.get("https://cpel.herokuapp.com/api/groups/" + this.id).then(response => {
             this.group = response.data
         });
-        axios.get("https://cpel.herokuapp.com/api/module/").then(response => {
+        axios.get("https://cpel.herokuapp.com/api/modules/").then(response => {
             this.mods = response.data
         });
-        axios.get("https://cpel.herokuapp.com/api/student/").then(response => {
+        axios.get("https://cpel.herokuapp.com/api/students/").then(response => {
             for(let student of response.data) {
                 if (student.idGroup === "") {
                     this.students.push(student)
@@ -71,9 +71,24 @@ export default {
     },
     methods: {
         sendForm() {
-            axios.put("https://cpel.herokuapp.com/api/group/" + this.id)
-            axios.put("https://cpel.herokuapp.com/api/group/" + this.id) // TODO demander a Marieme si c'est possible de prendre un tableau dans le body
-            axios.put("https://cpel.herokuapp.com/api/module/" + this.id)
+            for(let student of this.formData.students) {
+                axios.put("https://cpel.herokuapp.com/api/groups/" + this.id + "/students/" + student._id)
+                    .then(response => {
+                        console.log(response)
+                    })
+                    .catch(error => {
+                        console.log(error)
+                    })
+            }
+            for(let mod of this.formData.modules) {
+                axios.put("https://cpel.herokuapp.com/api/groups/" + this.id + "/modules/" + mod._id)
+                    .then(response => {
+                        console.log(response)
+                    })
+                    .catch(error => {
+                        console.log(error)
+                    })
+            }
         },
     }
 }

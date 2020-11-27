@@ -36,7 +36,7 @@
                     </select>
                 </div>
 
-                <button type="submit" class="btn btn-primary mt-3" @click.prevent="sendForm">Créer le groupe</button>
+                <button type="submit" class="btn btn-outline-success mt-3" @click.prevent="sendForm">Ajouter le groupe</button>
             </form>
         </div>
     </div>
@@ -86,12 +86,13 @@ export default {
             // Ajouter le nouveau groupe a la base
             axios.post("https://cpel.herokuapp.com/api/group/", groupCreated)
                 .then(() => {
+                    this.$router.push("/admin/tableau-de-bord")
                     // Mettre a jour l'etudiant
-                    for (let student in this.studentsAdded) {
+                    /*for (let student in this.studentsAdded) {
                         axios.put(`https://cpel.herokuapp.com/api/student/${student._id}`, this.idGroup)
                             .then()
                             .catch(error => console.log(error))
-                    }
+                    }*/
                 })
                 .catch(error => {
                     console.log(error)

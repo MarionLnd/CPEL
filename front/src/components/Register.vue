@@ -22,7 +22,6 @@
                     <select id="profileType" class="custom-select" v-model.lazy="formData.profileType">
                         <option value="student">Étudiant</option>
                         <option value="professor">Professeur</option>
-                        <option value="admin">Admin</option>
                     </select>
                 </div>
 
@@ -108,8 +107,8 @@
                            case 411:
                                this.errorMessage = "Votre numéro étudiant n'existe pas dans notre base."
                                break;
-                           case 412:
-                               this.errorMessage = "Votre numéro d'identification administrateur n'existe pas dans notre base."
+                           default:
+                               this.errorMessage = "Une erreur est survenue lors de votre inscription.. Réessayez !"
                                break;
                        }
                    })
