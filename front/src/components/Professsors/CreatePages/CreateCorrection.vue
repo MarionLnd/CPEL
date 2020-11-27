@@ -57,6 +57,7 @@
         props: ['idExercice'],
         data() {
             return {
+                idExercisesCorrected: [],
                 formData: {
                     exercises: [],
                     selectedExercise: {},
@@ -68,9 +69,19 @@
             }
         },
         created() {
-            axios.get("https://cpel.herokuapp.com/api/exercise")
+            axios.get("https://cpel.herokuapp.com/api/corrections")
+                .then(response => {
+                    for (let correction of response.data) {
+                        this.idExercisesCorrected.push(correction.idExercise)
+                    }
+                })
+            axios.get("https://cpel.herokuapp.com/api/exercises")
             .then(response => {
-                this.formData.exercises = response.data
+                for(let exo of response.data) {
+                    if (!this.idExercisesCorrected.includes(exo._id)) {
+                        this.formData.exercises.push(exo)
+                    }
+                }
                 // Sort exercises by their id modules
                 this.formData.exercises.sort((a, b) => {
                     let ma = a.createdAt,
@@ -93,11 +104,11 @@
                 let correctionCreated = {
                     idExercise: this.formData.selectedExercise._id,
                     content: this.formData.content,
-                    correctionCode: this.formData.correctionCode
+                    correctionCode: this.formData.correctionCode,
+                    sendCorrection: false
                 }
-                console.log(correctionCreated)
                 // Ajouter la nouvelle correction a la base
-               axios.post("https://cpel.herokuapp.com/api/correction/" + correctionCreated.idExercise, correctionCreated)
+               axios.post("https://cpel.herokuapp.com/api/correction/", correctionCreated)
                     .then(() => {
                         // redirect
                         this.$router.push(this.$route.query.redirect || '/professeur/')

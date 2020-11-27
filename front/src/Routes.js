@@ -1,8 +1,8 @@
 import Register from "@/components/Register";
 
 // Professor
-import Dashboard from "../components/Professsors/Dashboards/Dashboard";
-import Profile from "../components/Professsors/DetailsPages/Profile";
+import Dashboard from "@/components/Professsors/Dashboards/Dashboard";
+import Profile from "@/components/Professsors/DetailsPages/Profile";
 import CreateExercise from "@/components/Professsors/CreatePages/CreateExercise";
 import CreateGroup from "@/components/Professsors/CreatePages/CreateGroup";
 import CreateCorrection from "@/components/Professsors/CreatePages/CreateCorrection";
@@ -14,7 +14,7 @@ import Group from "@/components/Professsors/DetailsPages/Group";
 import Exercice from "@/components/Professsors/DetailsPages/Exercice";
 import Student from "@/components/Professsors/DetailsPages/Student";
 import CreateModule from "@/components/Professsors/CreatePages/CreateModule";
-import StudentRending from "../components/Professsors/DetailsPages/StudentRending";
+import StudentRending from "@/components/Professsors/DetailsPages/StudentRending";
 import CreateTD from "@/components/Professsors/CreatePages/CreateTD";
 import TD from "@/components/Professsors/DetailsPages/TD";
 
@@ -47,7 +47,7 @@ export default [
     {path: '/professeur/creer-groupe', component: CreateGroup },
     {path: '/professeur/creer-correction', component: CreateCorrection },
     {path: '/professeur/creer-module', component: CreateModule },
-    {path: '/professeur/editer-correction/:idCorrection', component: EditCorrection },
+    {path: '/professeur/editer-correction/:idCorrection', component: EditCorrection, props: (route) => ({ query: route.query.idCorrection}) },
     {path: '/professeur/editer-exercice/:idExercice', component: EditExercise },
     {path: '/professeur/editer-groupe/:idGroup', component: EditGroup },
     {path: '/professeur/module/:idModule', component: Module },
@@ -73,6 +73,5 @@ export default [
     {path: '/admin/professeur/:idProfessor', component: Dashboard },
     {path: '/admin/etudiant/:idStudent', component: Dashboard },
     {path: '/admin/groupe/:idGroup', component: Dashboard },
-
 
 ]

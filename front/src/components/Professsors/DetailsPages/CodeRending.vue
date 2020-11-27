@@ -1,5 +1,14 @@
 <template>
     <div class="text-left">
+
+        <!-- ALERTS -->
+        <transition name="slide-fade" v-if="codeSent || errorOnSending">
+            <div class="alert"
+                 :class="{'alert-success': codeSent, 'alert-danger': errorOnSending}">
+                {{ alertMessage }}
+            </div>
+        </transition>
+
         <div class="mb-2">
             <h5>Enoncé :</h5>
             <p class="align-middle text-left">{{ exercise.wording }}</p>
@@ -28,22 +37,21 @@
                                 id="yourcode"
                                 class="tab-pane fade show active"
                                 cols="40"
-                                rows="15" v-model="contentStudent" v-if="!hasCorrection">
+                                rows="15" v-model="setContent">
                             </textarea>
-                            <textarea
-                                id="yourcode"
-                                class="tab-pane fade show active"
-                                cols="40"
-                                rows="15" v-model="contentStudent" v-else>
-                                </textarea>
                     </div>
                 </div>
                 <div class="result">
                   <textarea id="output" class="form-control" cols="40" rows="15">
                   </textarea>
                 </div>
-                <footer class="embed-nav group text-left" v-if="!hasCorrection">
-                    <button class="btn btn-outline-light ml-3 m-3">Envoyer le code solution</button>
+                <footer class="embed-nav group text-left">
+                    <div v-if="!correction.sendCorrection">
+                        <button class="btn btn-outline-light ml-3 m-3" @click="sendCode">Envoyer le code solution</button>
+                    </div>
+                    <div v-else>
+                        <p class="text-white pl-2 pt-3">La correction a déjà été envoyée.</p>
+                    </div>
                 </footer>
             </div>
         </div>
@@ -54,13 +62,24 @@
 <script src="http://www.skulpt.org/static/skulpt-stdlib.js" type="text/javascript"></script>
 
 <script>
+    import axios from "axios";
+
     export default {
         name: "CodeRending",
-        props: ['exercise', 'contentStudent', 'hasCorrection', 'contentCorrection'],
+        props: {
+            exercise: Object,
+            contentStudent: String,
+            hasCorrection: Boolean,
+            contentCorrection: String
+        },
         data() {
             return {
-                correction: {},//this.hasCorrection,
+                correction: {},
                 active: false,
+                alertMessage: "",
+                content: "",
+                codeSent: false,
+                errorOnSending: false
             }
         },
         methods: {
@@ -88,7 +107,55 @@
                     alert(e.toString());
                 }
             },
+            sendCode() {
+                let correctionToSend = {
+                    _id: this.correction._id,
+                    __v: this.correction.__v,
+                    content: this.correction.content,
+                    correctionCode: this.correction.correctionCode,
+                    createdAt: this.correction.createdAt,
+                    idExercise: this.correction.idExercise,
+                    sendCorrection: true
+                }
+                axios.put("https://cpel.herokuapp.com/api/corrections/" + this.correction._id, correctionToSend,
+                    {headers: {
+                        "Content-type": "application/json"
+                        }
+                    }
+                )
+                .then((response) => {
+                    console.log("The code has been successfully sent")
+                    console.log(response)
+                    this.codeSent = true
+                    this.alertMessage = "Le code de correction pour l'exercice a bien été diffusé"
+                })
+                .catch(error => {
+                    console.log(error)
+                    this.errorOnSending = true
+                    this.alertMessage = "Le code de correction n'a pas été envoyé"
+                    //this.correction.sendCode = false
+                })
+            },
         },
+        computed: {
+            setContent() {
+                if (this.contentCorrection !== undefined) {
+                    return this.contentCorrection
+                } else {
+                    return this.contentStudent
+                }
+            }
+        },
+        created() {
+            axios.get("https://cpel.herokuapp.com/api/corrections/").then(response => {
+                for (let correction of response.data) {
+                    if (correction.idExercise === this.exercise._id) {
+                        this.correction = correction
+                        this.hasCorrection = true
+                    }
+                }
+            })
+        }
     }
 </script>
 

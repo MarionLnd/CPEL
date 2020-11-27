@@ -16,40 +16,17 @@
                 </button>
             </div>
             <div class="card-body text-left">
-                <div v-if="tds.length > 0">
-                    <p>Il est composé des TD suivants :</p>
-                    <ol v-for="(td, key) in tds" :key="key">
+                <div>
+                    <p v-if="moduleTds.length !== 0">Il est composé des TD suivants :</p>
+                    <ol v-for="(td, key) in moduleTds" :key="key">
                         <li class="text-left">
                             <router-link :to="`/professeur/td/${td._id}`">{{ td.name }}</router-link>
                         </li>
                     </ol>
                 </div>
-                <div v-else>
-                    <p>Il n'y a pas encore de TD dans ce module.</p>
-                    <button class="btn btn-outline-info" type="button" data-toggle="collapse" data-target="#collapseModules" aria-expanded="false" aria-controls="collapseModules">
-                        Consulter les TD
-                    </button>
-                    <div class="collapse" id="collapseModules">
-                        <div class="mt-3 p-4 border">
-                            <form class="row">
-                                <label for="modulesToSelect">Les modules existants :</label>
-                                <select id="modulesToSelect" class="form-control" multiple="multiple" v-model="moduleTdsSelected">
-                                    <option v-for="(td, key) in moduleTds" :key="key">
-                                        {{ td.name }}
-                                    </option>
-                                </select>
-                            </form>
-                            <br>
-                            <div>
-                                <p class="badge badge-info m-2 mt-0" v-for="(td, key) in moduleTdsSelected" :key="key">
-                                    {{ td }}
-                                </p>
-                            </div>
-
-                            <!--<button class="btn btn-outline-success mt-3" type="submit" @submit.prevent="addModuleToGroup" v-if="modulesSelected.length <= 1">Lier le groupe à ce module</button>
-                            <button class="btn btn-outline-success mt-3" type="submit" @submit.prevent="addModuleToGroup" v-else>Lier le groupe à ces modules</button>-->
-                        </div>
-                    </div>
+                <div>
+                    <p v-if="moduleTds.length === 0">Il n'y a pas encore de TD dans ce module.</p>
+                    <p>Vous pouvez en créer un en sélectionnant ce module dans la page d'ajout de TD <router-link :to="`/professeur/creer-td`">ici.</router-link></p>
                 </div>
             </div>
         </div>
@@ -74,10 +51,12 @@ export default {
         axios.get("https://cpel.herokuapp.com/api/modules/" + this.id).then(response => {
             this.mod = response.data
         })
-        axios.get("https://cpel.herokuapp.com/api/td/").then(response => {
-            this.moduleTds = response.data
+        axios.get("https://cpel.herokuapp.com/api/tds/").then(response => {
             for (let td of response.data) {
                 if (td.idModule === this.id) {
+                    this.moduleTds.push(td)
+                }
+                if (td.idModule === undefined) {
                     this.tds.push(td)
                 }
             }

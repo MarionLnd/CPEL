@@ -80,7 +80,6 @@
 
                 let groupCreated = {
                     name: this.formData.groupName,
-                    nbOfStudents: this.formData.studentsAdded.length,
                     modules: this.formData.modulesSelected,
                     students: this.formData.studentsAdded
                 }
@@ -110,7 +109,6 @@
     }
 </script>
 
-<style src="../../../../node_modules/vue-multiselect/dist/vue-multiselect.min.css"></style>
 <style scoped>
     /* Enter and leave animations can use different */
     /* durations and timing functions.              */

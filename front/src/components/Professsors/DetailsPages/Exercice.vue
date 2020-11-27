@@ -1,9 +1,12 @@
 <template>
     <div class="container">
-        <CodeRending :exercise="exo" :hasCorrection="hasCorrection" :contentCorrection="correctionContent" />
-        <router-link :to="`/professeur/creer-correction/`">
+        <CodeRending :exercise="exo" :hasCorrection="hasCorrection" :contentCorrection="correctionContent.content" />
+        <router-link :to="`/professeur/creer-correction/`" v-if="!hasCorrection">
              <button class="btn btn-outline-info">Ajouter une correction</button>
          </router-link>
+        <!--<router-link :to="`/professeur/editer-correction/${correctionContent._id}?idCorrection=${group.name}`" v-else>
+            <button class="btn btn-outline-info">Modifier la correction</button>
+        </router-link>-->
     </div>
 </template>
 
@@ -24,17 +27,17 @@ export default {
             exercise: {},
             active: Boolean,
             hasCorrection: false,
-            correctionContent: ""
+            correctionContent: {}
         };
     },
     methods: {
 
     },
     created() {
-        axios.get("https://cpel.herokuapp.com/api/exercise/" + this.idExercise).then(response => {
+        axios.get("https://cpel.herokuapp.com/api/exercises/" + this.idExercise).then(response => {
             this.exercise = response.data
         });
-        axios.get("https://cpel.herokuapp.com/api/correction/").then(response => {
+        axios.get("https://cpel.herokuapp.com/api/corrections/").then(response => {
             for (let correction of response.data) {
                 if (correction.idExercise === this.idExercise) {
                     this.hasCorrection = true

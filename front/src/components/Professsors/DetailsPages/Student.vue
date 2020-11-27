@@ -3,7 +3,7 @@
         <h1 class="pt-3 pb-3">Profil - {{ student.firstname }} {{ student.lastname }}</h1>
         <div class="row">
             <div class="col-6">
-                <h4>Informations personnelles</h4>
+                <h3>Informations personnelles</h3>
                 <div class="card mt-4">
                     <div class="card-header">
                         <h4 class="card-title">{{ student.firstname }} {{ student.lastname }}</h4>
@@ -41,9 +41,12 @@
                 </div>
             </div>
             <div class="col-6">
-                <h4>Exercices effectués</h4>
+                <h3>Exercices effectués</h3>
                 <div class="card mt-4">
-                    <div class="card-body text-left">
+                    <div class="card-body text-center" v-if="studentRenderings.length === 0">
+                        <p>{{ student.firstname }} n'a pas encore rendu d'exercices.</p>
+                    </div>
+                    <div class="card-body text-left" v-else>
                         <div v-for="(rendering, key) in studentRenderings" :key="key">
                             <ul>
                                 <li>
@@ -59,9 +62,6 @@
                 </div>
             </div>
         </div>
-
-
-
     </div>
 </template>
 
@@ -83,14 +83,18 @@
             }
         },
         created() {
-            axios.get("https://cpel.herokuapp.com/api/student/" + this.id).then(response => {
+            axios.get("https://cpel.herokuapp.com/api/students/" + this.id).then(response => {
                 this.student = response.data
             })
-            axios.get("https://cpel.herokuapp.com/api/exercise/").then(response => {
+            axios.get("https://cpel.herokuapp.com/api/exercises/").then(response => {
                 this.exercises = response.data
             })
-            axios.get("https://cpel.herokuapp.com/api/studentRendering/").then(response => {
-                this.studentRenderings = response.data
+            axios.get("https://cpel.herokuapp.com/api/studentRenderings/").then(response => {
+                for (let stdRender of response.data) {
+                    if (stdRender.idStudent === this.id) {
+                        this.studentRenderings.push(stdRender)
+                    }
+                }
             })
         },
         methods: {

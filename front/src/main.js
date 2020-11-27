@@ -3,7 +3,7 @@ import App from './App.vue'
 import 'bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import VueRouter from "vue-router"
-import Routes from "./js/Routes"
+import Routes from "./Routes"
 import 'skulpt/dist/skulpt.min'
 import 'skulpt/dist/skulpt-stdlib'
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome"
@@ -15,7 +15,9 @@ import {
     faClipboard,
     faEye,
     faFileDownload,
-    faFilePdf
+    faFilePdf,
+    faUserMinus,
+    faTrashAlt
 } from '@fortawesome/free-solid-svg-icons'
 import VueMoment from "vue-moment"
 
@@ -32,6 +34,8 @@ library.add(faClipboard)
 library.add(faEye)
 library.add(faFileDownload)
 library.add(faFilePdf)
+library.add(faUserMinus)
+library.add(faTrashAlt)
 
 const router = new VueRouter({
   routes: Routes,

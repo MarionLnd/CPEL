@@ -1,9 +1,9 @@
 <template>
     <div>
-        <h1 class="pt-2 pb-2">Tableau de bord</h1>
+        <h1 class="pt-3 pb-3">Tableau de bord - Administrateur</h1>
 
-        <ProfessorDashboard />
-        <StudentDashboard />
+        <ProfessorDashboard class="pb-3"/>
+        <StudentDashboard class="pb-3" />
         <GroupDashboard />
     </div>
 </template>

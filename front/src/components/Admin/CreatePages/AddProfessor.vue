@@ -1,23 +1,17 @@
 <template>
     <div>
-        <h1 class="pt-3 pb-3">Ajouter un professeur</h1>
+        <h1 class="pt-3 pb-1">Ajouter un professeur</h1>
 
         <!-- ALERTS -->
         <transition name="slide-fade">
-            <div class="alert alert-success" v-if="formData.submitted">
-                L'enseignant(e) a été ajouté(e) avec succès !
-            </div>
-        </transition>
-
-        <transition>
-            <div class="alert alert-danger alert-dismissible" v-if="formData.error" style="transition-delay: 1.5s">
-                Une erreur est survenue lors de l'ajout de l'enseignant.. Réessayez !
+            <div class="alert"
+                 :class="{'alert-success': formData.submitted, 'alert-danger': formData.error}">
+                {{ alertMessage }}
             </div>
         </transition>
 
         <div class="container">
             <form class="text-left">
-
                 <h5 class="section-title mb-3">Informations personnelles</h5>
                 <div class="form-row">
                     <div class="form-group col">
@@ -74,28 +68,30 @@ export default {
                 error: false,
                 submitted: false
             },
-            errorMessage: ""
+            alertMessage: ""
         }
     },
     methods: {
         sendForm() {
-            this.formData.submitted = true
-
             let professorCreated = {
                 lastname: this.formData.lastname,
                 firstname: this.formData.firstname,
                 professorNumber: this.formData.idNumber,
                 email: this.formData.email,
-                password: "",
                 idModule: this.formData.moduleSelected,
             }
             console.log(professorCreated)
 
             // Ajouter le nouveau professeur a la base
             axios.post("https://cpel.herokuapp.com/api/professor/", professorCreated)
-                .then(() => this.$router.push("/admin/tableau-de-bord"))
+                .then(() => {
+                    this.formData.submitted = true
+                    this.alertMessage = "L'enseignant(e) a été ajouté(e) avec succès !"
+                    this.$router.push("/admin/tableau-de-bord")
+                })
                 .catch(error => {
                     console.log(error)
+                    this.alertMessage = "L'enseignant(e) a été ajouté(e) avec succès !"
                     this.formData.error = true
                 })
             this.formData.submitted = false
