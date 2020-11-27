@@ -678,9 +678,9 @@ router.put('/students/:idStudent', async (req, res) => {
     try {
         await student.findByIdAndUpdate(req.params.idStudent, req.body)
         await student.save()
-        res.status(200).json({ Result : "200 - Student updated"})
+        res.status(200).json({ Result : "200 - Student updated"});
     } catch (err) {
-        res.status(400).json({ Result : "400 - Student not updated"})
+        res.status(400).json({ Result : "400 - Student not updated"});
     }
 });
 
