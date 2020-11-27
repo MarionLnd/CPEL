@@ -292,11 +292,11 @@ router.post("/studentRendering",async (req,res)=>{
 // -----------------------------------------------
 
 /**
- * Get all user
- * @route GET /user
+ * Get all users
+ * @route GET /users
  * @group user - Operations about user
- * @returns {object} 200 - All User
- * @returns {Error}  404 - User Not found
+ * @returns {object} 200 - All Users
+ * @returns {Error}  404 - Users Not found
  */
 // Récupère les users
 router.get("/users",async (req,res)=>{
@@ -308,32 +308,31 @@ router.get("/users",async (req,res)=>{
 });
 
 /**
- * Get a user url
- * @route GET /user/{idUser}
+ * Get a user by id
+ * @route GET /users/{idUser}
  * @group user - Operations about user
- * @param {string} idUser.path.required - idUser
+ * @param {string} idUser.path.required - The id of the user we are looking for
  * @returns {object} 200 - A user
  * @returns {Error}  404 - User Not found
  */
 // Récupère un user
-router.route('/user/:idUser').get(function async(req,res){
+router.route('/users/:idUser').get(function async(req,res){
     user.findById(req.params.idUser, function(err, user) {
         if (err)
             res.send(err);
         res.status(200).json(user)
-        // res.json(professor);
     });
 });
 
 /**
- * Get all professor url
- * @route GET /professor
+ * Get all professors
+ * @route GET /professors
  * @group professor - Operations about professor
- * @returns {object} 200 - All professor
- * @returns {Error}  404 - Professor Not found
+ * @returns {object} 200 - All professors
+ * @returns {Error}  404 - Professors Not found
  */
 // Récupère tous les professeurs
-router.get("/professor",async (req,res)=>{
+router.get("/professors",async (req,res)=>{
   await professor.find({}).then((result)=>{
     res.status(200).json(result)
   },(err)=>{
@@ -342,15 +341,15 @@ router.get("/professor",async (req,res)=>{
 });
 
 /**
- * Get a professor url
- * @route GET /professor/{idProfessor}
+ * Get a professor by id
+ * @route GET /professors/{idProfessor}
  * @group professor - Operations about professor
- * @param {string} idProfessor.path.required - idProfessor
+ * @param {string} idProfessor.path.required - The id of the professor we are looking for
  * @returns {object} 200 - A professor
  * @returns {Error}  404 - Professor Not found
  */
 // Récupère toutes les informations d’un professeur en fonction de son id
-router.route('/professor/:idProfessor').get(function async(req,res){
+router.route('/professors/:idProfessor').get(function async(req,res){
       professor.findById(req.params.idProfessor, function(err, professor) {
         if (err)
           res.status(404).json(err);
@@ -359,14 +358,14 @@ router.route('/professor/:idProfessor').get(function async(req,res){
     });
 
 /**
- * Get all student url
- * @route GET /student
+ * Get all students
+ * @route GET /students
  * @group student - Operations about student
- * @returns {object} 200 - All student
- * @returns {Error}  404 - Student Not found
+ * @returns {object} 200 - All students
+ * @returns {Error}  404 - Students Not found
  */
 // Récupère tous les étudiants
-router.get("/student",async (req,res)=>{
+router.get("/students",async (req,res)=>{
   await student.find({}).then((result)=>{
     res.status(200).json(result)
   },(err)=>{
@@ -375,15 +374,15 @@ router.get("/student",async (req,res)=>{
 });
 
 /**
- * Get a student url
- * @route GET /student/{idStudent}
+ * Get a student by id
+ * @route GET /students/{idStudent}
  * @group student - Operations about student
- * @param {string} idStudent.path.required - idStudent
+ * @param {string} idStudent.path.required - The id of the student we are looking for
  * @returns {object} 200 - A student
  * @returns {Error}  404 - Student Not found
  */
 // Récupère les étudiants par ID
-router.route('/student/:idStudent').get(function async(req,res){
+router.route('/students/:idStudent').get(function async(req,res){
       student.findById(req.params.idStudent, function(err, student) {
         if (err)
           res.status(404).json(err);
@@ -392,14 +391,14 @@ router.route('/student/:idStudent').get(function async(req,res){
     });
 
 /**
- * Get all group url
- * @route GET /group
+ * Get all groups
+ * @route GET /groups
  * @group group - Operations about group
  * @returns {object} 200 - All group
- * @returns {Error}  404 - Group Not found
+ * @returns {Error}  404 - Groups Not found
  */
 // Récupère les groupes
-router.get("/group",async (req,res)=>{
+router.get("/groups",async (req,res)=>{
   await group.find({}).then((result)=>{
     res.status(200).json(result)
   },(err)=>{
@@ -408,15 +407,15 @@ router.get("/group",async (req,res)=>{
 });
 
 /**
- * Get a group url
- * @route GET /group/{idGroup}
+ * Get a group by id
+ * @route GET /groups/{idGroup}
  * @group group - Operations about group
- * @param {string} idGroup.path.required - idGroup
+ * @param {string} idGroup.path.required - The id of the student we are looking for
  * @returns {object} 200 - A group
  * @returns {Error}  404 - Group Not found
  */
 // Récupère un groupe
-router.route('/group/:idGroup').get(function async(req,res){
+router.route('/groups/:idGroup').get(function async(req,res){
   group.findById(req.params.idGroup, function(err, group) {
     if (err)
         res.status(404).json(err);
@@ -425,14 +424,14 @@ router.route('/group/:idGroup').get(function async(req,res){
 });
 
 /**
- * Get a module url
- * @route GET /module
+ * Get all modules
+ * @route GET /modules
  * @group module - Operations about module
- * @returns {object} 200 - A module
- * @returns {Error}  404 - Module Not found
+ * @returns {object} 200 - All modules
+ * @returns {Error}  404 - Modules Not found
  */
 // Recup tous les modules
-router.get("/module",async (req,res)=>{
+router.get("/modules",async (req,res)=>{
   await mod.find({}).then((result)=>{
     res.status(200).json(result)
   },(err)=>{
@@ -441,15 +440,15 @@ router.get("/module",async (req,res)=>{
 });
 
 /**
- * Get all professor's module url
- * @route GET /module/{idProfessor}
- * @group module - Operations about module
- * @param {string} idProfessor.path.required - idProfessor
- * @returns {object} 200 - All module of a professor
- * @returns {Error}  404 - Module Not found
+ * Get all professor's modules
+ * @route GET /professors/{idProfessor}/modules
+ * @group professor - Operations about professor
+ * @param {string} idProfessor.path.required - The id of the professor whose modules we are looking for
+ * @returns {object} 200 - All modules of a professor
+ * @returns {Error}  404 - Modules Not found
  */
-// Recup tous les modules d'un prof
-router.get("/module/:idProfessor", async (req, res) => {
+// tous les modules d'un prof
+router.get("/professors/:idProfessor/modules", async (req, res) => {
   try {
     const modules = await mod.find({ idProfessor: req.params.idProfessor})
       res.status(200).json(modules)
@@ -459,9 +458,10 @@ router.get("/module/:idProfessor", async (req, res) => {
 });
 
 /**
- * Get a module url
- * @route GET /module/{idModule}
+ * Get a module
+ * @route GET /modules/{idModule}
  * @group module - Operations about module
+ * @param {string} idModule.path.required - The id of the module we are looking for
  * @returns {object} 200 - A module
  * @returns {Error}  404 - Module Not found
  */
@@ -475,14 +475,14 @@ router.route('/modules/:idModule').get(function async(req,res){
 });
 
 /**
- * Get all exercise url
- * @route GET /exercise
+ * Get all exercises
+ * @route GET /exercises
  * @group exercise - Operations about exercise
- * @returns {object} 200 - A exercise
- * @returns {Error}  404 - Exercise Not found
+ * @returns {object} 200 - All exercises
+ * @returns {Error}  404 - Exercises Not found
  */
 // Récupérer tous les exercices
-router.get("/exercise",async (req,res)=>{
+router.get("/exercises",async (req,res)=>{
   await exercise.find({}).then((result)=>{
     res.status(200).json(result)
   },(err)=>{
@@ -491,15 +491,15 @@ router.get("/exercise",async (req,res)=>{
 });
 
 /**
- * Get a exercise url
- * @route GET /exercise/{idExercise}
+ * Get a exercise by id
+ * @route GET /exercises/{idExercise}
  * @group exercise - Operations about exercise
- * @param {string} idExercise.path.required - idExercise
+ * @param {string} idExercise.path.required - The id of the exercise we are looking for
  * @returns {object} 200 - A exercise
  * @returns {Error}  404 - Exercise Not found
  */
 // Récupérer un exercice
-router.route('/exercise/:idExercise').get(function async(req,res){
+router.route('/exercises/:idExercise').get(function async(req,res){
   exercise.findById(req.params.idExercise, function(err, exercise) {
     if (err)
         res.status(404).json(err);
@@ -508,14 +508,14 @@ router.route('/exercise/:idExercise').get(function async(req,res){
 });
 
 /**
- * Get all studentRendering url
- * @route GET /studentRendering
+ * Get all studentRenderings
+ * @route GET /studentRenderings
  * @group studentRendering - Operations about studentRendering
- * @returns {object} 200 - A studentRendering
- * @returns {Error}  404 - Student Rendering Not found
+ * @returns {object} 200 - All studentRenderings
+ * @returns {Error}  404 - Students Renderings Not found
  */
 // Récupère tous les rendus de tous les étudiants
-router.get("/studentRendering",async (req,res)=>{
+router.get("/studentRenderings",async (req,res)=>{
   await studentRendering.find({}).then((result)=>{
     res.status(200).json(result)
   },(err)=>{
@@ -524,15 +524,32 @@ router.get("/studentRendering",async (req,res)=>{
 });
 
 /**
- * Get all rendering for a student url
- * @route GET /studentRendering/{idStudent}
+ * Get a studentRenderings by id
+ * @route GET /studentRenderings/{idStudentRendering}
  * @group studentRendering - Operations about studentRendering
- * @param {string} idStudent.path.required - idStudent
+ * @param {string} idStudentRendering.path.required - The id of the studentRendering we are looking for
  * @returns {object} 200 - A studentRendering
  * @returns {Error}  404 - Student Rendering Not found
  */
+// Récupérer un rendu par id
+router.route('/studentRenderings/:idStudentRendering').get(function async(req,res){
+    studentRendering.findById(req.params.idStudentRendering, function(err, studentRendering) {
+        if (err)
+            res.status(404).json(err);
+        res.status(200).json(studentRendering);
+    });
+});
+
+/**
+ * Get all rendering for a student
+ * @route GET /students/{idStudent}/studentRenderings
+ * @group student - Operations about student
+ * @param {string} idStudent.path.required - The id of the student whose rendering we are looking for
+ * @returns {object} 200 - All student Rendering
+ * @returns {Error}  404 - Student Renderings Not found
+ */
 // Récupérer tous les rendus pour un étudiant
-router.get("/studentRendering/:idStudent", async (req, res) => {
+router.get("/students/:idStudent/studentRenderings", async (req, res) => {
   try {
     const rendus = await studentRendering.findOne({ idStudent: req.params.idStudent})
       res.status(200).json(rendus);
@@ -544,50 +561,33 @@ router.get("/studentRendering/:idStudent", async (req, res) => {
 
 /**
  * Get all rendering for a exercise by a student url
- * @route GET /studentRendering/{idExercise}/{idStudent}
- * @group studentRendering - Operations about studentRendering
- * @param {string} idExercise.path.required - idExercise
- * @param {string} idStudent.path.required - idStudent
+ * @route GET /students/{idStudent}/{idExercise}/studentRenderings
+ * @group student - Operations about student
+ * @param {string} idExercise.path.required - The id of the exercise whose rendering we are looking for
+ * @param {string} idStudent.path.required - The id of the student whose rendering we are looking for
  * @returns {object} 200 - All studentRendering for an exercise
  * @returns {Error}  404 - Student Rendering Not found
  */
 // Récupérer les rendus d'un exercice pour un étudiant
-router.get("/studentRendering/:idExercise/:idStudent", async (req, res) => {
+router.get("/students/:idStudent/:idExercise/studentRenderings", async (req, res) => {
   try {
-    const exo = await studentRendering.findOne({ idExercise: req.params.idExercise, idStudent: req.params.idStudent })
+    const exo = await studentRendering.findOne({ idStudent: req.params.idStudent, idExercise: req.params.idExercise })
       res.status(200).json(exo);
   } catch {
     res.status(404)
     res.send({ error: "404" })
   }
-})
-
-/**
- * Get a studentRendering url
- * @route GET /studentRendering/{idStudentRendering}
- * @group studentRendering - Operations about studentRendering
- * @param {string} idStudentRendering.path.required - idStudentRendering
- * @returns {object} 200 - A studentRendering
- * @returns {Error}  404 - Student Rendering Not found
- */
-// Récupérer un rendu par id
-router.route('/studentRendering/:idStudentRendering').get(function async(req,res){
-    studentRendering.findById(req.params.idStudentRendering, function(err, studentRendering) {
-        if (err)
-            res.status(404).json(err);
-        res.status(200).json(studentRendering);
-    });
 });
 
 /**
- * Get all correction url
- * @route GET /correction
+ * Get all correction
+ * @route GET /corrections
  * @group correction - Operations about correction
- * @returns {object} 200 - A correction
- * @returns {Error}  404 - Correction Not found
+ * @returns {object} 200 - All corrections
+ * @returns {Error}  404 - Corrections Not found
  */
 // Récupérer toutes les corrections
-router.get("/correction",async (req,res)=>{
+router.get("/corrections",async (req,res)=>{
   await correction.find({}).then((result)=>{
     res.status(200).json(result)
   },(err)=>{
@@ -596,15 +596,15 @@ router.get("/correction",async (req,res)=>{
 });
 
 /**
- * Get a correction url
- * @route GET /correction/{idCorrection}
+ * Get a correction by id
+ * @route GET /corrections/{idCorrection}
  * @group correction - Operations about correction
- * @param {string} idCorrection.path.required - idCorrection
+ * @param {string} idCorrection.path.required - The id of the correction we are looking for
  * @returns {object} 200 - A correction
  * @returns {Error}  404 - Correction Not found
  */
 // Récupérer Correction par ID
-router.route('/correction/:idCorrection').get(function async(req,res){
+router.route('/corrections/:idCorrection').get(function async(req,res){
   correction.findById(req.params.idCorrection, function(err, correction) {
     if (err)
         res.status(404).json(err)
@@ -613,14 +613,14 @@ router.route('/correction/:idCorrection').get(function async(req,res){
 });
 
 /**
- * Get all TD url
- * @route GET /td
+ * Get all TD
+ * @route GET /tds
  * @group td - Operations about td
- * @returns {object} 200 - A td
- * @returns {Error}  404 - Td Not found
+ * @returns {object} 200 - All tds
+ * @returns {Error}  404 - Tds Not found
  */
 // Récupérer tous les TDs
-router.get("/td",async (req,res)=>{
+router.get("/tds",async (req,res)=>{
   await td.find({}).then((result)=>{
     res.status(200).json(result)
   },(err)=>{
@@ -629,15 +629,15 @@ router.get("/td",async (req,res)=>{
 });
 
 /**
- * Get a TD url
- * @route GET /td/{idTD}
+ * Get a TD by id
+ * @route GET /tds/{idTD}
  * @group td - Operations about td
- * @param {string} idTD.path.required - idTD
+ * @param {string} idTD.path.required - The id of the td we are looking for
  * @returns {object} 200 - A td
  * @returns {Error}  404 - Td Not found
  */
 // Récupérer un TD
-router.route('/td/:idTD').get(function async(req,res){
+router.route('/tds/:idTD').get(function async(req,res){
   td.findById(req.params.idTD, function(err, td) {
     if (err)
         res.status(404).json(err);
@@ -646,15 +646,15 @@ router.route('/td/:idTD').get(function async(req,res){
 });
 
 /**
- * Get all exercise for a TD url
- * @route GET /exercises/{idTD}
- * @group exercise - Operations about exercise
- * @param {string} idTD.path.required - idTD
- * @returns {object} 200 - A exercise
+ * Get all exercise for a TD
+ * @route GET /tds/{idTD}/exercises
+ * @group td - Operations about td
+ * @param {string} idTD.path.required - The id of the td whose exercises we are looking for
+ * @returns {object} 200 - All exercise for the td
  * @returns {Error}  404 - Exercise Not found
  */
 // Récupérer tous les exercices d'un TD
-router.get("/exercises/:idTD", async (req, res) => {
+router.get("/tds/{idTD}/exercises", async (req, res) => {
     try {
         const exs = await exercise.find({ idTD: req.params.idTD})
         res.status(200).json(exs)
