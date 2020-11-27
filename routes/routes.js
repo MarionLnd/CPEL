@@ -163,27 +163,6 @@ router.post("/user",async (req,res)=>{
 });
 
 /**
- * User Login
- * @route GET /login
- * @group user - Operations about user
- * @returns {user.model} 201 - Successful login
- * @returns {Error}  400 - Bad request
- */
-// Connexion d'un user
-router.get("/login", async (req, res) => {
-    const userLogin = await user.findOne({ username: req.body.username });
-    if (!userLogin) return res.status(401).json({ error: "Username is wrong" });
-    const validPassword = await bcrypt.compare(req.body.password, userLogin.password);
-    if (!validPassword) return res.status(401).json({ error: "Password is wrong" });
-    res.json({
-        error: null,
-        data: {
-            message: "Login successful",
-        },
-    });
-});
-
-/**
  * Add a new group
  * @route POST /group
  * @group group - Operations about group
@@ -322,6 +301,22 @@ router.route('/users/:idUser').get(function async(req,res){
             res.send(err);
         res.status(200).json(user)
     });
+});
+
+/**
+ * User Login
+ * @route GET /login/{idUser}
+ * @group user - Operations about user
+ * @returns {user.model} 201 - Successful login
+ * @returns {Error}  400 - Bad request
+ */
+// Connexion d'un user
+router.get("/login/:idUser", async (req, res) => {
+    const userLogin = await user.findOne({ username: req.body.username });
+    if (!userLogin) return res.status(401).json({ error: "Username is wrong" });
+    const validPassword = await bcrypt.compare(req.body.password, userLogin.password);
+    if (!validPassword) return res.status(401).json({ error: "Password is wrong" });
+    res.status(200).json({userLogin})
 });
 
 /**
@@ -673,7 +668,7 @@ router.get('/tds/:idTD/exercises', async (req, res) => {
  * @group student - Operations about student
  * @param {string} idStudent.path.required - idStudent
  * @returns {object} 200 - A student
- * @returns {Error}  404 - Student Not found
+ * @returns {Error}  204 - Student Not found
  */
 // MAJ d'un étudiant
 router.put('/student/:idStudent', async (req, res) => {
