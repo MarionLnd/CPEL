@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const mod  = mongoose.Schema({
     name : String,
-    content: Object,
+    content: String,
     groups : Array,
     idProfessor : String,
     tds : Array,
