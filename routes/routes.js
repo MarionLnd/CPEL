@@ -569,7 +569,7 @@ router.get("/students/:idStudent/studentRenderings", async (req, res) => {
 // Récupérer les rendus d'un exercice pour un étudiant
 router.get("/students/:idStudent/:idExercise/studentRenderings", async (req, res) => {
   try {
-    const exo = await studentRendering.findOne({ idStudent: req.params.idStudent, idExercise: req.params.idExercise })
+    const exo = await studentRendering.find({ idStudent: req.params.idStudent, idExercise: req.params.idExercise })
       res.status(200).json(exo);
   } catch {
     res.status(404)
