@@ -5,7 +5,6 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import VueCookies from 'vue-cookies';
 import VueRouter from "vue-router";
 import Routes from "./Routes";
-import Routes from "./js/Routes"
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faPlay,
   faCheck,
