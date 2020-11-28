@@ -10,5 +10,4 @@ https://cpel.herokuapp.com/api-docs#/
 https://github.com/MarionLnd/CPEL-front
 
 ## API déployée sur heroku
-https://cpel.herokuapp.com
-
+https://cpel.herokuapp.com/api/ + nom de la route
