@@ -11,7 +11,7 @@
       <br />
        <h4>
         <router-link class="nav-link" to="/rendering"
-          >Rendu Exercices 
+          >Exercices Rendu
         </router-link>
       </h4>
     

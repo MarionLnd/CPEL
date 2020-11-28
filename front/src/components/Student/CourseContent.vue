@@ -9,8 +9,8 @@
         {{ item.module }}
      </h1>
       <div class="card">
-        <a :href=   item.content  download>{{ item.module }}</a>
-       
+        <!--a :href=   item.content  download>{{ item.module }}</a-->
+       <p>{{ item.module }} </p>
       </div>
     </div>
   </div>
@@ -21,7 +21,7 @@
 .card {
 
  margin-top: 5%;
-  margin-left: 20%;
+  margin-left: 30%;
 }
 .content{
   margin-top: 5%;

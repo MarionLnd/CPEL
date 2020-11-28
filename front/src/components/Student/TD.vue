@@ -16,12 +16,11 @@
             
            <p @click="setCookie(item.idTD)"  id="subtitle">{{ item.td }}</p>
           </div>
-           
-          </div>
         </div>
-    
-      </div>
+          </div>
+          </div>     
     </div>
+  
   </div>
 </template>
 
@@ -32,12 +31,12 @@
 #first {
   margin-top: 50px;
 }
-#title{
+#title {
   font-family: Georgia, serif;
   font-size: 19px;
   font-weight: bold;
 }
-#subtitle{
+#subtitle {
   font-size: 19px;
   cursor: pointer;
 }
@@ -48,11 +47,11 @@
   margin-top: 50px;
   margin-left: 50%;
 }
-a{
-  color: #4E4E4E;
+a {
+  color: #4e4e4e;
 }
-a:focus{
-  color: #2F7777 ;
+a:focus {
+  color: #2f7777;
 }
 
 .nav-link {
@@ -70,7 +69,6 @@ a:focus{
 }
 .container {
   margin-left: 0%;
-  
 }
 #deconexion {
   position: absolute;
@@ -95,9 +93,8 @@ export default {
   name: "modules",
   components: {
     Header,
-  
-    LeftMenu
-   
+
+    LeftMenu,
   },
   data() {
     return {
@@ -110,22 +107,22 @@ export default {
   mounted() {
     axios.get("https://cpel.herokuapp.com/api/tds/").then((response) => {
       response.data.forEach((td) => {
-        axios.get("https://cpel.herokuapp.com/api/modules/").then((response) => {
-          response.data.forEach((mod) => {
-            
-            
-            if (mod._id === td.idModule) {
-              this.exoData.push({
-                module: mod.name,
-                td: td.name,
-                idTD: td._id,
-                moduleId: mod._id,
-                date: td.createdAt
-              });
-              //console.log(this.exoData);
-            }
+        axios
+          .get("https://cpel.herokuapp.com/api/modules/")
+          .then((response) => {
+            response.data.forEach((mod) => {
+              if (mod._id === td.idModule) {
+                this.exoData.push({
+                  module: mod.name,
+                  td: td.name,
+                  idTD: td._id,
+                  moduleId: mod._id,
+                  date: td.createdAt,
+                });
+                console.log(this.exoData);
+              }
+            });
           });
-        });
         axios
           .get("https://cpel.herokuapp.com/api/exercises/")
           .then((response) => {
@@ -141,7 +138,6 @@ export default {
 
                       if (exr._id === corr.idExercise) {
                         if (!this.newSolution.includes(corr.correctionCode)) {
-                         
                           this.newSolution.push({
                             newSol: corr.correctionCode,
                             solexercise: corr.idExercise,
@@ -150,8 +146,9 @@ export default {
                         }
                       }
 
-                      
-                      this.exoData.sort((a, b) => new Date(a.date) - new Date(b.date));
+                      this.exoData.sort(
+                        (a, b) => new Date(a.date) - new Date(b.date)
+                      );
                       console.log(this.exoData);
                     });
                   });
@@ -160,13 +157,18 @@ export default {
           });
       });
     });
-     axios.get("https://cpel.herokuapp.com/api/modules/").then((response) => {
-          response.data.forEach((mod) => {
-            this.modules.push({
-              modid: mod._id,
-              moduleName: mod.name,
-            });
-            });
+    axios.get("https://cpel.herokuapp.com/api/modules/").then((response) => {
+      response.data.forEach((mod) => {
+       /* this.exoData.forEach((exo)=>{
+          if(exo.idModule === mod._id){
+            
+          }
+        })*/
+        this.modules.push({
+          modid: mod._id,
+          moduleName: mod.name,
+        });
+      });
     });
   },
   methods: {
@@ -176,7 +178,6 @@ export default {
       console.log(this.$cookies.get("idTD"));
       //this.$router.push("/exercise/"+this.$cookies.get("idTD"));
       this.$router.push("/exercise");
-     
     },
   },
 };

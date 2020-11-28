@@ -3,12 +3,7 @@
     <Header />
 
     <LeftMenu />
-   
-   
-    <!--div class="card">
-         <h2 @click="setCookie()"> {{ message }} </h2>
-    </div-->
-    <a href="../SSI_MOUTAOUKIL_Soukayna.pdf" download>PDF</a>
+  
     <table class="table">
   <thead>
     <tr>
@@ -42,6 +37,7 @@ td{
 table{
   margin-left: 10%;
   background-color: azure;
+  margin-top: 20px;
 }
 </style>
 <script>

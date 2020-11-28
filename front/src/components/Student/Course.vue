@@ -16,6 +16,7 @@
        <p id="subtitle">   {{ item.professor }}</p>
           
         </div>
+        
       </div>
     </div>
    
@@ -109,17 +110,19 @@ export default {
   },
   mounted() {
        
-     
-    axios.get("https://cpel.herokuapp.com/api/modules/").then((response) => {
-      response.data.forEach((mod) => {
-        console.log(mod)
-        axios
+      axios
           .get("https://cpel.herokuapp.com/api/professors/")
           .then((response) => {
            
             response.data.forEach((prof) => {
+    axios.get("https://cpel.herokuapp.com/api/modules/").then((response) => {
+      response.data.forEach((mod) => {
+        
+       
+
               console.log(mod._id +"     and    " +prof.idModule)
               if (mod._id === prof.idModule) {
+                console.log(mod)
                console.log("test")
                 this.moduleData.push({
                   module: mod.name,

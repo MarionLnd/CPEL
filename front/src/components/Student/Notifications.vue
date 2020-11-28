@@ -89,7 +89,7 @@ export default {
           msg:"Un nouveau Cours est disponible ",
           modid: mod._id,
           date: moment(mod.createdAt).format('YYYY/MM/DD'),
-          link:"/courseContent"
+          link:"/courseContent/"+mod._id
         });
        //  this.message = "Un nouveau Cours est disponible ";
         //this.link = "/courseContent";
