@@ -8,3 +8,7 @@ https://cpel.herokuapp.com/api-docs#/
 
 ## FRONT
 https://github.com/MarionLnd/CPEL-front
+
+## API déployée sur heroku
+https://cpel.herokuapp.com
+
