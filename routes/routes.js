@@ -965,7 +965,7 @@ router.put('/users/:idUser', function(req, res) {
 // Suppression d'un prof
 router.delete("/professors/:idProfessor", async (req, res) => {
   try {
-    await group.deleteOne({ _id: req.params.idProfessor })
+    await professor.deleteOne({ _id: req.params.idProfessor })
     res.status(200).send()
   } catch {
     res.status(404)
