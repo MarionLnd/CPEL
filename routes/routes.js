@@ -16,6 +16,8 @@ const user = require('../schemas/user');
 const jwt = require('jsonwebtoken');
 const bcrypt =require('bcrypt');
 var Binary = require('mongodb').Binary;
+var moment = require('moment');
+
 
 // -------------------------------------------
 //             [Typedef Swagger]
@@ -190,9 +192,8 @@ router.post("/group",async (req,res)=>{
 // Ajout d'un module
 router.post("/module",async (req,res)=>{
   let newModule = new mod(req.body);
-  //let data = fs.readFileSync(newModule.content);
-  //newModule.content = Binary(data);
-  await newModule.save().then((result)=>{
+  newModule.createdAt = moment(Date.now).format('YYYY-MM-DD');
+    await newModule.save().then((result)=>{
     res.status(201).json({ NewModule : "201 => https://cpel.herokuapp.com/api/modules/"+newModule._id})
   },(err)=>{
     res.status(400).json(err)
