@@ -16,7 +16,6 @@ const user = require('../schemas/user');
 const jwt = require('jsonwebtoken');
 const bcrypt =require('bcrypt');
 var Binary = require('mongodb').Binary;
-var moment = require('moment');
 
 
 // -------------------------------------------
