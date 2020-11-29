@@ -192,7 +192,6 @@ router.post("/group",async (req,res)=>{
 // Ajout d'un module
 router.post("/module",async (req,res)=>{
   let newModule = new mod(req.body);
-  newModule.createdAt = moment(Date.now).format('YYYY-MM-DD');
     await newModule.save().then((result)=>{
     res.status(201).json({ NewModule : "201 => https://cpel.herokuapp.com/api/modules/"+newModule._id})
   },(err)=>{
