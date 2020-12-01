@@ -943,9 +943,9 @@ router.put('/users/:idUser', async function(req, res) {
     user.findByIdAndUpdate(req.params.idUser,
         {password: await bcrypt.hash(req.body.password, salt)}, function(err, data) {
             if (err) {
-                res.status(204);
+                res.status(204).json({ Result : "204 - Password not changed"})
             } else {
-                res.status(200);
+                res.status(200).json({ Result : "200 - Password changed"})
             }
         });
 });
