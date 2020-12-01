@@ -939,9 +939,9 @@ router.put("/modules/:idModule/tds/:idTD", async (req, res) => {
  */
 
 // Modifier un user
-router.put('/users/:idUser', function(req, res) {
+router.put('/users/:idUser', async function(req, res) {
     user.findByIdAndUpdate(req.params.idUser,
-        {password: bcrypt.hash(req.body.password, salt)}, function(err, data) {
+        {password: await bcrypt.hash(req.body.password, salt)}, function(err, data) {
             if (err) {
                 res.status(204);
             } else {
