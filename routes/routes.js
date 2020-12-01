@@ -939,9 +939,11 @@ router.put("/modules/:idModule/tds/:idTD", async (req, res) => {
  */
 
 // Modifier un user
-router.put('/users/:idUser', function(req, res) {
+router.put('/users/:idUser', async function(req, res) {
+    const salt = await bcrypt.genSalt(10);
+    const password = await bcrypt.hash(req.body.password, salt);
     user.findByIdAndUpdate(req.params.idUser,
-        {password: req.body.password}, function(err, data) {
+        {password: password}, function(err, data) {
             if (err) {
                 res.status(204).json({ Result : "204 - Password not changed"})
             } else {
