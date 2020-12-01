@@ -937,10 +937,11 @@ router.put("/modules/:idModule/tds/:idTD", async (req, res) => {
  * @returns {object} 200 - user added
  * @returns {Error}  default - Unexpected error
  */
+
 // Modifier un user
 router.put('/users/:idUser', function(req, res) {
     user.findByIdAndUpdate(req.params.idUser,
-        {password:req.body.password}, function(err, data) {
+        {password: bcrypt.hash(req.body.password, salt)}, function(err, data) {
             if (err) {
                 res.status(204);
             } else {
