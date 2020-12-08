@@ -105,7 +105,7 @@ var Binary = require('mongodb').Binary;
  * @returns {Error}  400 -  Bad Request
  */
 // Ajout un professeur
-router.post("/professor",async (req,res)=>{
+router.post("api/professor",async (req,res)=>{
     let newProfessor = new professor(req.body);
     await newProfessor.save().then((result)=>{
         res.status(201).json({ NewProfessor : "201 => https://cpel.herokuapp.com/api/professors/"+newProfessor._id})
@@ -116,7 +116,7 @@ router.post("/professor",async (req,res)=>{
 
 /**
  * Add a new student
- * @route POST /student
+ * @route POST api/student
  * @group student - Operations about student
  * @returns {student.model} 201 - A new student is added
  * @returns {Error}  400 - Bad Request
@@ -133,7 +133,7 @@ router.post("/student",async (req,res)=>{
 
 /**
  * Add a new user
- * @route POST /user
+ * @route POST api/user
  * @group user - Operations about user
  * @returns {user.model} 201 - A new user is added
  * @returns {Error}  400 - Bad request
@@ -166,7 +166,7 @@ router.post("/user",async (req,res)=>{
 
 /**
  * Add a new group
- * @route POST /group
+ * @route POST api/group
  * @group group - Operations about group
  * @returns {group.model} 201 - A new group is added
  * @returns {Error}  400 - Bad request
@@ -183,7 +183,7 @@ router.post("/group",async (req,res)=>{
 
 /**
  * Add a new module
- * @route POST /module
+ * @route POST api/module
  * @group module - Operations about module
  * @returns {module.model} 201 - A new module is added
  * @returns {Error}  400 - Bad request
@@ -200,7 +200,7 @@ router.post("/module",async (req,res)=>{
 
 /**
  * Add a new TD
- * @route POST /td
+ * @route POST api/td
  * @group td - Operations about td
  * @returns {td.model} 201 - A new td
  * @returns {Error}  400 - Bad request
@@ -217,7 +217,7 @@ router.post("/td",async (req,res)=>{
 
 /**
  * Add a new exercise
- * @route POST /exercise
+ * @route POST api/exercise
  * @group exercise - Operations about exercise
  * @returns {exercise.model} 201 - A new exercise is added
  * @returns {Error}  400 - Bad request
@@ -234,7 +234,7 @@ router.post("/exercise",async (req,res)=>{
 
 /**
  * Add a correction for an exercise
- * @route POST /correction
+ * @route POST api/correction
  * @group correction - Operations about correction
  * @returns {correction.model} 201 - A new correction is added
  * @returns {Error}  400 - Bad request
@@ -251,7 +251,7 @@ router.post("/correction",async (req,res)=>{
 
 /**
  * Add a new student rendering
- * @route POST /studentRendering
+ * @route POST api/studentRendering
  * @group studentRendering - Operations about studentRendering
  * @returns {studentRendering.model} 201 - A new student rendering is added
  * @returns {Error}  400 - Bad request
@@ -274,7 +274,7 @@ router.post("/studentRendering",async (req,res)=>{
 
 /**
  * Get all users
- * @route GET /users
+ * @route GET api/users
  * @group user - Operations about user
  * @returns {object} 200 - All Users
  * @returns {Error}  404 - Users Not found
@@ -290,7 +290,7 @@ router.get("/users",async (req,res)=>{
 
 /**
  * Get a user by id
- * @route GET /users/{idUser}
+ * @route GET api/users/{idUser}
  * @group user - Operations about user
  * @param {string} idUser.path.required - The id of the user we are looking for
  * @returns {object} 200 - A user
@@ -307,7 +307,7 @@ router.route('/users/:idUser').get(function async(req,res){
 
 /**
  * User Login
- * @route GET /login/{username}/{password}
+ * @route GET api/login/{username}/{password}
  * @group user - Operations about user
  * @returns {user.model} 201 - Successful login
  * @returns {Error}  401 - unauthorized
@@ -323,7 +323,7 @@ router.get("/login/:username/:password", async (req, res) => {
 
 /**
  * Get all professors
- * @route GET /professors
+ * @route GET api/professors
  * @group professor - Operations about professor
  * @returns {object} 200 - All professors
  * @returns {Error}  404 - Professors Not found
@@ -339,7 +339,7 @@ router.get("/professors",async (req,res)=>{
 
 /**
  * Get a professor by id
- * @route GET /professors/{idProfessor}
+ * @route GET api/professors/{idProfessor}
  * @group professor - Operations about professor
  * @param {string} idProfessor.path.required - The id of the professor we are looking for
  * @returns {object} 200 - A professor
@@ -356,7 +356,7 @@ router.route('/professors/:idProfessor').get(function async(req,res){
 
 /**
  * Get all students
- * @route GET /students
+ * @route GET api/students
  * @group student - Operations about student
  * @returns {object} 200 - All students
  * @returns {Error}  404 - Students Not found
@@ -372,7 +372,7 @@ router.get("/students",async (req,res)=>{
 
 /**
  * Get a student by id
- * @route GET /students/{idStudent}
+ * @route GET api/students/{idStudent}
  * @group student - Operations about student
  * @param {string} idStudent.path.required - The id of the student we are looking for
  * @returns {object} 200 - A student
@@ -389,7 +389,7 @@ router.route('/students/:idStudent').get(function async(req,res){
 
 /**
  * Get all groups
- * @route GET /groups
+ * @route GET api/groups
  * @group group - Operations about group
  * @returns {object} 200 - All group
  * @returns {Error}  404 - Groups Not found
@@ -405,7 +405,7 @@ router.get("/groups",async (req,res)=>{
 
 /**
  * Get a group by id
- * @route GET /groups/{idGroup}
+ * @route GET api/groups/{idGroup}
  * @group group - Operations about group
  * @param {string} idGroup.path.required - The id of the student we are looking for
  * @returns {object} 200 - A group
@@ -422,7 +422,7 @@ router.route('/groups/:idGroup').get(function async(req,res){
 
 /**
  * Get all modules
- * @route GET /modules
+ * @route GET api/modules
  * @group module - Operations about module
  * @returns {object} 200 - All modules
  * @returns {Error}  404 - Modules Not found
@@ -438,7 +438,7 @@ router.get("/modules",async (req,res)=>{
 
 /**
  * Get all professor's modules
- * @route GET /professors/{idProfessor}/modules
+ * @route GET api/professors/{idProfessor}/modules
  * @group professor - Operations about professor
  * @param {string} idProfessor.path.required - The id of the professor whose modules we are looking for
  * @returns {object} 200 - All modules of a professor
@@ -456,7 +456,7 @@ router.get("/professors/:idProfessor/modules", async (req, res) => {
 
 /**
  * Get a module
- * @route GET /modules/{idModule}
+ * @route GET api/modules/{idModule}
  * @group module - Operations about module
  * @param {string} idModule.path.required - The id of the module we are looking for
  * @returns {object} 200 - A module
@@ -473,7 +473,7 @@ router.route('/modules/:idModule').get(function async(req,res){
 
 /**
  * Get all exercises
- * @route GET /exercises
+ * @route GET api/exercises
  * @group exercise - Operations about exercise
  * @returns {object} 200 - All exercises
  * @returns {Error}  404 - Exercises Not found
@@ -489,7 +489,7 @@ router.get("/exercises",async (req,res)=>{
 
 /**
  * Get a exercise by id
- * @route GET /exercises/{idExercise}
+ * @route GET api/exercises/{idExercise}
  * @group exercise - Operations about exercise
  * @param {string} idExercise.path.required - The id of the exercise we are looking for
  * @returns {object} 200 - A exercise
@@ -506,7 +506,7 @@ router.route('/exercises/:idExercise').get(function async(req,res){
 
 /**
  * Get all studentRenderings
- * @route GET /studentRenderings
+ * @route GET api/studentRenderings
  * @group studentRendering - Operations about studentRendering
  * @returns {object} 200 - All studentRenderings
  * @returns {Error}  404 - Students Renderings Not found
@@ -522,7 +522,7 @@ router.get("/studentRenderings",async (req,res)=>{
 
 /**
  * Get a studentRenderings by id
- * @route GET /studentRenderings/{idStudentRendering}
+ * @route GET api/studentRenderings/{idStudentRendering}
  * @group studentRendering - Operations about studentRendering
  * @param {string} idStudentRendering.path.required - The id of the studentRendering we are looking for
  * @returns {object} 200 - A studentRendering
@@ -539,7 +539,7 @@ router.route('/studentRenderings/:idStudentRendering').get(function async(req,re
 
 /**
  * Get all rendering for a student
- * @route GET /students/{idStudent}/studentRenderings
+ * @route GET api/students/{idStudent}/studentRenderings
  * @group student - Operations about student
  * @param {string} idStudent.path.required - The id of the student whose rendering we are looking for
  * @returns {object} 200 - All student Rendering
@@ -558,7 +558,7 @@ router.get("/students/:idStudent/studentRenderings", async (req, res) => {
 
 /**
  * Get all rendering for a exercise by a student url
- * @route GET /students/{idStudent}/{idExercise}/studentRenderings
+ * @route GET api/students/{idStudent}/{idExercise}/studentRenderings
  * @group student - Operations about student
  * @param {string} idExercise.path.required - The id of the exercise whose rendering we are looking for
  * @param {string} idStudent.path.required - The id of the student whose rendering we are looking for
@@ -578,7 +578,7 @@ router.get("/students/:idStudent/:idExercise/studentRenderings", async (req, res
 
 /**
  * Get all correction
- * @route GET /corrections
+ * @route GET api/corrections
  * @group correction - Operations about correction
  * @returns {object} 200 - All corrections
  * @returns {Error}  404 - Corrections Not found
@@ -594,7 +594,7 @@ router.get("/corrections",async (req,res)=>{
 
 /**
  * Get a correction by id
- * @route GET /corrections/{idCorrection}
+ * @route GET api/corrections/{idCorrection}
  * @group correction - Operations about correction
  * @param {string} idCorrection.path.required - The id of the correction we are looking for
  * @returns {object} 200 - A correction
@@ -611,7 +611,7 @@ router.route('/corrections/:idCorrection').get(function async(req,res){
 
 /**
  * Get all TD
- * @route GET /tds
+ * @route GET api/tds
  * @group td - Operations about td
  * @returns {object} 200 - All tds
  * @returns {Error}  404 - Tds Not found
@@ -627,7 +627,7 @@ router.get("/tds",async (req,res)=>{
 
 /**
  * Get a TD by id
- * @route GET /tds/{idTD}
+ * @route GET api/tds/{idTD}
  * @group td - Operations about td
  * @param {string} idTD.path.required - The id of the td we are looking for
  * @returns {object} 200 - A td
@@ -644,7 +644,7 @@ router.route('/tds/:idTD').get(function async(req,res){
 
 /**
  * Get all exercise for a TD
- * @route GET /tds/{idTD}/exercises
+ * @route GET api/tds/{idTD}/exercises
  * @group td - Operations about td
  * @param {string} idTD.path.required - The id of the td whose exercises we are looking for
  * @returns {object} 200 - All exercise for the td
@@ -666,7 +666,7 @@ router.get('/tds/:idTD/exercises', async (req, res) => {
 
 /**
  * Update a student
- * @route PUT /students/{idStudent}
+ * @route PUT api/students/{idStudent}
  * @group student - Operations about student
  * @param {string} idStudent.path.required - The id of the student you want to update
  * @returns {object} 200 - Student updated
@@ -679,13 +679,13 @@ router.put('/students/:idStudent', async (req, res) => {
         await student.save()
         res.status(200).json({ Result : "200 - Student updated"});
     } catch (err) {
-        res.status(400).json({ Result : "400 - Student not updated"});
+        res.status(204).json({ Result : "400 - Student not updated"});
     }
 });
 
 /**
  * Update student's group
- * @route PUT /students/group/{idStudent}
+ * @route PUT api/students/group/{idStudent}
  * @group student - Operations about student
  * @param {string} idStudent.path.required - The id of the student you want to update
  * @returns {object} 200 - Student updated
@@ -705,7 +705,7 @@ router.put('/students/group/:idStudent', function(req, res) {
 
 /**
  * Update a professor
- * @route PUT /professors/{idProfessor}
+ * @route PUT api/professors/{idProfessor}
  * @group professor - Operations about professor
  * @param {string} idProfessor.path.required - The id of the professor you want to update
  * @returns {object} 200 - Professor updated
@@ -724,7 +724,7 @@ router.put('/professors/:idProfessor', async (req, res) => {
 
 /**
  * Update a exercise
- * @route PUT /exercises/{idExercise}
+ * @route PUT api/exercises/{idExercise}
  * @group exercise - Operations about exercise
  * @param {string} idExercise.path.required - The id of the exercise you want to update
  * @returns {object} 200 - Exercise updated
@@ -742,7 +742,7 @@ router.put("/exercises/:idExercise", async (req, res) => {
 
 /**
  * Update a correction
- * @route PUT /corrections/{idCorrection}
+ * @route PUT api/corrections/{idCorrection}
  * @group correction - Operations about correction
  * @param {string} idCorrection.path.required - The id of the correction you want to update
  * @returns {object} 200 - Correction updated
@@ -760,7 +760,7 @@ router.put("/corrections/:idCorrection", async (req, res) => {
 
 /**
  * Update a student rendering
- * @route PUT /studentRenderings/{idStudentRendering}
+ * @route PUT api/studentRenderings/{idStudentRendering}
  * @group studentRendering - Operations about studentRendering
  * @param {string} idStudentRendering.path.required - The id of the rendering you want to update
  * @returns {object} 200 - StudentRendering updated
@@ -778,7 +778,7 @@ router.put("/studentRenderings/:idStudentRendering", async (req, res) => {
 
 /**
  * Add groups to a module
- * @route PUT /modules/{idModule}/{idGroup}
+ * @route PUT api/modules/{idModule}/{idGroup}
  * @group module - Operations about module
  * @param {string} idModule.path.required - The id of the module you want to add the group into
  * @param {string} idGroup.path.required - The id of the group you want to add
@@ -809,7 +809,7 @@ router.put("/modules/:idModule/:idGroup", async (req, res) => {
 
 /**
  * Add module to a group
- * @route PUT /groups/{idGroup}/modules/{idModule}
+ * @route PUT api/groups/{idGroup}/modules/{idModule}
  * @group group - Operations about group
  * @param {string} idGroup.path.required - The id of the group you want to add the modules into
  * @param {string} idModule.path.required - The id of the module you want to add
@@ -840,7 +840,7 @@ router.put("/groups/:idGroup/modules/:idModule", async (req, res) => {
 
 /**
  * Add students to a group
- * @route PUT /groups/{idGroup}/students/{idStudent}
+ * @route PUT api/groups/{idGroup}/students/{idStudent}
  * @group group - Operations about group
  * @param {string} idGroup.path.required - The id of the group you want to add the students into
  * @param {string} idStudent.path.required - The id of the student you want to add
@@ -870,7 +870,7 @@ router.put("/groups/:idGroup/students/:idStudent", async (req, res) => {
 
 /**
  * Add exercise to a TD
- * @route PUT /tds/{idTD}/{idExercise}
+ * @route PUT api/tds/{idTD}/{idExercise}
  * @group td - Operations about td
  * @param {string} idTD.path.required - The id of the TD you want to add the exercises into
  * @param {string} idExercise.path.required - The id of the exercise you want to add
@@ -900,7 +900,7 @@ router.put("/tds/:idTD/:idExercise", async (req, res) => {
 
 /**
  * Add TD to a Module
- * @route PUT /modules/{idModule}/tds/{idTD}
+ * @route PUT api/modules/{idModule}/tds/{idTD}
  * @group module - Operations about module
  * @param {string} idModule.path.required - The id of the module you want to add the tds into
  * @param {string} idTD.path.required - The id of the td you want to add
@@ -931,7 +931,7 @@ router.put("/modules/:idModule/tds/:idTD", async (req, res) => {
 
 /**
  * Update user password
- * @route PUT /users/{idUser}
+ * @route PUT api/users/{idUser}
  * @group user - Operations about user
  * @param {string} idUser.path.required - username
  * @returns {object} 200 - user added
@@ -958,7 +958,7 @@ router.put('/users/:idUser', async function(req, res) {
 
 /**
  * Delete professor
- * @route DELETE /professors/{idProfessor}
+ * @route DELETE api/professors/{idProfessor}
  * @group professor - Operations about professor
  * @param {string} idProfessor.path.required - The id of the professor to be deleted
  * @returns {object} 200 - professor deleted
@@ -977,7 +977,7 @@ router.delete("/professors/:idProfessor", async (req, res) => {
 
 /**
  * Delete student
- * @route DELETE /students/{idStudent}
+ * @route DELETE api/students/{idStudent}
  * @group student - Operations about student
  * @param {string} idStudent.path.required - The id of the student to be deleted
  * @returns {object} 200 - student deleted
@@ -996,7 +996,7 @@ router.delete("/students/:idStudent", async (req, res) => {
 
 /**
  * Delete group
- * @route DELETE /groups/{idGroup}
+ * @route DELETE api/groups/{idGroup}
  * @group group - Operations about group
  * @param {string} idGroup.path.required - The id of the group to be deleted
  * @returns {object} 200 - group deleted
@@ -1015,7 +1015,7 @@ router.delete("/groups/:idGroup", async (req, res) => {
 
 /**
  * Delete td
- * @route DELETE /tds/{idTD}
+ * @route DELETE api/tds/{idTD}
  * @group td - Operations about td
  * @param {string} idTD.path.required - The id of the td to be deleted
  * @returns {object} 200 - td deleted
@@ -1034,7 +1034,7 @@ router.delete("/tds/:idTD", async (req, res) => {
 
 /**
  * Delete td
- * @route DELETE /modules/{idModule}
+ * @route DELETE api/modules/{idModule}
  * @group module - Operations about module
  * @param {string} idModule.path.required - The id of the module to be deleted
  * @returns {object} 200 - module deleted
@@ -1053,7 +1053,7 @@ router.delete("/modules/:idModule", async (req, res) => {
 
 /**
  * Delete exercise
- * @route DELETE /exercises/{idExercise}
+ * @route DELETE api/exercises/{idExercise}
  * @group exercise - Operations about exercise
  * @param {string} idExercise.path.required - The id of the exercise to be deleted
  * @returns {object} 200 - exercise deleted
@@ -1072,7 +1072,7 @@ router.delete("/exercises/:idExercise", async (req, res) => {
 
 /**
  * Delete studentRendering
- * @route DELETE /studentRenderings/{idStudentRendering}
+ * @route DELETE api/studentRenderings/{idStudentRendering}
  * @group studentRendering - Operations about studentRendering
  * @param {string} idStudentRendering.path.required - The id of the rendering to be deleted
  * @returns {object} 200 - studentRendering deleted
