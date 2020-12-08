@@ -14,7 +14,7 @@ let options = {
             title: 'Swagger',
             version: '1.0.0',
         },
-        host: 'https://cpel.herokuapp.com',
+        host: 'cpel.herokuapp.com',
         basePath: '/api',
         produces: [
             "application/json",
