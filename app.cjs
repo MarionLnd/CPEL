@@ -15,7 +15,7 @@ let options = {
             version: '1.0.0',
         },
         host: 'https://cpel.herokuapp.com',
-        basePath: '/v1',
+        basePath: '/api',
         produces: [
             "application/json",
             "application/xml"
