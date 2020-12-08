@@ -10,7 +10,7 @@ mongoose.set('useFindAndModify', false);
 let options = {
     swaggerDefinition: {
         info: {
-            description: 'CPEL API CRUD',
+            description: 'CPEL API CRUD : Marion .L, Soukayna .M, Marieme .D',
             title: 'Swagger',
             version: '1.0.0',
         },
